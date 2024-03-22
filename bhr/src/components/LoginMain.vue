@@ -46,6 +46,9 @@ export default {
           case 'ROLE_EMPLOYEE':
             router.push({ name: 'LoginSuccess' }); // 'user' 권한을 가진 사용자를 위한 페이지
             break;
+          case 'ROLE_HREMPLOYEE':
+            router.push({ name: 'LoginSuccess' }); // 'user' 권한을 가진 사용자를 위한 페이지
+            break;
           default:
             router.push({ name: 'LoginSuccess' }); // 기본 홈페이지
             break;
