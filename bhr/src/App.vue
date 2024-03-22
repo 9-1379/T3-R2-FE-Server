@@ -1,15 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your bhr project App"/>
+  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  <LoginMain/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+import LoginMain from './components/LoginMain.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    LoginMain
   }
 }
 </script>

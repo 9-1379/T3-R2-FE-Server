@@ -24,3 +24,5 @@ export default {
   }
 }
 </script>
+
+<!-- axios.get('http://172.31.6.228:8000/greeting') -->
