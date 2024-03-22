@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosInstance from '../axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'; // vue-router를 사용하고 있다고 가정
 
@@ -30,13 +30,15 @@ export default {
 
     const handleLogin = async () => {
       try {
-        const response = await axios.post('/login', {
+        const response = await axiosInstance.post('/login', {
           username: username.value,
           password: password.value,
         });
 
+
         // 로그인 성공 시, JWT를 LocalStorage에 저장
         localStorage.setItem('authToken', response.data.token);
+        localStorage.setItem('username', response.data.username);
 
         // 사용자 권한에 따라 다른 페이지로 리다이렉트
         switch (response.data.role) {
@@ -67,39 +69,41 @@ export default {
   },
 };
 </script>
-  
-  <style>
-  /* 여기에 CSS 스타일을 추가하세요 */
-  .login-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  label {
-    margin-bottom: 5px;
-    display: block;
-  }
-  
-  input[type="email"], input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #0056b3;
-  }
-  </style>
+
+<style>
+/* 여기에 CSS 스타일을 추가하세요 */
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+label {
+  margin-bottom: 5px;
+  display: block;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+</style>

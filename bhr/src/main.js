@@ -1,17 +1,13 @@
-import { createApp } from 'vue'
-// import axios from 'axios'
-import App from './App.vue'
-import routers from './router'  // router import
-import axios from 'axios';
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import axiosInstance from './axios'; // 2단계에서 생성한 인스턴스를 가져옵니다.
 
-// Axios 인스턴스 생성 및 설정
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000'
-});
+const app = createApp(App);
 
-// 모든 Vue 인스턴스에서 `$http`를 통해 접근할 수 있도록 설정
-Vue.prototype.$http = axiosInstance;
+// 애플리케이션 인스턴스에 axios 인스턴스 추가
+app.config.globalProperties.$axios = axiosInstance;
 
-// app.config.globalProperties.$axios = axios;
-createApp(App).mount('#app').use(routers)
+app.use(router);
+app.mount('#app');
 
