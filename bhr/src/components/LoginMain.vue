@@ -30,7 +30,7 @@ export default {
 
     const handleLogin = async () => {
       try {
-        const response = await axios.post('YOUR_LOGIN_API_ENDPOINT', {
+        const response = await axios.post('/login', {
           username: username.value,
           password: password.value,
         });
