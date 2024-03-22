@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     fetchGreeting() {
-      axios.get('http://localhost:8000/greeting') // 백엔드 URL 및 포트 번호 수정
+      axios.get('http://172.31.6.228:8000/greeting') // 백엔드 URL 및 포트 번호 수정
         .then(response => this.greetingMessage = response.data)
         .catch(error => console.error(error));
     }
