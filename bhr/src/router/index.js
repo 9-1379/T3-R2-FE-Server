@@ -1,23 +1,24 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'; //메인 컴포넌트 호출
-import MyLogin from '@/components/login/MyLogin.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+// import HelloWorld from '@/components/HelloWorld.vue';
+import LoginMain from '@/components/LoginMain.vue'; // MyLogin 대신 LoginMain을 임포트해야 합니다.
+import EmpList from '@/components/EmpList.vue';
 
 const routes = [
   {
-    path:'/'
-	,name:HelloWorld
-	,component:HelloWorld
+    path: '/',
+    name: 'LoginMain', // 경로 이름은 그대로 유지됩니다.
+    component: LoginMain // 임포트된 컴포넌트 이름을 사용합니다.
   },
   {
-    path:'/login'
-    ,name:MyLogin
-    ,component:MyLogin
+    path: '/list',
+    name: 'EmpList',
+    component: EmpList
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
-export default router
+export default router;

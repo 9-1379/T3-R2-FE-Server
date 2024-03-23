@@ -1,17 +1,12 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <LoginMain/>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import LoginMain from './components/LoginMain.vue'
-
 export default {
   name: 'App',
-  components: {
-    LoginMain
-  }
 }
 </script>
 

@@ -1,8 +1,7 @@
-import { createApp } from 'vue'
-// import axios from 'axios'
-import App from './App.vue'
-import routers from './router'  // router import
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router'; // 변수명이 일관성 있게 변경되었습니다.
 
-// app.config.globalProperties.$axios = axios;
-createApp(App).mount('#app').use(routers)
+createApp(App).use(router).mount('#app'); // 순서가 중요합니다!
+
 
