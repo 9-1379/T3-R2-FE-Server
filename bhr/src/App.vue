@@ -1,16 +1,19 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <LoginMain/>
+   <!--<LoginMain/>-->
+  <UserDashboard/>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import LoginMain from './components/LoginMain.vue'
+//import LoginMain from './components/LoginMain.vue'
+import UserDashboard from './components/UserDashboard.vue'
 
 export default {
   name: 'App',
   components: {
-    LoginMain
+    //LoginMain
+    UserDashboard
   }
 }
 </script>
