@@ -1,68 +1,90 @@
 <template>
-    <div class="employee-list-container">
-      <h2 class="list-title">직원 목록 조회</h2>
-      <div class="search-and-actions">
-        <div class="search-section">
-          <label for="search">검색:</label>
-          <input type="text" id="search" v-model="searchQuery" placeholder="검색">
-        </div>
-        <div class="action-buttons">
-          <button @click="fetchEmployees" class="action-button">신규 직원 추가</button>
-          <button @click="downloadEmployeeList" class="action-button">퇴직 처리</button>
-        </div>
+  <AdminMenu />
+  <div class="employee-list-container">
+    <h2 class="list-title">직원 목록 조회</h2>
+    <div class="search-and-actions">
+      <div class="search-section">
+        <label for="search">검색:</label>
+        <input type="text" id="search" v-model="searchQuery" placeholder="검색">
       </div>
-      <div class="table-section">
-        <table>
-          <thead>
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>이름</th>
-              <th>부서</th>
-              <th>전화번호</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="employee in filteredEmployees" :key="employee.id">
-              <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
-              <td>{{ employee.name }}</td>
-              <td>{{ employee.dept }}</td>
-              <td>{{ employee.phoneNumber }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="action-buttons">
+        <button @click="goToNewEmployee" class="action-button">신규 직원 추가</button>
+        <button @click="downloadEmployeeList" class="action-button">퇴직 처리</button>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        employees: [],
-        searchQuery: '',
-        selectedEmployees: []
-      };
-    },
-    computed: {
-      filteredEmployees() {
-        return this.employees.filter(employee =>
-          employee.name.includes(this.searchQuery)
-        );
-      }
-    },
-    methods: {
-      fetchEmployees() {
-        // Fetch logic here
-      },
-      downloadEmployeeList() {
-        // Download logic here
-      }
-    },
-    created() {
-      this.fetchEmployees();
+    <div class="table-section">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox"></th>
+            <th>이름</th>
+            <th>부서</th>
+            <th>전화번호</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="employee in filteredEmployees" :key="employee.id">
+            <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.dept }}</td>
+            <td>{{ employee.phoneNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import AdminMenu from '@/components/menu/AdminMenu.vue';
+
+export default {
+  components: {
+    AdminMenu
+  },
+  setup() {
+    const router = useRouter();
+    return { router };
+  },
+  data() {
+    return {
+      employees: [],
+      searchQuery: '',
+      selectedEmployees: []
+    };
+  },
+  computed: {
+    filteredEmployees() {
+      return this.employees.filter(employee =>
+        employee.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
     }
-  };
-  </script>
+  },
+  methods: {
+    async fetchEmployees() {
+      try {
+        const response = await axios.get('http://localhost:8000/employees');
+        this.employees = response.data;
+      } catch (error) {
+        console.error('There was an error fetching the employees:', error);
+        alert('직원 정보를 불러오는데 실패했습니다.');
+      }
+    },
+    goToNewEmployee() {
+      this.router.push('/new');
+    },
+    downloadEmployeeList() {
+      // 다운로드 로직 여기에 작성
+    }
+  },
+  created() {
+    this.fetchEmployees();
+  }
+};
+</script>
+
   
   <style scoped>
   .employee-list-container {

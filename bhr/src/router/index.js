@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 // import HelloWorld from '@/components/HelloWorld.vue';
 import LoginMain from '@/components/LoginMain.vue'; // MyLogin 대신 LoginMain을 임포트해야 합니다.
 import EmpList from '@/components/EmpList.vue';
+import NewEmp from '@/components/NewEmp.vue';
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: '/list',
     name: 'EmpList',
     component: EmpList
+  },
+  {
+    path: '/new',
+    name: 'NewEmp',
+    component: NewEmp
   }
 ];
 
