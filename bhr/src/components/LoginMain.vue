@@ -39,25 +39,22 @@ export default {
       // axios를 사용해 서버에 로그인 요청 보내기
       // 이번에는 폼 데이터를 전송합니다.
       axios.post("http://localhost:8000/login", formData)
-        .then((res) => {
-          if (res.data.token) {
-            // 로그인 성공 시, 토큰을 localStorage에 저장하고 성공 메시지 표시
-            localStorage.setItem("Authorization", res.data.token);
-            alert("로그인 성공");
-            // 로그인 성공 후의 추가 로직 (예: 페이지 이동)
-          } else {
-            // 토큰이 반환되지 않았다면 로그인 실패 메시지 표시
-            alert("로그인 실패: 토큰이 반환되지 않았습니다.");
-          }
-        })
-        .catch((error) => {
-          // 요청 중 에러가 발생하면 에러 메시지 표시
-          console.error("로그인 에러:", error);
-          alert("로그인 실패");
-        });
-    };
+      .then((res) => {
+        if (res.status === 200) {
+          // 모든 헤더 이름은 소문자
+          let accessToken = res.headers['authorization']; // 응답헤더에서 토큰 받기
+          let refreshToken = res.headers['refresh']; // 응답헤더에서 토큰 받기
+          console.log('access 토큰 :', accessToken);
+          console.log('refresh 토큰 :', refreshToken);
+          localStorage.setItem('access_token', accessToken); // 토큰 localStorage에 저장
+          axios.defaults.headers.common[
+            'Authorization'
+          ] = `Bearer ${accessToken}`;
+        }
+      });
+};
 
-    return { form, handleLogin };
+return { form, handleLogin };
   },
 };
 </script>
