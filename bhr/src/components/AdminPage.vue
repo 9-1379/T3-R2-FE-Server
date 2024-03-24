@@ -1,60 +1,39 @@
 <template>
-    <div class="admin-dashboard">
-      <h2>Admin Dashboard</h2>
-      <div v-if="loading">Loading users...</div>
-      <ul v-else>
-        <li v-for="user in users" :key="user.id" @click="selectUser(user)">
-          {{ user.name }}
-        </li>
-      </ul>
-  
-      <div v-if="selectedUser">
-        <h3>Selected User</h3>
-        <p>ID: {{ selectedUser.id }}</p>
-        <p>Name: {{ selectedUser.name }}</p>
-        <p>Email: {{ selectedUser.email }}</p>
-        <!-- 추가 정보를 여기에 표시 -->
-      </div>
-    </div>
-    <div>
-      <h1>직원 수 : {{ employeeConut }}</h1>
-    </div>
-  </template>
+  <div>
+    <h1>Employee List</h1>
+    <p>Total Employees: {{ count }}</p>
+    <ul>
+      <li v-for="employee in employeeList" :key="employee.id">
+        {{ employee.name }} - {{ employee.position }}
+      </li>
+    </ul>
+  </div>
+</template>
   
   <script>
-  import axios from 'axios';
+
   import { ref, onMounted } from 'vue';
+  import axios from 'axios';
   
   export default {
     setup() {
-      const loading = ref(true);
-      const users = ref([]);
-      const selectedUser = ref(null);
-      const employeeConut = ref(null); // 직원 수 값 초기화
+      const employeeList = ref([]);
+      const count = ref(0);
   
       onMounted(async () => {
         try {
-          const response = await axios.get('http://localhost:8050/count');
-          users.value = response.data;
-          employeeConut.value = response.data;
+          const response = await axios.get('http://localhost:8050/list');
+          employeeList.value = response.data.employeeList;
+          count.value = response.data.count;
         } catch (error) {
           console.error('Error fetching users:', error);
           // 에러 처리 로직
-        } finally {
-          loading.value = false;
-        }
+        } 
       });
   
-      const selectUser = (user) => {
-        selectedUser.value = user;
-      };
-  
       return {
-        loading,
-        users,
-        selectedUser,
-        selectUser,
-        employeeConut,
+        employeeList,
+        count
       };
     },
   };
