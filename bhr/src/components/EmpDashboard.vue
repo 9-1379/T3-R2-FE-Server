@@ -1,28 +1,28 @@
 <template>
-    <div class="user-dashboard">
-      <div v-if="user">
+    <div class="emp-dashboard">
+      <div v-if="emp">
         <div v-if="editingImage">
           <input type="file" @change="updateImage"/>
           <button @click="cancelEditImage">Cancel</button>
         </div>
         <div v-else>
-          <img :src="user.profilePicture || defaultProfilePicture" alt="Profile Picture" class="profile-picture"/>
+          <img :src="emp.profilePicture || defaultProfilePicture" alt="Profile Picture" class="profile-picture"/>
           <button @click="editImage">Edit Image</button>
         </div>
-        <h2>{{ user.name }}</h2>
-        <p><strong>Department:</strong> {{ user.department }}</p>
-        <p><strong>Position:</strong> {{ user.position }}</p>
+        <h2>{{ emp.name }}</h2>
+        <p><strong>Department:</strong> {{ emp.department }}</p>
+        <p><strong>Position:</strong> {{ emp.position }}</p>
         <div>
-          <p><strong>About:</strong> {{ user.introduction }}</p>
+          <p><strong>About:</strong> {{ emp.introduction }}</p>
           <button @click="editIntroduction">Edit</button>
           <button @click="deleteIntroduction">Delete</button>
-          <textarea v-if="editingIntroduction" v-model="user.introduction"></textarea>
+          <textarea v-if="editingIntroduction" v-model="emp.introduction"></textarea>
           <button v-if="editingIntroduction" @click="saveIntroduction">Save</button>
           <button v-if="editingIntroduction" @click="cancelEditIntroduction">Cancel</button>
         </div>
       </div>
       <div v-else>
-        <p>User not found.</p>
+        <p>emp not found.</p>
       </div>
     </div>
   </template>
@@ -33,18 +33,18 @@
   
   export default {
     setup() {
-      const user = ref(null);
+      const emp = ref(null);
       const editingImage = ref(false);
       const editingIntroduction = ref(false);
       const defaultProfilePicture = 'path_to_default_image';
   
-      // user data
-      user.value = {
+      // emp data
+      emp.value = {
         name: "김로미",
         department: "Engineering",
         position: "Software Engineer",
         introduction: "Hello! I'm a software engineer.😺",
-        profilePicture: "path_to_user_image"
+        profilePicture: "path_to_emp_image"
       };
   
       const editImage = () => {
@@ -69,7 +69,7 @@
       };
   
       const deleteIntroduction = () => {
-        user.value.introduction = ''; 
+        emp.value.introduction = ''; 
       };
   
       const cancelEditIntroduction = () => {
@@ -77,7 +77,7 @@
       };
   
       return {
-        user,
+        emp,
         editingImage,
         editingIntroduction,
         editImage,
@@ -94,7 +94,7 @@
   </script>
   
 <style scoped>
-.user-dashboard {
+.emp-dashboard {
   font-family: 'Arial', sans-serif;
   margin: 0 auto;
   max-width: 800px;

@@ -1,19 +1,19 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
    <!--<LoginMain/>-->
-  <UserDashboard/>
+  <EmpDashboard/>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 //import LoginMain from './components/LoginMain.vue'
-import UserDashboard from './components/UserDashboard.vue'
+import EmpDashboard from './components/EmpDashboard.vue';
 
 export default {
   name: 'App',
   components: {
     //LoginMain
-    UserDashboard
+    EmpDashboard
   }
 }
 </script>
@@ -27,4 +27,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-</style>
+</style>./components/EmpDashboard.vue
