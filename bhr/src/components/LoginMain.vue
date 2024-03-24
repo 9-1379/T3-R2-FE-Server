@@ -4,11 +4,11 @@
     <form @submit.prevent="handleLogin">
       <div>
         <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" required>
+        <input type="text" id="username" v-model="form.username" required>
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required>
+        <input type="password" id="password" v-model="form.password" required>
       </div>
       <div>
         <button type="submit">Login</button>
@@ -18,54 +18,46 @@
 </template>
 
 <script>
-import axiosInstance from '../axios';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // vue-router를 사용하고 있다고 가정
+import axios from "axios";
+import { reactive } from "vue";
 
 export default {
+  name: "LoginMain",
   setup() {
-    const router = useRouter(); // 라우터 인스턴스를 사용
-    const username = ref('');
-    const password = ref('');
+    const form = reactive({
+      username: "",
+      password: "",
+    });
 
-    const handleLogin = async () => {
-      try {
-        const response = await axiosInstance.post('/login', {
-          username: username.value,
-          password: password.value,
+    const handleLogin = () => {
+      // FormData 인스턴스 생성
+      let formData = new FormData();
+      // 폼 데이터에 사용자 이름과 비밀번호 추가
+      formData.append("username", form.username);
+      formData.append("password", form.password);
+
+      // axios를 사용해 서버에 로그인 요청 보내기
+      // 이번에는 폼 데이터를 전송합니다.
+      axios.post("http://localhost:8000/login", formData)
+        .then((res) => {
+          if (res.data.token) {
+            // 로그인 성공 시, 토큰을 localStorage에 저장하고 성공 메시지 표시
+            localStorage.setItem("Authorization", res.data.token);
+            alert("로그인 성공");
+            // 로그인 성공 후의 추가 로직 (예: 페이지 이동)
+          } else {
+            // 토큰이 반환되지 않았다면 로그인 실패 메시지 표시
+            alert("로그인 실패: 토큰이 반환되지 않았습니다.");
+          }
+        })
+        .catch((error) => {
+          // 요청 중 에러가 발생하면 에러 메시지 표시
+          console.error("로그인 에러:", error);
+          alert("로그인 실패");
         });
-
-
-        // 로그인 성공 시, JWT를 LocalStorage에 저장
-        localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('username', response.data.username);
-
-        // 사용자 권한에 따라 다른 페이지로 리다이렉트
-        switch (response.data.role) {
-          case 'ROLE_MANAGER':
-            router.push({ name: 'LoginSuccess' }); // 'admin' 권한을 가진 사용자를 위한 페이지
-            break;
-          case 'ROLE_EMPLOYEE':
-            router.push({ name: 'LoginSuccess' }); // 'user' 권한을 가진 사용자를 위한 페이지
-            break;
-          case 'ROLE_HREMPLOYEE':
-            router.push({ name: 'LoginSuccess' }); // 'user' 권한을 가진 사용자를 위한 페이지
-            break;
-          default:
-            router.push({ name: 'LoginSuccess' }); // 기본 홈페이지
-            break;
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-        alert('Login failed');
-      }
     };
 
-    return {
-      username,
-      password,
-      handleLogin,
-    };
+    return { form, handleLogin };
   },
 };
 </script>
