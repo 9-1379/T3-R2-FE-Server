@@ -2,6 +2,7 @@
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
    <!--<LoginMain/>-->
   <EmpDashboard/>
+  <router-view />
 </template>
 
 <script>
