@@ -1,15 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import HelloWorld from '@/components/HelloWorld.vue';
-import LoginMain from '@/components/LoginMain.vue'; // MyLogin 대신 LoginMain을 임포트해야 합니다.
+import LoginMain from '@/components/LoginMain.vue';
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
-
+import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 
 const routes = [
   {
     path: '/',
-    name: 'LoginMain', // 경로 이름은 그대로 유지됩니다.
-    component: LoginMain // 임포트된 컴포넌트 이름을 사용합니다.
+    name: 'LoginMain',
+    component: LoginMain
   },
   {
     path: '/list',
@@ -20,6 +19,11 @@ const routes = [
     path: '/new',
     name: 'NewEmp',
     component: NewEmp
+  },
+  {
+    path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
+    name: 'EmpDetail',
+    component: EmpDetail
   }
 ];
 
@@ -29,3 +33,5 @@ const router = createRouter({
 });
 
 export default router;
+
+

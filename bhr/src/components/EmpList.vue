@@ -30,7 +30,7 @@
             <td>{{ employee.name }}</td>
             <td>{{ employee.dept ? employee.dept.deptName : '부서 정보 없음' }}</td>
             <td>{{ employee.phoneNumber }}</td>
-            <td><button @click="viewEmployeeDetails(employee.id)" class="detail-button">상세보기</button></td>
+            <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
           </tr>
         </tbody>
       </table>
@@ -60,7 +60,6 @@ export default {
   },
   computed: {
     filteredEmployees() {
-      // 배열 확인 추가
       if (!Array.isArray(this.employees)) {
         return [];
       }
@@ -82,17 +81,15 @@ export default {
     async retireEmployees() {
       if (this.selectedEmployees.length === 0) {
         alert('직원을 선택해주세요.');
-        return; // 선택된 직원이 없을 경우 바로 종료
+        return;
       }
 
       try {
         for (const employeeId of this.selectedEmployees) {
-          // 직원의 status를 LEAVE로 변경하는 요청 보내기
           await axios.put(`http://localhost:8000/employees/${employeeId}/retire`);
-
         }
-        await this.fetchEmployees(); // 비동기 처리 추가
-        this.selectedEmployees = []; // 선택된 직원 초기화
+        await this.fetchEmployees();
+        this.selectedEmployees = [];
         alert('선택된 직원이 퇴직 처리되었습니다.');
       } catch (error) {
         console.error('Error while processing employee leave:', error);
@@ -102,9 +99,8 @@ export default {
     goToNewEmployee() {
       this.router.push('/new');
     },
-    viewEmployeeDetails(employeeId) {
-      // 상세 정보 페이지로 이동하는 로직 작성
-      alert(`직원 ${employeeId}의 상세 정보를 보여주는 페이지로 이동`);
+    viewEmployeeDetails(employee) {
+      this.router.push({ name: 'EmpDetail', params: { id: employee.id }});
     },
     selectAllEmployees(event) {
       if (event.target.checked) {
@@ -115,7 +111,7 @@ export default {
     }
   },
   created() {
-    this.fetchEmployees(); // 생성 시 직원 데이터 불러오기 추가
+    this.fetchEmployees();
   }
 };
 </script>
