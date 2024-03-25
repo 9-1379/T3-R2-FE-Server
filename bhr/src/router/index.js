@@ -4,6 +4,7 @@ import LoginMain from '@/components/LoginMain.vue'; // MyLogin 대신 LoginMain�
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
 
+
 const routes = [
   {
     path: '/',
