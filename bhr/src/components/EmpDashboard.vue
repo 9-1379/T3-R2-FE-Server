@@ -23,12 +23,12 @@
       </div>
       <div v-else>
         <p>emp not found.</p>
-      </div>
+      </div>                            
     </div>
   </template>
   
   <script>
- // import axios from 'axios';
+  import axios from 'axios';
   import { ref } from 'vue';
   
   export default {
@@ -46,17 +46,36 @@
         introduction: "Hello! I'm a software engineer.😺",
         profilePicture: "path_to_emp_image"
       };
+
+      const updateImage = async (event) => {
+        const file = event.target.files[0]; 
+        if (file) {
+          const formData = new FormData();
+          formData.append ('profilePicture', file); // 서버에서 'profilePicture'필드를 사용하여 파일을 참조!
+        
+         try {
+          const responce = await axios.post('서버_업로드_URL', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          // 업로드 성공 후 로직, 예: 서버 응답을 바탕으로 UI 업데이트
+          emp.value.profilePicture = Response.data.url;
+         } catch (error) {
+          console.error('Failed to upload image', error);
+          //오류 처리 로직
+          }
+        } else {
+          alert('Please select an image file.');
+      
+          }
+        };
   
       const editImage = () => {
         editingImage.value = true;
       };
   
       const cancelEditImage = () => {
-        editingImage.value = false;
-      };
-  
-      const updateImage = (event) => {
-        console.log(event.target.files[0]);
         editingImage.value = false;
       };
   
