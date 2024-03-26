@@ -30,6 +30,7 @@
             <div class="info-row"><strong>생년월일:</strong> {{ formatDate(employee.birthday) }}</div>
             <div class="info-row"><strong>전화번호:</strong> {{ employee.phoneNumber }}</div>
             <div class="info-row"><strong>이메일:</strong> {{ employee.email }}</div>
+            <div class="info-row"><strong>부서:</strong> {{ employee.deptName }}</div>
             <div class="info-row"><strong>직위:</strong> {{ employee.position }}</div>
             <div class="info-row"><strong>직무:</strong> {{ employee.jobId }}</div>
             <div class="info-row"><strong>입사 날짜:</strong> {{ formatDate(employee.hireDate) }}</div>

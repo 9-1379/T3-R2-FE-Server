@@ -24,15 +24,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="employee in filteredEmployees" :key="employee.id" 
-              :class="{'selected-row': selectedEmployees.includes(employee.id)}">
-            <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
-            <td>{{ employee.name }}</td>
-            <td>{{ employee.dept ? employee.dept.deptName : '부서 정보 없음' }}</td>
-            <td>{{ employee.phoneNumber }}</td>
-            <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
-          </tr>
-        </tbody>
+  <tr v-for="employee in filteredEmployees" :key="employee.id" 
+      :class="{'selected-row': selectedEmployees.includes(employee.id)}">
+    <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
+    <td>{{ employee.name }}</td>
+    <td>{{ employee.deptName ? employee.deptName : '부서 정보 없음' }}</td>
+    <td>{{ employee.phoneNumber }}</td>
+    <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
+  </tr>
+</tbody>
+
       </table>
     </div>
   </div>
@@ -208,6 +209,3 @@ td {
   background-color: #f2f2f2; /* 선택된 행의 배경색 */
 }
 </style>
-
-
-
