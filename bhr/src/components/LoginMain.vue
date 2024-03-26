@@ -13,6 +13,9 @@
       <div>
         <button type="submit">Login</button>
       </div>
+      <div>
+        <button @click="goToNewEmp">신규직원추가(개발용버튼)</button>
+      </div>
     </form>
   </div>
 </template>
@@ -25,6 +28,12 @@ import { useRouter } from "vue-router"; // 라우터 사용을 위해 import
 
 export default {
   name: "LoginMain",
+
+  methods: {
+    goToNewEmp() {
+      this.$router.push("/New")
+    }
+  },
   setup() {
     const router = useRouter(); // 라우터 인스턴스 사용
     const form = reactive({
@@ -52,13 +61,13 @@ export default {
             const { role } = res.data;
             switch (role) {
               case "ROLE_HRMANAGER":
-                router.push("/success");
+                router.push("/new");
                 break;
-              case "user":
-                router.push("/user-profile");
+              case "ROLE_EMPLOYEE":
+                router.push("/admin");
                 break;
               default:
-                router.push("/");
+                router.push("/admin");
                 break;
             }
           }
