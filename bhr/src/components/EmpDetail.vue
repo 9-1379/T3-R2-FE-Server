@@ -46,7 +46,7 @@
 
 
 <script>
-import axios from 'axios';
+import axiosInstance from '@/axios'; // axiosInstance를 import 합니다.
 import { useRoute } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
@@ -99,7 +99,7 @@ export default {
     const route = useRoute();
     const employeeId = route.params.id;
     try {
-      const response = await axios.get(`http://localhost:8000/employees/${employeeId}`);
+      const response = await axiosInstance.get(`/employees/${employeeId}`); // axiosInstance를 사용하여 요청을 보냅니다.
       this.employee = response.data;
     } catch (error) {
       console.error('직원 정보를 불러오는데 실패했습니다:', error);
@@ -108,6 +108,7 @@ export default {
   }
 };
 </script>
+
   
   <style scoped>
   .page-container {

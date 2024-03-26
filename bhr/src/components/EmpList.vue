@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosInstance from '@/axios'; // axiosInstance를 import 합니다.
 import { useRouter } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
@@ -71,10 +71,10 @@ export default {
   methods: {
     async fetchEmployees() {
       try {
-        const response = await axios.get('http://localhost:8000/employees');
+        const response = await axiosInstance.get('/employees'); // axiosInstance를 사용하여 요청을 보냅니다.
         this.employees = response.data;
       } catch (error) {
-        console.error('There was an error fetching the employees:', error);
+        console.error('직원 정보를 불러오는데 실패했습니다:', error);
         alert('직원 정보를 불러오는데 실패했습니다.');
       }
     },
@@ -86,13 +86,13 @@ export default {
 
       try {
         for (const employeeId of this.selectedEmployees) {
-          await axios.put(`http://localhost:8000/employees/${employeeId}/retire`);
+          await axiosInstance.put(`/employees/${employeeId}/retire`);
         }
         await this.fetchEmployees();
         this.selectedEmployees = [];
         alert('선택된 직원이 퇴직 처리되었습니다.');
       } catch (error) {
-        console.error('Error while processing employee leave:', error);
+        console.error('직원 퇴직 처리 중 오류가 발생했습니다:', error);
         alert('직원 퇴직 처리 중 오류가 발생했습니다.');
       }
     },
@@ -115,6 +115,7 @@ export default {
   }
 };
 </script>
+
 
 
 
