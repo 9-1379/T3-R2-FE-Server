@@ -4,6 +4,7 @@ import LoginMain from '@/components/LoginMain.vue'; // 메인 컴포넌트 호�
 import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트 호출
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
+import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: '/new',
     name: 'NewEmp',
     component: NewEmp
+  },
+  {
+    path: '/admin',
+    name: 'AdminMenu',
+    component: AdminMenu
   }
 ];
 
