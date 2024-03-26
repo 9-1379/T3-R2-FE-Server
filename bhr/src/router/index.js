@@ -5,12 +5,7 @@ import LoginMain from '@/components/LoginMain.vue'; // 메인 컴포넌트 호�
 import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트 호출
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
-<<<<<<< HEAD
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
-
-=======
-import AdminMenu from '@/components/menu/AdminMenu.vue';
->>>>>>> dev
 
 const routes = [
   {
@@ -34,15 +29,10 @@ const routes = [
     component: NewEmp
   },
   {
-<<<<<<< HEAD
+
     path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
     name: 'EmpDetail',
     component: EmpDetail
-=======
-    path: '/admin',
-    name: 'AdminMenu',
-    component: AdminMenu
->>>>>>> dev
   }
 ];
 

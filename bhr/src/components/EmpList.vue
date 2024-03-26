@@ -24,23 +24,22 @@
           </tr>
         </thead>
         <tbody>
-  <tr v-for="employee in filteredEmployees" :key="employee.id" 
-      :class="{'selected-row': selectedEmployees.includes(employee.id)}">
-    <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
-    <td>{{ employee.name }}</td>
-    <td>{{ employee.deptName ? employee.deptName : '부서 정보 없음' }}</td>
-    <td>{{ employee.phoneNumber }}</td>
-    <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
-  </tr>
-</tbody>
-
+          <tr v-for="employee in filteredEmployees" :key="employee.id" 
+              :class="{'selected-row': selectedEmployees.includes(employee.id)}">
+            <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.deptName ? employee.deptName : '부서 정보 없음' }}</td>
+            <td>{{ employee.phoneNumber }}</td>
+            <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
 </template>
 
 <script>
-import axiosInstance from '@/axios'; // axiosInstance를 import 합니다.
+import axiosInstance from '@/axios';
 import { useRouter } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
@@ -72,7 +71,7 @@ export default {
   methods: {
     async fetchEmployees() {
       try {
-        const response = await axiosInstance.get('/employees'); // axiosInstance를 사용하여 요청을 보냅니다.
+        const response = await axiosInstance.get('/employees');
         this.employees = response.data;
       } catch (error) {
         console.error('직원 정보를 불러오는데 실패했습니다:', error);
@@ -86,9 +85,7 @@ export default {
       }
 
       try {
-        for (const employeeId of this.selectedEmployees) {
-          await axiosInstance.put(`/employees/${employeeId}/retire`);
-        }
+        await axiosInstance.put('/employees/retire-multiple', this.selectedEmployees);
         await this.fetchEmployees();
         this.selectedEmployees = [];
         alert('선택된 직원이 퇴직 처리되었습니다.');
