@@ -6,6 +6,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 // import HelloWorld from './components/HelloWorld.vue'
 //import LoginMain from './components/LoginMain.vue'
 import EmpDashboard from './components/EmpDashboard.vue';
@@ -16,6 +17,10 @@ export default {
     //LoginMain
     EmpDashboard
   }
+=======
+export default {
+  name: 'App',
+>>>>>>> dev
 }
 </script>
 
@@ -28,4 +33,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+<<<<<<< HEAD
 </style>./components/EmpDashboard.vue
+=======
+
+</style>
+>>>>>>> dev
