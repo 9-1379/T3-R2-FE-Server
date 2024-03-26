@@ -7,20 +7,6 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-<<<<<<< HEAD
-
-export default {
-    setup() {
-        const username = ref('');
-
-        onMounted(() => {
-            // LocalStorage에서 username 가져오기
-            username.value = localStorage.getItem('username');
-        });
-
-        return {
-            username,
-=======
 import axios from 'axios';
 
 export default {
@@ -40,7 +26,6 @@ export default {
 
         return {
             username, // 템플릿에서 사용할 수 있도록 username 반환
->>>>>>> dev
         };
     },
 };
