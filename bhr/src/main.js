@@ -10,4 +10,3 @@ app.config.globalProperties.$axios = axiosInstance;
 
 app.use(router);
 app.mount('#app');
-
