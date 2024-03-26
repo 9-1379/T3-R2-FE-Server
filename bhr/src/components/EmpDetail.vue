@@ -139,11 +139,15 @@ export default {
   }
   
   .employee-photo {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 20px;
-    align-self: center;
-  }
+  width: 150px; /* 너비 설정 */
+  height: 150px; /* 높이 설정 */
+  margin-bottom: 20px;
+  align-self: center;
+}
+.employee-photo img {
+  width: 100%; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
+  height: auto; /* 이미지의 높이를 자동으로 조정하여 비율 유지 */
+}
   
   .info-section {
     display: flex;
