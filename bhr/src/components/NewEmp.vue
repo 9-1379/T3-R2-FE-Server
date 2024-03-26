@@ -144,6 +144,7 @@ export default {
         console.log(response.data);
         alert('신규 직원 정보가 성공적으로 등록되었습니다.');
         // 폼 초기화 또는 성공 메시지 표시 등의 추가 작업
+        this.$router.push("/")
       } catch (error) {
         console.error(error);
         alert('정보 등록에 실패했습니다.');
