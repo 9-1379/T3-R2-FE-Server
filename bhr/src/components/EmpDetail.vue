@@ -1,100 +1,113 @@
 <template>
-    <div class="page-container">
-      <div class="admin-menu-wrapper">
-        <AdminMenu />
-      </div>
-      <div class="employee-detail-container">
-        <div v-if="employee" class="employee-details">
-          <div class="left-section">
-            <h2>직원상세정보</h2>
-            <div class="employee-photo">
-              <img :src="employee.profilePictureUrl" alt="프로필 사진" />
-            </div>
-            <div class="info-section">
-              <div class="info-row"><strong>사번:</strong> {{ employee.id }}</div>
-              <div class="info-row"><strong>이름:</strong> {{ employee.name }}</div>
-              <div class="info-row">
-                <!-- <strong>소개:</strong>  -->
-                {{ employee.introduction }}
-              </div>
-            </div>
+  <div class="page-container">
+    <div class="admin-menu-wrapper">
+      <AdminMenu />
+    </div>
+    <div class="employee-detail-container">
+      <div v-if="employee" class="employee-details">
+        <!-- Left Section: Employee Photo -->
+        <div class="left-section">
+          <h2>직원상세정보</h2>
+          <div class="employee-photo">
+            <img :src="getProfilePictureUrl(employee.profilePicture)" alt="프로필 사진" />
           </div>
-          <div class="right-section">
-            <div class="info-section">
-              <div class="info-row"><strong>성별:</strong> {{ employee.gender === 'MALE' ? '남성' : '여성' }}</div>
-              <div class="info-row"><strong>생년월일:</strong> {{ formatDate(employee.birthday) }}</div>
-              <div class="info-row"><strong>전화번호:</strong> {{ employee.phoneNumber }}</div>
-              <div class="info-row"><strong>이메일:</strong> {{ employee.email }}</div>
-              <div class="info-row"><strong>직위:</strong> {{ employee.position }}</div>
-              <div class="info-row"><strong>직무:</strong> {{ employee.jobId }}</div>
-              <div class="info-row"><strong>입사 날짜:</strong> {{ formatDate(employee.hireDate) }}</div>
-              <div class="info-row"><strong>주소:</strong> {{ formatAddress(employee.address) }}</div>
-              <div class="info-row"><strong>재직여부:</strong> {{ formatEmploymentStatus(employee.status) }}</div>
-              <div class="info-row"><strong>권한:</strong> {{ employee.authorization }}</div>
+
+          <!-- Middle Section: Employee Basic Information -->
+          <div class="info-section">
+            <div class="info-row"><strong>사번:</strong> {{ employee.id }}</div>
+            <div class="info-row"><strong>이름:</strong> {{ employee.name }}</div>
+            <div class="info-row">
+              <!-- <strong>소개:</strong>  -->
+              {{ employee.introduction }}
             </div>
           </div>
         </div>
-        <div v-else class="loading">로딩 중...</div>
+
+        <!-- Right Section: Employee Detailed Information -->
+        <div class="right-section">
+          <div class="info-section">
+            <div class="info-row"><strong>성별:</strong> {{ employee.gender === 'MALE' ? '남성' : '여성' }}</div>
+            <div class="info-row"><strong>생년월일:</strong> {{ formatDate(employee.birthday) }}</div>
+            <div class="info-row"><strong>전화번호:</strong> {{ employee.phoneNumber }}</div>
+            <div class="info-row"><strong>이메일:</strong> {{ employee.email }}</div>
+            <div class="info-row"><strong>직위:</strong> {{ employee.position }}</div>
+            <div class="info-row"><strong>직무:</strong> {{ employee.jobId }}</div>
+            <div class="info-row"><strong>입사 날짜:</strong> {{ formatDate(employee.hireDate) }}</div>
+            <div class="info-row"><strong>주소:</strong> {{ formatAddress(employee.address) }}</div>
+            <div class="info-row"><strong>재직여부:</strong> {{ formatEmploymentStatus(employee.status) }}</div>
+            <div class="info-row"><strong>권한:</strong> {{ employee.authorization }}</div>
+          </div>
+        </div>
       </div>
+      <div v-else class="loading">로딩 중...</div>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  import { useRoute } from 'vue-router';
-  import AdminMenu from '@/components/menu/AdminMenu.vue';
-  
-  export default {
-    components: {
-      AdminMenu
+  </div>
+</template>
+
+
+<script>
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+import AdminMenu from '@/components/menu/AdminMenu.vue';
+
+export default {
+  components: {
+    AdminMenu
+  },
+  data() {
+    return {
+      employee: null
+    };
+  },
+  methods: {
+    formatDate(value) {
+      if (value) {
+        const date = new Date(value);
+        return date.toLocaleDateString(); // 이 부분은 필요에 따라 형식을 조정할 수 있습니다.
+      }
+      return '';
     },
-    data() {
-      return {
-        employee: null
-      };
+    formatAddress(address) {
+      if (address) {
+        return `${address.city}, ${address.street}, ${address.zipCode}`;
+      }
+      return '';
     },
-    methods: {
-      formatDate(value) {
-        if (value) {
-          const date = new Date(value);
-          return date.toLocaleDateString(); // 이 부분은 필요에 따라 형식을 조정할 수 있습니다.
-        }
-        return '';
-      },
-      formatAddress(address) {
-        if (address) {
-          return `${address.city}, ${address.street}, ${address.zipCode}`;
-        }
-        return '';
-      },
-      formatEmploymentStatus(status) {
-        switch (status) {
-          case 'WORKING':
-            return '재직중';
-          case 'REST':
-            return '휴직중';
-          case 'LEAVE':
-            return '퇴직';
-          default:
-            return '알 수 없음';
-        }
+    formatEmploymentStatus(status) {
+      switch (status) {
+        case 'WORKING':
+          return '재직중';
+        case 'REST':
+          return '휴직중';
+        case 'LEAVE':
+          return '퇴직';
+        default:
+          return '알 수 없음';
       }
     },
-    async mounted() {
-      const route = useRoute();
-      const employeeId = route.params.id;
-      try {
-        const response = await axios.get(`http://localhost:8000/employees/${employeeId}`);
-        this.employee = response.data;
-        // 직원의 프로필 사진 URL을 설정합니다.
-        this.employee.profilePictureUrl = `http://localhost:8000/employees/${employeeId}/profile_picture`;
-      } catch (error) {
-        console.error('직원 정보를 불러오는데 실패했습니다:', error);
-        alert('직원 정보를 불러오는데 실패했습니다.');
+    getProfilePictureUrl(profilePicture) {
+      // 프로필 사진이 null이 아닌 경우에만 URL 반환
+      if (profilePicture) {
+        return `data:image/jpeg;base64,${profilePicture}`; // 예시: base64 인코딩된 이미지를 보여주는 방식
+      } else {
+        // 프로필 사진이 없는 경우 기본 이미지 경로 반환
+        return require('@/assets/profile_basic.png');
       }
     }
-  };
-  </script>
+  },
+  async mounted() {
+    const route = useRoute();
+    const employeeId = route.params.id;
+    try {
+      const response = await axios.get(`http://localhost:8000/employees/${employeeId}`);
+      this.employee = response.data;
+    } catch (error) {
+      console.error('직원 정보를 불러오는데 실패했습니다:', error);
+      alert('직원 정보를 불러오는데 실패했습니다.');
+    }
+  }
+};
+</script>
   
   <style scoped>
   .page-container {
@@ -137,6 +150,8 @@
   
   .info-row {
     margin-bottom: 10px;
+    overflow-wrap: break-word; /* 영어 텍스트 줄바꿈 */
+    word-break: break-word; /* 강제 줄바꿈 */
   }
   
   h2 {
