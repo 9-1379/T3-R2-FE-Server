@@ -1,7 +1,12 @@
 <template>
+<<<<<<< HEAD
   <div id="app">
     <router-view/>
   </div>
+=======
+  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  <router-view />
+>>>>>>> dev
 </template>
 
 <script>
