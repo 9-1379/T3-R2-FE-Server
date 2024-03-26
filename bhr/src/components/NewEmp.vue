@@ -8,11 +8,9 @@
           <div class="form-section">
             <h3 class="section-title">기본정보 입력</h3>
             <div class="form-group">
-              <!-- <label for="name">이름</label> -->
               <input type="text" id="name" v-model="form.name" required placeholder="이름">
             </div>
             <div class="form-group">
-              <!-- <label>성별</label> -->
               <div class="btn-group">
                 <button type="button" class="btn btn-secondary rounded" @click="setGender('MALE')"
                   :class="{ active: form.gender === 'MALE' }">남자</button>
@@ -29,15 +27,12 @@
               <input type="text" id="sample6_extraAddress" placeholder="참고항목" v-model="form.addr.extraAddress">
             </div>
             <div class="form-group">
-              <!-- <label for="phone">전화번호</label> -->
               <input type="text" id="phone" v-model="form.phoneNumber" required placeholder="전화번호">
             </div>
             <div class="form-group">
-              <!-- <label for="email">이메일</label> -->
               <input type="email" id="email" v-model="form.email" class="blur-text" placeholder="이메일">
             </div>
             <div class="form-group">
-              <label for="email">생년월일</label>
               <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일">
             </div>
           </div>
@@ -45,27 +40,33 @@
           <div class="form-section">
             <h3 class="section-title">인사정보 입력</h3>
             <div class="form-group">
-              <!-- <label for="userId">ID</label> -->
+              <input type="text" id="employeeId" v-model="form.empId" placeholder="임직원 ID" readonly>
+            </div>
+            <div class="form-group">
+              <input type="text" id="employeeNumber" v-model="form.empNum" placeholder="사번" readonly>
+            </div>
+            <div class="form-group">
               <input type="text" id="userId" v-model="form.username" placeholder="ID">
             </div>
             <div class="form-group">
-              <!-- <label for="password">비밀번호</label> -->
               <input type="password" id="password" v-model="form.password" placeholder="비밀번호">
             </div>
             <div class="form-group">
-              <!-- <label for="departmentCode">부서코드</label> -->
-              <input type="text" id="departmentName" v-model="form.deptName" placeholder="부서명">
+              <label for="departmentName">부서명</label>
+              <select id="departmentName" v-model="form.deptName" required>
+                <option disabled value="">부서를 선택하세요</option>
+                <option v-for="deptName in deptNames" :key="deptName" :value="deptName">
+                  {{ deptName }}
+                </option>
+              </select>
             </div>
             <div class="form-group">
-              <!-- <label for="position">직위</label> -->
               <input type="text" id="position" v-model="form.position" placeholder="직위">
             </div>
             <div class="form-group">
-              <!-- <label for="job">직무</label> -->
               <input type="text" id="job" v-model="form.jobId" placeholder="직무">
             </div>
             <div class="form-group">
-              <label for="hireDate">입사일</label>
               <input type="date" id="hireDate" v-model="form.hireDate" placeholder="입사일">
             </div>
           </div>
@@ -77,7 +78,7 @@
 </template>
 
 <script>
-import axiosInstance from '@/axios'
+import axios from 'axios';
 import TopMenuBar from '@/components/menu/AdminMenu.vue';
 
 export default {
@@ -103,52 +104,68 @@ export default {
         },
         username: '',
         password: '',
-        deptName: '', // 부서명 추가
+        deptName: '',
+        empId: '',
+        empNum: ''
       },
+      deptNames: [] // 서버에서 가져온 부서명을 저장할 배열
     };
   },
   methods: {
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          let extraAddr = ''; // 참고항목 변수 초기화
-
+          // 주소 관련 데이터 처리 로직
+          let extraAddr = '';
           if (data.userSelectedType === 'R') {
-            // 사용자가 도로명 주소를 선택한 경우
             if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
               extraAddr += data.bname;
             }
             if (data.buildingName !== '' && data.apartment === 'Y') {
               extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
             }
-            if (extraAddr !== '') {
-              extraAddr = ' (' + extraAddr + ')';
-            }
+            extraAddr = extraAddr !== '' ? ` (${extraAddr})` : '';
           }
-
-          // `form.address` 객체의 각 속성을 업데이트
-          this.form.addr.postcode = data.zonecode;
-          this.form.addr.address = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-          document.getElementById("sample6_detailAddress").focus();
-          this.form.addr.extraAddress = extraAddr;
-          // detailAddress 필드는 사용자가 직접 입력
+          this.form.addr = {
+            postcode: data.zonecode,
+            address: data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress,
+            extraAddress: extraAddr
+          };
         }
       }).open();
     },
     setGender(gender) {
-      this.form.gender = gender; // 'MALE' 또는 'FEMALE'
+      this.form.gender = gender;
     },
     async submitForm() {
+      // 폼 제출 로직
       try {
-        const response = await axiosInstance.post('/api/join', this.form);
+        // eslint-disable-next-line no-unused-vars
+        const { empId, empNum, ...submitData } = this.form;
+        const response = await axios.post('/api/join', submitData);
         console.log(response.data);
         alert('신규 직원 정보가 성공적으로 등록되었습니다.');
         // 폼 초기화 또는 성공 메시지 표시 등의 추가 작업
+        this.$router.push("/")
       } catch (error) {
         console.error(error);
         alert('정보 등록에 실패했습니다.');
       }
+    },
+    async fetchEmployeeInfo() {
+      // 부서 정보 로딩
+      try {
+        const response = await axios.get('/api/join');
+        this.form.empId = response.data.empId;
+        this.form.empNum = response.data.empNum;
+        this.deptNames = response.data.deptNames;
+      } catch (error) {
+        console.error('부서 정보를 불러오는 데 실패했습니다.', error);
+      }
     }
+  },
+  mounted() {
+    this.fetchEmployeeInfo(); // 컴포넌트 마운트 시 부서 정보 로딩
   }
 };
 </script>
