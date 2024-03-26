@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import AxiosInstance from 'axios';
+import axiosInstance from '@/axios'
 import TopMenuBar from '@/components/menu/AdminMenu.vue';
 
 export default {
@@ -140,7 +140,7 @@ export default {
     },
     async submitForm() {
       try {
-        const response = await AxiosInstance.post('/api/join', this.form);
+        const response = await axiosInstance.post('/api/join', this.form);
         console.log(response.data);
         alert('신규 직원 정보가 성공적으로 등록되었습니다.');
         // 폼 초기화 또는 성공 메시지 표시 등의 추가 작업

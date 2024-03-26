@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import HelloWorld from '@/components/HelloWorld.vue';
-import LoginMain from '@/components/LoginMain.vue'; // MyLogin 대신 LoginMain을 임포트해야 합니다.
+import LoginMain from '@/components/LoginMain.vue'; // 메인 컴포넌트 호출
+import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트 호출
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
 
