@@ -31,8 +31,8 @@ export default {
     methods: {
         async fetchEmployeesAndDeptNames() {
             try {
-                const employeesResponse = await axiosInstance.get('/api/employees');
-                const deptNamesResponse = await axiosInstance.get('/api/departments');
+                const employeesResponse = await axiosInstance.get('/api/hrCard/empList');
+                const deptNamesResponse = await axiosInstance.get('/api//hrCard/deptList');
                 this.employees = employeesResponse.data;
                 this.filteredEmployees = employeesResponse.data; // 초기에는 모든 직원 목록을 표시
                 this.deptNames = deptNamesResponse.data;
