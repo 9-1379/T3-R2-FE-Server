@@ -5,6 +5,7 @@ import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
+import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/admin',
     name: 'AdminMenu',
     component: AdminMenu
+  },
+  {
+    path: '/hrcard',
+    name: 'HrCardMain',
+    component: HrCardMain
   }
 ];
 
