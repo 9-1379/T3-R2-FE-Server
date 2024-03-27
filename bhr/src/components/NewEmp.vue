@@ -80,9 +80,8 @@
 </template>
 
 <script>
-import axiosInstance from 'axios';
-import TopMenuBar from '@/components/menu/AdminMenu.vue';
 import axiosInstance from '@/axios';
+import TopMenuBar from '@/components/menu/AdminMenu.vue';
 
 export default {
   components: {
