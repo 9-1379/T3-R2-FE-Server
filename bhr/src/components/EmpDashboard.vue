@@ -45,6 +45,7 @@ export default {
     const defaultProfilePicture = 'path_to_default_image';
 
     const editImage = () => {
+      console.log('Edit Image button clicked');
       editingImage.value = true;
     };
 
@@ -53,6 +54,7 @@ export default {
     };
 
     const editIntroduction = () => {
+      console.log('Edit Introduction button clicked');
       editingIntroduction.value = true;
     };
 
