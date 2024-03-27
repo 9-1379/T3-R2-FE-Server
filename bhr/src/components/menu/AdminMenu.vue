@@ -55,15 +55,12 @@ export default {
     goToNewAnnual() {
       this.$router.push("/newannual")
   },
-<<<<<<< HEAD
-}
-=======
+},
   data() {
     return {
       dropdownType: '',
     };
   },
->>>>>>> dev
 };
 </script>
 
