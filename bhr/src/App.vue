@@ -51,6 +51,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 <<<<<<< HEAD
+<<<<<<< HEAD
   margin-top: 60px;
 
 }
@@ -59,10 +60,16 @@ export default {
 =======
 }
 
+=======
+}
+>>>>>>> 272215ff9d7cb30f3048e9b7bd904fe726abc382
 .dark-mode {
   /* 다크 모드 스타일 */
   background-color: #333;
   color: white;
 }
 </style>
+<<<<<<< HEAD
 >>>>>>> dev
+=======
+>>>>>>> 272215ff9d7cb30f3048e9b7bd904fe726abc382

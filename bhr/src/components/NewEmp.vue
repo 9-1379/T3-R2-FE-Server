@@ -81,10 +81,14 @@
 
 <script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 import axiosInstance from '@/axios'
 =======
 import axiosInstance from '@/axios';
 >>>>>>> dev
+=======
+import axiosInstance from '@/axios';
+>>>>>>> 272215ff9d7cb30f3048e9b7bd904fe726abc382
 import TopMenuBar from '@/components/menu/AdminMenu.vue';
 
 export default {
