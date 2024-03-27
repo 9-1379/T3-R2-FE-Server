@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+
 // import HelloWorld from '@/components/HelloWorld.vue';
 import LoginMain from '@/components/LoginMain.vue'; // 메인 컴포넌트 호출
 import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트 호출
@@ -6,12 +7,13 @@ import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
+import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 
 const routes = [
   {
     path: '/',
-    name: 'LoginMain', // 경로 이름은 그대로 유지됩니다.
-    component: LoginMain // 임포트된 컴포넌트 이름을 사용합니다.
+    name: 'LoginMain',
+    component: LoginMain
   },
   {
     path: '/success',
@@ -37,6 +39,12 @@ const routes = [
     path: '/hrcard',
     name: 'HrCardMain',
     component: HrCardMain
+  },
+  {
+
+    path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
+    name: 'EmpDetail',
+    component: EmpDetail
   }
 ];
 
@@ -46,3 +54,5 @@ const router = createRouter({
 });
 
 export default router;
+
+
