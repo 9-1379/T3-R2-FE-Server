@@ -316,4 +316,5 @@ export default {
   background-color: #434190;
   /* Darker shade on hover */
 }
+
 </style>

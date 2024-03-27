@@ -1,5 +1,5 @@
 <template>
-  <div class="top-navbar">
+  <div class="top-navbar" :class="{ 'dark-mode': darkModeEnabled }">
     <div class="navbar-logo">
       <img src="@/assets/team_logo.png" alt="Logo" /> <!-- 로고 이미지 경로를 설정해주세요 -->
     </div>
@@ -28,7 +28,9 @@
     <div class="navbar-icons">
       <button class="user-btn">사용자</button>
       <!-- Dark Mode Toggle Button -->
-      <button class="mode-toggle-btn" @click="toggleDarkMode">🌞</button>
+      <button class="mode-toggle-btn" @click="toggleDarkMode">
+        {{ darkModeEnabled ? '🌜' : '🌞' }}
+      </button>
     </div>
   </div>
 </template>
@@ -36,21 +38,23 @@
 <script>
 export default {
   name: 'TopMenuBar',
-  data() {
-    return {
-      isDropdownVisible: false,
-      dropdownType: ''
-    };
+  computed: {
+    darkModeEnabled() {
+      return this.$store.state.darkMode;
+    },
   },
   methods: {
     toggleDropdown(visible, type) {
       this.dropdownType = visible ? type : '';
     },
     toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      const btn = document.querySelector('.mode-toggle-btn');
-      btn.textContent = btn.textContent === '🌞' ? '🌜' : '🌞'; // Mode icon change
+      this.$store.commit('toggleDarkMode');
     },
+  },
+  data() {
+    return {
+      dropdownType: '',
+    };
   },
 };
 </script>
@@ -150,12 +154,12 @@ export default {
 }
 
 .dark-mode {
-  background-color: #121212;
+  background-color: #666;
   color: white;
 }
 
 .dark-mode .top-navbar {
-  background-color: #333;
+  background-color: #757575;
   color: white;
 }
 
@@ -167,4 +171,4 @@ export default {
   background-color: #555;
   color: white;
 }
-</style> 
+</style>

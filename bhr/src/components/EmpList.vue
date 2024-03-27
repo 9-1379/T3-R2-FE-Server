@@ -1,38 +1,40 @@
 <template>
-  <AdminMenu />
-  <div class="employee-list-container">
-    <h2 class="list-title">직원 목록 조회</h2>
-    <div class="search-and-actions">
-      <div class="search-section">
-        <label for="search">검색:</label>
-        <input type="text" id="search" @input="updateSearchQuery" placeholder="검색">
+  <div>
+    <AdminMenu />
+    <div class="employee-list-container" :class="{ 'dark-mode': darkModeEnabled }">
+      <h2 class="list-title">직원 목록 조회</h2>
+      <div class="search-and-actions">
+        <div class="search-section">
+          <label for="search">검색:</label>
+          <input type="text" id="search" @input="updateSearchQuery" placeholder="검색">
+        </div>
+        <div class="action-buttons">
+          <button @click="goToNewEmployee" class="action-button">신규 직원 추가</button>
+          <button @click="retireEmployees" class="action-button">퇴직 처리</button>
+        </div>
       </div>
-      <div class="action-buttons">
-        <button @click="goToNewEmployee" class="action-button">신규 직원 추가</button>
-        <button @click="retireEmployees" class="action-button">퇴직 처리</button>
+      <div class="table-section">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" @change="selectAllEmployees"></th>
+              <th>이름</th>
+              <th>부서</th>
+              <th>전화번호</th>
+              <th>상세정보</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="employee in filteredEmployees" :key="employee.id" :class="{'selected-row': selectedEmployees.includes(employee.id)}">
+              <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
+              <td>{{ employee.name }}</td>
+              <td>{{ employee.deptName || '부서 정보 없음' }}</td>
+              <td>{{ employee.phoneNumber }}</td>
+              <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-    <div class="table-section">
-      <table>
-        <thead>
-          <tr>
-            <th><input type="checkbox" @change="selectAllEmployees"></th>
-            <th>이름</th>
-            <th>부서</th>
-            <th>전화번호</th>
-            <th>상세정보</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="employee in filteredEmployees" :key="employee.id" :class="{'selected-row': selectedEmployees.includes(employee.id)}">
-            <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
-            <td>{{ employee.name }}</td>
-            <td>{{ employee.deptName || '부서 정보 없음' }}</td>
-            <td>{{ employee.phoneNumber }}</td>
-            <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
@@ -52,10 +54,13 @@ export default {
     return {
       employees: [],
       searchQuery: '',
-      selectedEmployees: []
+      selectedEmployees: [],
     };
   },
   computed: {
+    darkModeEnabled() {
+      return this.$store.state.darkMode;
+    },
     filteredEmployees() {
       return this.employees.filter(e => e.name.toLowerCase().includes(this.searchQuery.toLowerCase()) && e.status !== 'LEAVE');
     }
@@ -109,9 +114,6 @@ export default {
 };
 </script>
 
-
-
-
 <style scoped>
 .employee-list-container {
   display: flex;
@@ -121,11 +123,13 @@ export default {
   background-color: white;
   padding: 20px;
 }
+
 .list-title {
   color: #4a4a4a;
   text-align: left;
   margin-bottom: 20px;
 }
+
 .search-and-actions {
   display: flex;
   justify-content: space-between;
@@ -134,29 +138,33 @@ export default {
   max-width: 700px;
   margin-bottom: 20px;
 }
+
 .search-section {
   display: flex;
   align-items: center;
 }
+
 .search-section label, .search-section input {
   margin-right: 10px;
 }
+
 .action-buttons {
   display: flex;
   align-items: center;
 }
+
 .action-button {
   margin: 0 5px;
   background-color: transparent;
   border: 1px solid #4a76a8;
   border-radius: 4px;
   padding: 10px 15px;
-  color: #4a76a8; /* 글자 색상 설정 */
+  color: #4a76a8;
   cursor: pointer;
 }
 
 .action-button:hover {
-  background-color: #e0e0e0; /* 마우스를 올렸을 때의 배경색 변경 */
+  background-color: #e0e0e0;
 }
 
 .table-section {
@@ -198,6 +206,48 @@ td {
 
 /* 선택된 행의 배경색을 변경하는 스타일 */
 .selected-row {
-  background-color: #f2f2f2; /* 선택된 행의 배경색 */
+  background-color: #f2f2f2;
 }
+
+.dark-mode .employee-list-container {
+    background-color: #333;
+    color: white;
+  }
+  
+  .dark-mode .list-title {
+    color: white;
+  }
+  
+  .dark-mode .search-section label,
+  .dark-mode .search-section input {
+    color: white;
+  }
+  
+  .dark-mode .action-button {
+    color: white;
+    border-color: #888;
+  }
+  
+  .dark-mode .action-button:hover {
+    background-color: #555;
+  }
+  
+  .dark-mode th,
+  .dark-mode td {
+    border-color: #888;
+  }
+  
+  .dark-mode .detail-button {
+    background-color: #555;
+    border-color: #444;
+  }
+  
+  .dark-mode .detail-button:hover {
+    background-color: #777;
+  }
+  
+  .dark-mode .selected-row {
+    background-color: #444;
+  }
 </style>
+
