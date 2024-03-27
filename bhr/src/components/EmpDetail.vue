@@ -34,7 +34,7 @@
             <div class="info-row"><strong>직위:</strong> {{ employee.position }}</div>
             <div class="info-row"><strong>직무:</strong> {{ employee.jobId }}</div>
             <div class="info-row"><strong>입사 날짜:</strong> {{ formatDate(employee.hireDate) }}</div>
-            <div class="info-row"><strong>주소:</strong> {{ formatAddress(employee.address) }}</div>
+            <div class="info-row"><strong>주소:</strong> {{ employee.formattedAddress }}</div>
             <div class="info-row"><strong>재직여부:</strong> {{ formatEmploymentStatus(employee.status) }}</div>
             <div class="info-row"><strong>권한:</strong> {{ employee.authorization }}</div>
           </div>
@@ -65,12 +65,6 @@ export default {
       if (value) {
         const date = new Date(value);
         return date.toLocaleDateString(); // 이 부분은 필요에 따라 형식을 조정할 수 있습니다.
-      }
-      return '';
-    },
-    formatAddress(address) {
-      if (address) {
-        return `${address.city}, ${address.street}, ${address.zipCode}`;
       }
       return '';
     },
