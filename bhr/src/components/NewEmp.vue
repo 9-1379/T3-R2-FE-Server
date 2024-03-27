@@ -33,6 +33,7 @@
               <input type="email" id="email" v-model="form.email" class="blur-text" placeholder="이메일">
             </div>
             <div class="form-group">
+              <p>생년월일</p>
               <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일">
             </div>
           </div>
@@ -67,6 +68,7 @@
               <input type="text" id="job" v-model="form.jobId" placeholder="직무">
             </div>
             <div class="form-group">
+              <p>입사일</p>
               <input type="date" id="hireDate" v-model="form.hireDate" placeholder="입사일">
             </div>
           </div>
@@ -314,4 +316,5 @@ export default {
   background-color: #434190;
   /* Darker shade on hover */
 }
+
 </style>
