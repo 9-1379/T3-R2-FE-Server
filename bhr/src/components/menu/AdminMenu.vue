@@ -8,7 +8,7 @@
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')" @mouseleave="toggleDropdown(false, 'vacation')">
         <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
-          <a href="/vacation">연차관리</a>
+          <a href="#vacation">연차관리</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
@@ -21,7 +21,7 @@
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'badge')" @mouseleave="toggleDropdown(false, 'badge')">
         <a href="/badge" class="nav-link">배지<span class="dropdown-arrow" v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'badge'">
-          <a href="/badge">배지기준관리</a>
+          <a href="#badge">배지기준관리</a>
         </div>
       </div>
     </div>
@@ -31,6 +31,8 @@
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
       </button>
+      <!-- Logout Button -->
+      <a href="/" class="logout-link">로그아웃</a>
     </div>
   </div>
 </template>
@@ -122,6 +124,17 @@ export default {
 
 .mode-toggle-btn:hover {
   opacity: 0.8;
+}
+
+.logout-link {
+  color: black;
+  text-decoration: none;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
 }
 
 .nav-item {
