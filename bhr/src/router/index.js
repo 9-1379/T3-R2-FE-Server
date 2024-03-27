@@ -9,10 +9,16 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 <<<<<<< HEAD
+<<<<<<< HEAD
 import EmpDashboard from '@/components/EmpDashboard.vue';
 =======
 import NewAnnual from '@/components/NewAnnual.vue';
 >>>>>>> dev
+=======
+import EmpDashboard from '@/components/EmpDashboard.vue';
+import NewAnnual from '@/components/NewAnnual.vue';
+
+>>>>>>> d6605ecbc9807fa63a9e1be1ee4fe0b0a51dff77
 
 const routes = [
   {
@@ -42,7 +48,10 @@ const routes = [
   },
   {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> d6605ecbc9807fa63a9e1be1ee4fe0b0a51dff77
     path: '/admin',
     name: 'AdminMenu',
     component: AdminMenu
@@ -53,7 +62,10 @@ const routes = [
     component: HrCardMain
   },
   {
+<<<<<<< HEAD
 >>>>>>> dev
+=======
+>>>>>>> d6605ecbc9807fa63a9e1be1ee4fe0b0a51dff77
     path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
     name: 'EmpDetail',
     component: EmpDetail
