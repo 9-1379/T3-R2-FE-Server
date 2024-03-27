@@ -6,6 +6,7 @@ import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
+import NewAnnual from '@/components/NewAnnual.vue'; 
 
 const routes = [
   {
@@ -29,10 +30,14 @@ const routes = [
     component: NewEmp
   },
   {
-
     path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
     name: 'EmpDetail',
     component: EmpDetail
+  },
+  {
+    path: '/newannual', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
+    name: 'NewAnnual',
+    component: NewAnnual
   }
 ];
 
