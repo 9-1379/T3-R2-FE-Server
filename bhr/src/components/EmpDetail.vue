@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="page-container" :class="{ 'dark-mode': darkModeEnabled }">
     <div class="admin-menu-wrapper">
       <AdminMenu />
     </div>
@@ -45,20 +45,22 @@
   </div>
 </template>
 
-
 <script>
-import axiosInstance from '@/axios'; // axiosInstance를 import 합니다.
+import axiosInstance from '@/axios';
 import { useRoute } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 export default {
-  components: {
-    AdminMenu
-  },
+  components: { AdminMenu },
   data() {
     return {
       employee: null
     };
+  },
+  computed: {
+    darkModeEnabled() {
+      return this.$store.state.darkMode;
+    }
   },
   methods: {
     formatDate(value) {
@@ -88,100 +90,117 @@ export default {
         // 프로필 사진이 없는 경우 기본 이미지 경로 반환
         return require('@/assets/profile_basic.png');
       }
+    },
+    async fetchEmployeeDetails() {
+      const route = useRoute();
+      const employeeId = route.params.id;
+      try {
+        const response = await axiosInstance.get(`/employees/${employeeId}`);
+        this.employee = response.data;
+      } catch (error) {
+        console.error('직원 정보를 불러오는데 실패했습니다:', error);
+        alert('직원 정보를 불러오는데 실패했습니다.');
+      }
     }
   },
-  async mounted() {
-    const route = useRoute();
-    const employeeId = route.params.id;
-    try {
-      const response = await axiosInstance.get(`/employees/${employeeId}`); // axiosInstance를 사용하여 요청을 보냅니다.
-      this.employee = response.data;
-    } catch (error) {
-      console.error('직원 정보를 불러오는데 실패했습니다:', error);
-      alert('직원 정보를 불러오는데 실패했습니다.');
-    }
+  mounted() {
+    this.fetchEmployeeDetails();
   }
 };
 </script>
 
-  
-  <style scoped>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .admin-menu-wrapper {
-    width: 100%;
-  }
-  
-  .employee-detail-container {
-    width: 70%;
-    margin-top: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .employee-details {
-    display: flex;
-  }
-  
-  .employee-photo {
+<style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.admin-menu-wrapper {
+  width: 100%;
+}
+
+.employee-detail-container {
+  width: 70%;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+}
+
+.employee-details {
+  display: flex;
+}
+
+.employee-photo {
   width: 150px; /* 너비 설정 */
   height: 150px; /* 높이 설정 */
   margin-bottom: 20px;
   align-self: center;
 }
+
 .employee-photo img {
   width: 100%; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
   height: auto; /* 이미지의 높이를 자동으로 조정하여 비율 유지 */
 }
-  
-  .info-section {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .info-row {
-    margin-bottom: 10px;
-    overflow-wrap: break-word; /* 영어 텍스트 줄바꿈 */
-    word-break: break-word; /* 강제 줄바꿈 */
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .loading {
-    text-align: center;
-  }
-  
-  /* 추가된 부분 */
-  .left-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-right: 50px; /* 사이 간격 조절 */
-    align-items: flex-start; /* 왼쪽 상단에 고정 */
-  }
-  
-  .right-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-top: 80px; /* 높이 여백 */
-  }
-  
-  .right-section .info-row {
-    margin-bottom: 10px;
-    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
-  }
-  </style>
-  
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-row {
+  margin-bottom: 10px;
+  overflow-wrap: break-word; /* 영어 텍스트 줄바꿈 */
+  word-break: break-word; /* 강제 줄바꿈 */
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+}
+
+/* 추가된 부분 */
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 50px; /* 사이 간격 조절 */
+  align-items: flex-start; /* 왼쪽 상단에 고정 */
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px; /* 높이 여백 */
+}
+
+.right-section .info-row {
+  margin-bottom: 10px;
+  white-space: nowrap; 
+  text-align: center;
+}
+
+/* 다크 모드 스타일 */
+.dark-mode {
+  background-color: #333; /* 배경색을 어두운 색상으로 설정 */
+  color: #fff; /* 글자색을 밝은 색상으로 설정 */
+}
+
+.dark-mode .employee-detail-container {
+  background-color: #444; /* 직원 상세정보 컨테이너 배경색을 조절 */
+}
+
+.dark-mode .info-row {
+  color: #fff; /* 정보 텍스트의 색상을 밝은 색상으로 설정 */
+}
+</style>
