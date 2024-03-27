@@ -5,7 +5,7 @@
     <div class="search-and-actions">
       <div class="search-section">
         <label for="search">검색:</label>
-        <input type="text" id="search" v-model="searchQuery" placeholder="검색">
+        <input type="text" id="search" @input="updateSearchQuery" placeholder="검색">
       </div>
       <div class="action-buttons">
         <button @click="goToNewEmployee" class="action-button">신규 직원 추가</button>
@@ -24,13 +24,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="employee in filteredEmployees" :key="employee.id" 
-              :class="{'selected-row': selectedEmployees.includes(employee.id)}">
+          <tr v-for="employee in filteredEmployees" :key="employee.id" :class="{'selected-row': selectedEmployees.includes(employee.id)}">
             <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
             <td>{{ employee.name }}</td>
-            <td>{{ employee.dept ? employee.dept.deptName : '부서 정보 없음' }}</td>
+            <td>{{ employee.deptName || '부서 정보 없음' }}</td>
             <td>{{ employee.phoneNumber }}</td>
-            <td><button @click="viewEmployeeDetails(employee.id)" class="detail-button">상세보기</button></td>
+            <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
           </tr>
         </tbody>
       </table>
@@ -39,14 +38,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosInstance from '@/axios';
 import { useRouter } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 export default {
-  components: {
-    AdminMenu
-  },
+  components: { AdminMenu },
   setup() {
     const router = useRouter();
     return { router };
@@ -60,51 +57,40 @@ export default {
   },
   computed: {
     filteredEmployees() {
-      // 배열 확인 추가
-      if (!Array.isArray(this.employees)) {
-        return [];
-      }
-      return this.employees.filter(employee =>
-        employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) && employee.status !== 'LEAVE'
-      );
+      return this.employees.filter(e => e.name.toLowerCase().includes(this.searchQuery.toLowerCase()) && e.status !== 'LEAVE');
     }
   },
   methods: {
     async fetchEmployees() {
       try {
-        const response = await axios.get('http://localhost:8000/employees');
+        const response = await axiosInstance.get('/employees');
         this.employees = response.data;
       } catch (error) {
-        console.error('There was an error fetching the employees:', error);
+        console.error('직원 정보를 불러오는데 실패했습니다:', error);
         alert('직원 정보를 불러오는데 실패했습니다.');
       }
     },
     async retireEmployees() {
       if (this.selectedEmployees.length === 0) {
         alert('직원을 선택해주세요.');
-        return; // 선택된 직원이 없을 경우 바로 종료
+        return;
       }
 
       try {
-        for (const employeeId of this.selectedEmployees) {
-          // 직원의 status를 LEAVE로 변경하는 요청 보내기
-          await axios.put(`http://localhost:8000/employees/${employeeId}/retire`);
-
-        }
-        await this.fetchEmployees(); // 비동기 처리 추가
-        this.selectedEmployees = []; // 선택된 직원 초기화
+        await axiosInstance.put('/employees/retire-multiple', this.selectedEmployees);
+        await this.fetchEmployees();
+        this.selectedEmployees = [];
         alert('선택된 직원이 퇴직 처리되었습니다.');
       } catch (error) {
-        console.error('Error while processing employee leave:', error);
+        console.error('직원 퇴직 처리 중 오류가 발생했습니다:', error);
         alert('직원 퇴직 처리 중 오류가 발생했습니다.');
       }
     },
     goToNewEmployee() {
       this.router.push('/new');
     },
-    viewEmployeeDetails(employeeId) {
-      // 상세 정보 페이지로 이동하는 로직 작성
-      alert(`직원 ${employeeId}의 상세 정보를 보여주는 페이지로 이동`);
+    viewEmployeeDetails(employee) {
+      this.router.push({ name: 'EmpDetail', params: { id: employee.id }});
     },
     selectAllEmployees(event) {
       if (event.target.checked) {
@@ -112,13 +98,17 @@ export default {
       } else {
         this.selectedEmployees = [];
       }
+    },
+    updateSearchQuery(event) {
+      this.searchQuery = event.target.value;
     }
   },
   created() {
-    this.fetchEmployees(); // 생성 시 직원 데이터 불러오기 추가
+    this.fetchEmployees();
   }
 };
 </script>
+
 
 
 
@@ -211,6 +201,3 @@ td {
   background-color: #f2f2f2; /* 선택된 행의 배경색 */
 }
 </style>
-
-
-
