@@ -5,7 +5,7 @@
     <div class="search-and-actions">
       <div class="search-section">
         <label for="search">검색:</label>
-        <input type="text" id="search" v-model="searchQuery" placeholder="검색">
+        <input type="text" id="search" @input="updateSearchQuery" placeholder="검색">
       </div>
       <div class="action-buttons">
         <button @click="goToNewEmployee" class="action-button">신규 직원 추가</button>
@@ -24,11 +24,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="employee in filteredEmployees" :key="employee.id" 
-              :class="{'selected-row': selectedEmployees.includes(employee.id)}">
+          <tr v-for="employee in filteredEmployees" :key="employee.id" :class="{'selected-row': selectedEmployees.includes(employee.id)}">
             <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
             <td>{{ employee.name }}</td>
-            <td>{{ employee.deptName ? employee.deptName : '부서 정보 없음' }}</td>
+            <td>{{ employee.deptName || '부서 정보 없음' }}</td>
             <td>{{ employee.phoneNumber }}</td>
             <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
           </tr>
@@ -44,9 +43,7 @@ import { useRouter } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 export default {
-  components: {
-    AdminMenu
-  },
+  components: { AdminMenu },
   setup() {
     const router = useRouter();
     return { router };
@@ -60,12 +57,7 @@ export default {
   },
   computed: {
     filteredEmployees() {
-      if (!Array.isArray(this.employees)) {
-        return [];
-      }
-      return this.employees.filter(employee =>
-        employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) && employee.status !== 'LEAVE'
-      );
+      return this.employees.filter(e => e.name.toLowerCase().includes(this.searchQuery.toLowerCase()) && e.status !== 'LEAVE');
     }
   },
   methods: {
@@ -106,6 +98,9 @@ export default {
       } else {
         this.selectedEmployees = [];
       }
+    },
+    updateSearchQuery(event) {
+      this.searchQuery = event.target.value;
     }
   },
   created() {
