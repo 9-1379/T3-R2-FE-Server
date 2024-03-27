@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import axiosInstance from '@/axios'
+import axiosInstance from '@/axios';
 import TopMenuBar from '@/components/menu/AdminMenu.vue';
 
 export default {
@@ -316,4 +316,5 @@ export default {
   background-color: #434190;
   /* Darker shade on hover */
 }
+
 </style>
