@@ -14,8 +14,8 @@
 
           <!-- Middle Section: Employee Basic Information -->
           <div class="info-section">
-            <div class="info-row"><strong>사번:</strong> {{ employee.id }}</div>
             <div class="info-row"><strong>이름:</strong> {{ employee.name }}</div>
+            <div class="info-row"><strong>사번:</strong> {{ employee.id }}</div>
             <div class="info-row">
               <!-- <strong>소개:</strong>  -->
               {{ employee.introduction }}
@@ -175,6 +175,7 @@ h2 {
   flex-direction: column;
   margin-right: 50px; /* 사이 간격 조절 */
   align-items: flex-start; /* 왼쪽 상단에 고정 */
+  text-align: left;
 }
 
 .right-section {
@@ -187,7 +188,7 @@ h2 {
 .right-section .info-row {
   margin-bottom: 10px;
   white-space: nowrap; 
-  text-align: center;
+  text-align: left;
 }
 
 /* 다크 모드 스타일 */
