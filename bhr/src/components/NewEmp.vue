@@ -43,11 +43,13 @@
 
           <div class="form-section">
             <h3 class="section-title">인사정보 입력</h3>
-            <div class="form-group">
-              <input type="text" id="employeeId" v-model="form.empId" placeholder="임직원 ID" readonly>
+            <div class="form-group" style="text-align: left;">
+              <label for="employeeId" style="font-size: 12px;">임직원 ID</label>
+              <input type="text" id="employeeId" v-model="form.empId" placeholder="임직원 ID" readonly style="font-size: 14px;">
             </div>
-            <div class="form-group">
-              <input type="text" id="employeeNumber" v-model="form.empNum" placeholder="사번" readonly>
+            <div class="form-group" style="text-align: left;">
+              <label for="employeeNumber" style="font-size: 12px;">사번</label>
+              <input type="text" id="employeeNumber" v-model="form.empNum" placeholder="사번" readonly style="font-size: 14px;">
             </div>
             <div class="form-group">
               <input type="text" id="userId" v-model="form.username" placeholder="ID">
@@ -391,13 +393,20 @@ input[type="date"]:not(.has-value):before{
   content: attr(placeholder);
 }
 
+.form-group input[type="text"][readonly] {
+  background-color: #f4f4f4;
+  /* Light gray background */
+  pointer-events: none;
+  /* Disable mouse events */
+}
+
 
 ::placeholder,
 select option {
   color: gray;
 }
 
-.form-group input[type="text"][readonly]:not(:focus)::placeholder {
-  color: transparent;
-}
+
+
+
 </style>
