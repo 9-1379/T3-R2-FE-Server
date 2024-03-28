@@ -29,7 +29,7 @@
               <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
               <td>{{ employee.name }}</td>
               <td>{{ employee.deptName || '부서 정보 없음' }}</td>
-              <td>{{ employee.phoneNumber }}</td>
+              <td>{{ maskedPhoneNumber(employee.phoneNumber) }}</td>
               <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
             </tr>
           </tbody>
@@ -63,7 +63,21 @@ export default {
     },
     filteredEmployees() {
       return this.employees.filter(e => e.name.toLowerCase().includes(this.searchQuery.toLowerCase()) && e.status !== 'LEAVE');
+    },
+    // 전화번호를 가려주는 계산된 속성
+    maskedPhoneNumber() {
+  return function(phoneNumber) {
+    if (phoneNumber && phoneNumber.length >= 4) {
+      const visibleDigits = phoneNumber.slice(0, -4);
+      const hiddenDigits = '*'.repeat(phoneNumber.length - visibleDigits.length);
+      const maskedNumber = visibleDigits + hiddenDigits;
+      return maskedNumber;
+    } else {
+      return phoneNumber;
     }
+  };
+}
+
   },
   methods: {
     async fetchEmployees() {
@@ -246,4 +260,3 @@ td {
   }
   
 </style>
-
