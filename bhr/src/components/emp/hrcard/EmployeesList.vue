@@ -1,11 +1,11 @@
 <template>
     <div class="employees-section">
-        <select v-model="selectedDept" @change="$emit('deptChanged', selectedDept)">
-            <option value="">모든 부서</option>
-            <option v-for="dept in deptNames" :key="dept" :value="dept">
-                {{ dept }}
-            </option>
-        </select>
+        <div class="checkbox-section">
+            <div v-for="dept in deptNames" :key="dept" class="checkbox-container">
+                <input type="checkbox" :id="dept" :value="dept" v-model="selectedDepts">
+                <label :for="dept">{{ dept }}</label>
+            </div>
+        </div>
         <div class="table-section">
             <table>
                 <thead>
@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="employee in employees" :key="employee.empNo"
+                    <tr v-for="employee in filteredEmployees" :key="employee.empNo"
                         @click="$emit('employeeSelected', employee)">
                         <td>{{ employee.empNo }}</td>
                         <td>{{ employee.name }}</td>
@@ -44,13 +44,36 @@ export default {
     },
     data() {
         return {
-            selectedDept: '',
+            selectedDepts: [],
         };
+    },
+    computed: {
+        filteredEmployees() {
+            if (this.selectedDepts.length === 0) {
+                return this.employees;
+            }
+            return this.employees.filter(employee =>
+                this.selectedDepts.includes(employee.deptName));
+        },
     },
 };
 </script>
 
 <style scoped>
+.checkbox-container {
+    display: inline-block;
+    /* Use flex layout to arrange children inline */
+
+    /* Center items vertically */
+    margin-right: 20px;
+    /* Adds some space to the right of each container */
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 0px;
+    /* Adds some space between the checkbox and the label */
+}
+
 .employees-section {
     margin: 20px;
 }
