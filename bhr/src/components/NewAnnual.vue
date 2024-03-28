@@ -8,13 +8,13 @@
           <div class="form-section">
             <div class="form-group">
               <p>연차시작일</p>
-              <input type="date" id="annual" v-model="form.annualstartday" placeholder="연차시작일">
+              <input type="date" id="annual" v-model="form.annualStartday" placeholder="연차시작일">
             </div>
           </div>
           <div class="form-section">
             <div class="form-group">
               <p>연차종료일</p>
-              <input type="date" id="annual" v-model="form.annualendday" placeholder="연차종료일">
+              <input type="date" id="annual" v-model="form.annualEndday" placeholder="연차종료일">
             </div>
           </div>
           <div class="form-group">
@@ -33,13 +33,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="employee in filteredEmployees" :key="employee.id"
-                  :class="{ 'selected-row': selectedEmployees.includes(employee.id) }">
-                  <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
-                  <td>{{ employee.name }}</td>
-                  <td>{{ employee.deptName || '부서 정보 없음' }}</td>
-                  <td>{{ employee.phoneNumber }}</td>
-                  <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
+                <tr v-for="(annualLists, index) in annualList" :key="annualLists.id">
+                  <td>{{ index }}</td>
+                  <td>{{ annualLists.annualStartday }}</td>
+                  <td>{{ annualLists.annualEndday }}</td>
                 </tr>
               </tbody>
             </table>
@@ -53,18 +50,34 @@
 
 <script>
 import TopMenuBar from '@/components/menu/AdminMenu.vue';
+import axiosInstance from '@/axios';
 
 export default {
+  created() {
+    this.annualList();
+  },
   components: {
     TopMenuBar,
+      },
+  methods: {
+    async annualList(){
+      try{
+        const response = await axiosInstance.get('/annualList')
+        this.annualListData = response.data;
+      } catch (error) {
+        console.error('연차 정보를 불러오는데 실패했습니다.', error);
+        alert('연차 정보를 불러오는데 실패했습니다.');
+      }
+    }
   },
-  data() {
+  data() { 
     return {
       form: {
-        name: '',
-        email: '',
-        annualstartday: '',
+        annualStartday: '',
+        annualEndday: '',
+        annualYear: '',
       },
+      annualListData: [],
     };
   },
 };
