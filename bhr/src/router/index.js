@@ -6,6 +6,7 @@ import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트
 import EmpList from '@/components/EmpList.vue';
 import NewEmp from '@/components/NewEmp.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
+import EmpDashboard from '@/components/EmpDashboard.vue';
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     path: '/success',
     name: 'LoginSuccess', // 여기에 문자열 이름을 사용
     component: LoginSuccess
+  },
+    {
+    path: '/dashboard',
+    name: 'EmpDashboard',
+    component: EmpDashboard
   },
   {
     path: '/list',
