@@ -17,6 +17,15 @@
               </div>
               <input type="hidden" v-model="form.gender">
             </div>
+            <div class="form-group">
+              <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일" class="placeholder-gray">
+            </div>
+            <div class="form-group">
+              <input type="text" id="phone" v-model="form.phoneNumber" required placeholder="전화번호">
+            </div>
+            <div class="form-group">
+              <input type="email" id="email" v-model="form.email" class="blur-text" placeholder="이메일">
+            </div>
             <div class="form-group" style="display: flex;">
               <input type="text" id="sample6_postcode" placeholder="우편번호" v-model="form.addr.postcode" style="flex: 5;">
               <button @click="execDaumPostcode" style="flex: 1; padding: 1px;">찾기</button>
@@ -29,15 +38,6 @@
             </div>
             <div class="form-group" style="margin-top: -19px;">
               <input type="text" id="sample6_extraAddress" placeholder="참고항목" v-model="form.addr.extraAddress">
-            </div>
-            <div class="form-group">
-              <input type="text" id="phone" v-model="form.phoneNumber" required placeholder="전화번호">
-            </div>
-            <div class="form-group">
-              <input type="email" id="email" v-model="form.email" class="blur-text" placeholder="이메일">
-            </div>
-            <div class="form-group">
-              <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일" class="placeholder-gray">
             </div>
           </div>
 
@@ -307,7 +307,7 @@ export default {
   /* Add border and set initial color */
   color: #a0aec0;
   /* Set text color to match the border */
-  padding: 10px 20px;
+  padding: 10px 85px;
   /* Keep padding */
   cursor: pointer;
   margin-top: 8px;
@@ -392,10 +392,12 @@ input[type="date"]:not(.has-value):before{
 }
 
 
-
 ::placeholder,
 select option {
   color: gray;
 }
 
+.form-group input[type="text"][readonly]:not(:focus)::placeholder {
+  color: transparent;
+}
 </style>
