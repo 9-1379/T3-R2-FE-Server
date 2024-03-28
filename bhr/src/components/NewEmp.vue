@@ -12,18 +12,22 @@
             </div>
             <div class="form-group">
               <div class="btn-group">
-                <button type="button" class="btn btn-secondary rounded" @click="setGender('MALE')"
-                  :class="{ active: form.gender === 'MALE' }">남자</button>
-                <button type="button" class="btn btn-secondary rounded" @click="setGender('FEMALE')"
-                  :class="{ active: form.gender === 'FEMALE' }">여자</button>
+                <button type="button" class="btn btn-secondary rounded" @click="setGender('MALE')" :class="{ active: form.gender === 'MALE' }">남자</button>
+                <button type="button" class="btn btn-secondary rounded" @click="setGender('FEMALE')" :class="{ active: form.gender === 'FEMALE' }">여자</button>
               </div>
               <input type="hidden" v-model="form.gender">
             </div>
-            <div class="form-group">
-              <input type="text" id="sample6_postcode" placeholder="우편번호" v-model="form.addr.postcode">
-              <button @click="execDaumPostcode">우편번호 찾기</button><br>
-              <input type="text" id="sample6_address" placeholder="주소" v-model="form.addr.address"><br>
+            <div class="form-group" style="display: flex;">
+              <input type="text" id="sample6_postcode" placeholder="우편번호" v-model="form.addr.postcode" style="flex: 5;">
+              <button @click="execDaumPostcode" style="flex: 1; padding: 1px;">찾기</button>
+            </div>
+            <div class="form-group" style="margin-top: -19px;">
+              <input type="text" id="sample6_address" placeholder="주소" v-model="form.addr.address">
+            </div>
+            <div class="form-group" style="margin-top: -19px;">
               <input type="text" id="sample6_detailAddress" placeholder="상세주소" v-model="form.addr.detailAddress">
+            </div>
+            <div class="form-group" style="margin-top: -19px;">
               <input type="text" id="sample6_extraAddress" placeholder="참고항목" v-model="form.addr.extraAddress">
             </div>
             <div class="form-group">
@@ -33,8 +37,7 @@
               <input type="email" id="email" v-model="form.email" class="blur-text" placeholder="이메일">
             </div>
             <div class="form-group">
-              <p>생년월일</p>
-              <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일">
+              <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일" class="placeholder-gray">
             </div>
           </div>
 
@@ -53,13 +56,12 @@
               <input type="password" id="password" v-model="form.password" placeholder="비밀번호">
             </div>
             <div class="form-group">
-              <label for="departmentName">부서명</label>
-              <select id="departmentName" v-model="form.deptName" required>
-                <option disabled value="">부서를 선택하세요</option>
-                <option v-for="deptName in deptNames" :key="deptName" :value="deptName">
-                  {{ deptName }}
-                </option>
-              </select>
+              <div class="select-container">
+                <select id="departmentName" v-model="form.deptName" required>
+                  <option disabled value="">부서</option>
+                  <option v-for="deptName in deptNames" :key="deptName" :value="deptName">{{ deptName }}</option>
+                </select>
+              </div>
             </div>
             <div class="form-group">
               <input type="text" id="position" v-model="form.position" placeholder="직위">
@@ -68,7 +70,6 @@
               <input type="text" id="job" v-model="form.jobId" placeholder="직무">
             </div>
             <div class="form-group">
-              <p>입사일</p>
               <input type="date" id="hireDate" v-model="form.hireDate" placeholder="입사일">
             </div>
           </div>
@@ -147,8 +148,9 @@ export default {
         const response = await axiosInstance.post('/api/join', submitData);
         console.log(response.data);
         alert('신규 직원 정보가 성공적으로 등록되었습니다.');
+        // 폼 초기화 또는 성공 메시
         // 폼 초기화 또는 성공 메시지 표시 등의 추가 작업
-        this.$router.push("/")
+        this.$router.push("/");
       } catch (error) {
         console.error(error);
         alert('정보 등록에 실패했습니다.');
@@ -173,6 +175,22 @@ export default {
 </script>
 
 <style scoped>
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group input[type="password"],
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 2px; /* 입력란 위 여백 설정 */
+  margin-bottom: 2px; /* 입력란 아래 여백 설정 */
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
 .signup-form-container {
   display: flex;
   justify-content: center;
@@ -180,6 +198,22 @@ export default {
   height: 110vh;
   background-color: #edf2f7;
   /* Lighter shade for background */
+}
+
+/* 찾기 버튼 스타일 */
+.signup-form-container button {
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.signup-form-container button:hover {
+  background-color: #a0aec0;
+  /* 더 밝은 회색으로 변경 */
 }
 
 .signup-form {
@@ -315,6 +349,53 @@ export default {
 .submit-button:hover {
   background-color: #434190;
   /* Darker shade on hover */
+}
+
+.select-container {
+  position: relative;
+}
+
+.select-container::after {
+  content: "\25BC";
+  font-size: 16px;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.select-container select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 10px 12px;
+  width: 100%;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.select-container select:hover {
+  border-color: #a0aec0;
+}
+
+.select-container select:focus {
+  border-color: #4c51bf;
+  outline: none;
+}
+
+input[type="date"]:not(.has-value):before{
+  color: gray;
+  content: attr(placeholder);
+}
+
+
+
+::placeholder,
+select option {
+  color: gray;
 }
 
 </style>
