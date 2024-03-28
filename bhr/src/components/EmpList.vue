@@ -218,11 +218,6 @@ td {
     color: white;
   }
   
-  .dark-mode .search-section label,
-  .dark-mode .search-section input {
-    color: white;
-  }
-  
   .dark-mode .action-button {
     color: white;
     border-color: #888;
@@ -249,5 +244,6 @@ td {
   .dark-mode .selected-row {
     background-color: #444;
   }
+  
 </style>
 
