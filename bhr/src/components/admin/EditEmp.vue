@@ -37,12 +37,20 @@
               <div class="info-row"><strong>직무:</strong> <input type="text" v-model="employee.jobId" /></div>
               <div class="info-row"><strong>입사 날짜:</strong> <input type="date" v-model="employee.hireDate" /></div>
               <div class="info-row"><strong>주소:</strong> <input type="text" v-model="employee.formattedAddress" /></div>
-              <div class="info-row"><strong>재직여부:</strong> <select v-model="employee.status">
-                <option value="WORKING">재직중</option>
-                <option value="REST">휴직중</option>
-                <option value="LEAVE">퇴직</option>
-              </select></div>
-              <div class="info-row"><strong>권한:</strong> <input type="text" v-model="employee.authorization" /></div>
+              <div class="info-row">
+                <strong>재직여부:</strong>
+                <select v-model="employee.status">
+                  <option value="WORKING">재직중</option>
+                  <option value="REST">휴직중</option>
+                  <option value="LEAVE">퇴직</option>
+                </select>
+              </div>
+              <div class="info-row">
+                <strong>권한:</strong>
+                <label><input type="radio" v-model="employee.authorization" value="MANAGER" /> 매니저</label>
+                <label><input type="radio" v-model="employee.authorization" value="HRMANAGER" /> 인사담당자</label>
+                <label><input type="radio" v-model="employee.authorization" value="EMPLOYEE" /> 직원</label>
+              </div>
             </div>
           </div>
         </div>
@@ -90,13 +98,13 @@
       async saveEmployeeDetails() {
         try {
           await axiosInstance.put(`/employees/${this.employee.id}`, this.employee);
-          alert('Employee details saved successfully.');
+          alert('저장하였습니다.');
           // 이동할 경로 설정
-          const router = useRouter();
+            const router = useRouter();
           router.push(`/detail/${this.employee.id}`);
         } catch (error) {
-          console.error('Failed to save employee details:', error);
-          alert('Failed to save employee details.');
+          console.error('저장에 실패하였습니다.', error);
+          alert('저장에 실패하였습니다s.');
         }
       }
     },
