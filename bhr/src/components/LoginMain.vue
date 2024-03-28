@@ -64,7 +64,7 @@ export default {
                 router.push("/new");
                 break;
               case "ROLE_EMPLOYEE":
-                router.push("/admin");
+                router.push("/dashboard");
                 break;
               default:
                 router.push("/admin");
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style>
-/* 여기에 CSS 스타일을 추가하세요 */
+/* 여기에npm  CSS 스타일을 추가하세요 */
 .login-container {
   max-width: 400px;
   margin: auto;

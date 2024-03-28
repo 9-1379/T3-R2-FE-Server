@@ -50,11 +50,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
 
 .dark-mode {
   /* 다크 모드 스타일 */
   background-color: #333;
   color: white;
 }
+}
 </style>
+
+
