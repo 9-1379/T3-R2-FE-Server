@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopMenuBar />
+    <AdminMenu />
     <div class="signup-form-container">
       <div class="signup-form">
         <h2 class="form-title">연차 신청</h2>
@@ -8,13 +8,13 @@
           <div class="form-section">
             <div class="form-group">
               <p>연차시작일</p>
-              <input type="date" id="annual" v-model="form.annualStartday" placeholder="연차시작일">
+              <input type="date" id="annual" v-model="form.startDate" placeholder="연차시작일">
             </div>
           </div>
           <div class="form-section">
             <div class="form-group">
               <p>연차종료일</p>
-              <input type="date" id="annual" v-model="form.annualEndday" placeholder="연차종료일">
+              <input type="date" id="annual" v-model="form.endDate" placeholder="연차종료일">
             </div>
           </div>
           <div class="form-group">
@@ -33,10 +33,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(annualLists, index) in annualList" :key="annualLists.id">
-                  <td>{{ index }}</td>
-                  <td>{{ annualLists.annualStartday }}</td>
-                  <td>{{ annualLists.annualEndday }}</td>
+                <tr v-for="list in annualList" :key="list.id">
+                  <td>{{ list.id }}</td>
+                  <td>{{list.annualYear}} - {{ list.startDate }} - {{ list.endDate }}</td>
                 </tr>
               </tbody>
             </table>
@@ -49,37 +48,41 @@
 </template>
 
 <script>
-import TopMenuBar from '@/components/menu/AdminMenu.vue';
+import AdminMenu from '@/components/menu/AdminMenu.vue';
 import axiosInstance from '@/axios';
 
+
+
+
 export default {
-  created() {
-    this.annualList();
-  },
   components: {
-    TopMenuBar,
-      },
-  methods: {
-    async annualList(){
-      try{
-        const response = await axiosInstance.get('/annualList')
-        this.annualListData = response.data;
-      } catch (error) {
-        console.error('연차 정보를 불러오는데 실패했습니다.', error);
-        alert('연차 정보를 불러오는데 실패했습니다.');
-      }
-    }
+    AdminMenu,
   },
-  data() { 
+  name: 'NewAnnual',
+  data() {
     return {
-      form: {
-        annualStartday: '',
-        annualEndday: '',
-        annualYear: '',
-      },
-      annualListData: [],
+      annualList: [],
     };
   },
+  methods: {
+    async fetchAnnualList() {
+      try {
+        const response = await axiosInstance.get('/annualList');
+        this.annualList = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+//  formatDate(dateString) {
+//   const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+//   return new Date(dateString).toLocaleDateString('ko-KR', options);
+// },
+  },
+
+mounted() {
+  this.fetchAnnualList;
+},
 };
 </script>
 
