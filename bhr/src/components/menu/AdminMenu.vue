@@ -8,7 +8,7 @@
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')" @mouseleave="toggleDropdown(false, 'vacation')">
         <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
-          <a href="#vacation">연차관리</a>
+          <a href="/newannual">연차관리</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
@@ -52,7 +52,10 @@ export default {
     toggleDarkMode() {
       this.$store.commit('toggleDarkMode');
     },
+    goToNewAnnual() {
+      this.$router.push("/newannual")
   },
+},
   data() {
     return {
       dropdownType: '',
