@@ -64,7 +64,7 @@ export default {
                 router.push("/new");
                 break;
               case "ROLE_EMPLOYEE":
-                router.push("/admin");
+                router.push("/dashboard");
                 break;
               default:
                 router.push("/admin");
