@@ -4,6 +4,8 @@
       <AdminMenu />
     </div>
     <div class="employee-detail-container">
+      <!-- 수정하기 버튼 -->
+      <button class="edit-button" @click="editEmployeeDetails">수정하기</button>
       <div v-if="employee" class="employee-details">
         <!-- Left Section: Employee Photo -->
         <div class="left-section">
@@ -47,7 +49,7 @@
 
 <script>
 import axiosInstance from '@/axios';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 export default {
@@ -101,6 +103,14 @@ export default {
         console.error('직원 정보를 불러오는데 실패했습니다:', error);
         alert('직원 정보를 불러오는데 실패했습니다.');
       }
+    },
+    editEmployeeDetails() {
+      // 수정하기 버튼 클릭 시 실행되는 메서드
+      // 해당 직원의 ID를 사용하여 새로운 경로로 이동
+      const router = useRouter();
+      const route = useRoute();
+      const employeeId = route.params.id;
+      router.push(`/edit/${employeeId}`);
     }
   },
   mounted() {
@@ -130,6 +140,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
+  position: relative; /* 수정하기 버튼 위치 지정을 위해 부모 요소를 relative로 설정 */
 }
 
 .employee-details {
@@ -137,15 +148,15 @@ export default {
 }
 
 .employee-photo {
-  width: 150px; /* 너비 설정 */
-  height: 150px; /* 높이 설정 */
+  width: 150px;
+  height: 150px;
   margin-bottom: 20px;
   align-self: center;
 }
 
 .employee-photo img {
-  width: 100%; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
-  height: auto; /* 이미지의 높이를 자동으로 조정하여 비율 유지 */
+  width: 100%;
+  height: auto;
 }
 
 .info-section {
@@ -155,8 +166,8 @@ export default {
 
 .info-row {
   margin-bottom: 10px;
-  overflow-wrap: break-word; /* 영어 텍스트 줄바꿈 */
-  word-break: break-word; /* 강제 줄바꿈 */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 h2 {
@@ -168,13 +179,12 @@ h2 {
   text-align: center;
 }
 
-/* 추가된 부분 */
 .left-section {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-right: 50px; /* 사이 간격 조절 */
-  align-items: flex-start; /* 왼쪽 상단에 고정 */
+  margin-right: 50px;
+  align-items: flex-start;
   text-align: left;
 }
 
@@ -182,26 +192,42 @@ h2 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 80px; /* 높이 여백 */
+  margin-top: 80px;
 }
 
 .right-section .info-row {
   margin-bottom: 10px;
-  white-space: nowrap; 
+  white-space: nowrap;
   text-align: left;
 }
 
-/* 다크 모드 스타일 */
 .dark-mode {
-  background-color: #333; /* 배경색을 어두운 색상으로 설정 */
-  color: #fff; /* 글자색을 밝은 색상으로 설정 */
+  background-color: #333;
+  color: #fff;
 }
 
 .dark-mode .employee-detail-container {
-  background-color: #444; /* 직원 상세정보 컨테이너 배경색을 조절 */
+  background-color: #444;
 }
 
 .dark-mode .info-row {
-  color: #fff; /* 정보 텍스트의 색상을 밝은 색상으로 설정 */
+  color: #fff;
+}
+
+/* 수정하기 버튼 스타일 */
+.edit-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
 }
 </style>
