@@ -9,6 +9,8 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import NewAnnual from '@/components/NewAnnual.vue';
+import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
+
 
 const routes = [
   {
@@ -47,9 +49,14 @@ const routes = [
     component: EmpDetail
   },
   {
-    path: '/newannual', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
+    path: '/newannual',
     name: 'NewAnnual',
     component: NewAnnual
+  },
+  {
+    path: '/adnim/annual',
+    name: 'AdminSetupList',
+    component: AnnualSetupList
   }
 ];
 
