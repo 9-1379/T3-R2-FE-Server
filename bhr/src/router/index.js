@@ -9,10 +9,16 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 <<<<<<< HEAD
+<<<<<<< HEAD
 import EmpDashboard from '@/components/EmpDashboard.vue';
 =======
 import NewAnnual from '@/components/NewAnnual.vue';
 >>>>>>> dev
+=======
+import EmpDashboard from '@/components/EmpDashboard.vue';
+import NewAnnual from '@/components/NewAnnual.vue';
+
+>>>>>>> b0ac43eb40708dfa8102903a2ac6fa7f8190afee
 
 const routes = [
   {
