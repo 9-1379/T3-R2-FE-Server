@@ -1,62 +1,72 @@
 <template>
   <div class="emp-dashboard">
-    <div v-if="emp">
-      <div v-if="editingImage.value">
+    <div v-if="employees">
+      <div v-if="editingImage">
         <input type="file" @change="uploadProfilePicture" />
         <button @click="cancelEditImage">Cancel</button>
       </div>
       <div v-else>
-        <img :src="emp.profilePicture || defaultProfilePicture" alt="Profile Picture" class="profile-picture" />
+        <img :src="employees.profilePicture || defaultProfilePicture" alt="Profile Picture" class="profile-picture" />
         <button @click="editImage">Edit Image</button>
       </div>
-      <h2>{{ emp.name }}</h2>
-      <p><strong>Department:</strong> {{ emp.department }}</p>
-      <p><strong>Position:</strong> {{ emp.position }}</p>
       <div>
-        <p><strong>About:</strong> {{ emp.introduction }}</p>
+        <div v-for="employee in employees" :key="employee.id">
+          {{ employee.name }}
+        </div>
+      </div>
+      <h2>{{ employees.name }}</h2>
+      <p><strong>Department:</strong> {{ employees.department }}</p>
+      <p><strong>Position:</strong> {{ employees.position }}</p>
+      <div>
+        <p><strong>About:</strong> {{ employees.introduction }}</p>
         <button @click="editIntroduction">Edit</button>
         <button @click="deleteIntroduction">Delete</button>
-        <textarea v-if="editingIntroduction.value" v-model="emp.introduction"></textarea>
-        <button v-if="editingIntroduction.value" @click="saveIntroduction">Save</button>
-        <button v-if="editingIntroduction.value" @click="cancelEditIntroduction">Cancel</button>
+        <textarea v-if="editingIntroduction" v-model="employees.introduction"></textarea>
+        <button v-if="editingIntroduction" @click="saveIntroduction">Save</button>
+        <button v-if="editingIntroduction" @click="cancelEditIntroduction">Cancel</button>
       </div>
     </div>
     <div v-else>
-      <p>Emp not found.</p>
+      <p>Employee not found.</p>
     </div>
   </div>
 </template>
 
 <script>
 import axiosInstance from "@/axios";
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 export default {
+  components: { AdminMenu },
   setup() {
-    const emp = ref(null);
-    const route = useRoute();
-    const editingImage = ref(false);
-    const editingIntroduction = ref(false);
-    const defaultProfilePicture = 'path_to_default_image'; // 실제 경로로 대체해야 함
-    const employeeId = ref(null);
-
-    onMounted(async () => {
-      employeeId.value = route.params.id; // 라우트 파라미터에서 직원 ID를 가져옵니다.
-      console.log('Current employee ID:', employeeId.value); 
-      if (employeeId.value) {
-        try {
-          const response = await axiosInstance.get(`/api/employees/${employeeId.value}`);
-          emp.value = response.data;
-        } catch (error) {
-          console.error('Failed to fetch employee data:', error);
-        }
-      }
-    });
-
-
-    // 파일 업로드를 위한 함수 정의
-    const uploadProfilePicture = async (event) => {
+    const router = useRouter();
+    return { router };
+  },
+  data() {
+    return {
+      employees: [],
+      searchQuery: '',
+      selectedEmployees: [],
+      editingImage: false,
+      editingIntroduction: false,
+      defaultProfilePicture: 'https://i.pinimg.com/564x/67/78/b8/6778b87dfce51fb95792c256b2358dca.jpg', // 실제 경로로 대체해야 함
+      
+    };
+  },
+  methods: {
+    // 서버로부터 직원 데이터를 불러오는 메서드
+    fetchEmployees() {
+      axiosInstance.get(`/employees/dashboard`)
+      .then(response => {
+          this.employees = response.data;
+        })
+       .catch (error => {
+        console.error('직원 데이터를 불러오는 데 실패했습니다.', error);
+      });
+    },
+    async uploadProfilePicture(event) {
+      const employeesId = this.$route.params.id;
       const file = event.target.files[0];
       if (!file) {
         alert('Please select a file.');
@@ -66,77 +76,65 @@ export default {
       formData.append('file', file);
 
       try {
-        const response = await axiosInstance.post(`/api/employees/${employeeId.value}/profile-picture`, formData, {
+        const response = await axiosInstance.post(`/employees/dashboard/${employeesId}/profile-picture`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
         if (response.data.path) {
-          emp.value.profilePicture = response.data.path;
+          this.employees.profilePicture = response.data.path;
         }
       } catch (error) {
         console.error('Failed to upload profile picture:', error);
       }
-    };
-
-    const editImage = () => {
-      editingImage.value = true;
-    };
-
-    const cancelEditImage = () => {
-      editingImage.value = false;
-    };
-
-    const editIntroduction = () => {
-      editingIntroduction.value = true;
-    };
-
-    const saveIntroduction = async () => {
-      try {
-        const response = await axiosInstance.put(`/api/employees/${employeeId.value}`, {
-          ...emp.value,
-          introduction: emp.value.introduction
+    },
+    editImage() {
+      this.editingImage = true;
+    },
+    cancelEditImage() {
+      this.editingImage = false;
+    },
+    editIntroduction() {
+      this.editingIntroduction = true;
+    },
+   saveIntroduction() {
+   const employeesId = this.$route.params.id;
+   const introduction =  this.employees.introduction;
+    axiosInstance.put(`/employees/dashboard/${employeesId}/introduction`, { introduction })
+        .then(() => {
+          alert('소개글이 성공적으로 저장되었습니다.');
+          // 필요한 경우, 직원 데이터를 다시 불러옵니다.
+          this.fetchEmployees();
+        })
+        .catch(error => {
+          console.error('소개글 저장에 실패했습니다.', error);
         });
-        emp.value = response.data;
-        editingIntroduction.value = false;
-      } catch (error) {
-        console.error('Failed to update introduction:', error);
+  },
+    async deleteIntroduction() {
+      const employeesId = this.$route.params.id;
+      if (employeesId) {
+        try {
+          await axiosInstance.delete(`/employees/dashboard/${employeesId}/introduction`);
+          this.employees.introduction = '';
+        } catch (error) {
+          console.error('Failed to delete introduction:', error);
+        }
       }
-    };
-// eslint-disable-next-line no-unused-vars
-    const deleteIntroduction = async () => {
-      if (employeeId.value) {
-      try {
-        await axiosInstance.delete(`/api/employees/${employeeId.value}/introduction`);
-        emp.value.introduction = '';
-      } catch (error) {
-        console.error('Failed to delete introduction:', error);
-      }
+    },
+    cancelEditIntroduction() {
+      this.editingIntroduction = false;
     }
-
-    const cancelEditIntroduction = () => {
-      editingIntroduction.value = false;
-    };
-
-    return {
-      emp,
-      editingImage,
-      editingIntroduction,
-      defaultProfilePicture,
-      editImage,
-      cancelEditImage,
-      uploadProfilePicture,
-      editIntroduction,
-      saveIntroduction,
-      deleteIntroduction,
-      cancelEditIntroduction,
-    };
-   }
+  },
+  mounted() {
+    this.fetchEmployees();
   }
- };
+};
+
 </script>
 
 <style scoped>
+/* 여기에 스타일을 그대로 유지 */
+
 .emp-dashboard {
   font-family: 'Arial', sans-serif;
   margin: 0 auto;

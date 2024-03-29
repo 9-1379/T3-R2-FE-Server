@@ -20,7 +20,7 @@ const routes = [
     component: LoginSuccess
   },
     {
-    path: '/api/employees/:id',
+    path: '/employees/dashboard',
     name: 'EmpDashboard',
     component: EmpDashboard
   },
