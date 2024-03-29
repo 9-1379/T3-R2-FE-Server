@@ -8,13 +8,13 @@
           <div class="form-section">
             <div class="form-group">
               <p>연차시작일</p>
-              <input type="date" id="annual" v-model="form.startDate" placeholder="연차시작일">
+              <input type="date" id="annualStart" v-model="form.startDate" placeholder="연차시작일">
             </div>
           </div>
           <div class="form-section">
             <div class="form-group">
               <p>연차종료일</p>
-              <input type="date" id="annual" v-model="form.endDate" placeholder="연차종료일">
+              <input type="date" id="annualEnd" v-model="form.endDate" placeholder="연차종료일">
             </div>
           </div>
           <div class="form-group">
@@ -35,7 +35,7 @@
               <tbody>
                 <tr v-for="list in annualList" :key="list.id">
                   <td>{{ list.id }}</td>
-                  <td>{{list.annualYear}} - {{ list.startDate }} - {{ list.endDate }}</td>
+                  <td>{{ list.annualYear }} - {{ list.startDate }} - {{ list.endDate }}</td>
                 </tr>
               </tbody>
             </table>
@@ -50,15 +50,14 @@
 <script>
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 import axiosInstance from '@/axios';
-
-
+// import axios from '@/axios';
 
 
 export default {
   components: {
     AdminMenu,
   },
-  name: 'NewAnnual',
+  name: 'AnnualList',
   data() {
     return {
       annualList: [],
@@ -67,22 +66,20 @@ export default {
   methods: {
     async fetchAnnualList() {
       try {
-        const response = await axiosInstance.get('/annualList');
-        this.annualList = response.data;
+        const response = await axiosInstance.get('/annualList'); // API 경로에 맞게 수정하세요.
+        this.annualList = response.data.map(item => ({
+          ...item,
+          startDate: item.startDate.split('T')[0], // ISO 문자열의 날짜 부분만 추출
+          endDate: item.endDate.split('T')[0], // ISO 문자열의 날짜 부분만 추출
+        }));
       } catch (error) {
-        console.error(error);
+        console.error('연차 목록을 불러오는데 실패했습니다: ', error);
       }
     },
-
-//  formatDate(dateString) {
-//   const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-//   return new Date(dateString).toLocaleDateString('ko-KR', options);
-// },
   },
-
-mounted() {
-  this.fetchAnnualList;
-},
+  created() {
+    this.fetchAnnualList();
+  },
 };
 </script>
 
