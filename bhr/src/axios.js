@@ -7,5 +7,4 @@ const axiosInstance = axios.create({
         Authorization: token,
     }
 });
-
 export default axiosInstance;
