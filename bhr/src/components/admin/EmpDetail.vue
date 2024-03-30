@@ -119,13 +119,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-}
+<style lang="css" src="@/css/styles.css">
 
 .admin-menu-wrapper {
   width: 100%;
@@ -230,4 +224,5 @@ h2 {
 .edit-button:hover {
   background-color: #0056b3;
 }
+
 </style>
