@@ -19,7 +19,7 @@
             <div class="info-row"><strong>이름:</strong> <input type="text" v-model="employee.name" /></div>
             <div class="info-row"><strong>사번:</strong> {{ employee.id }}</div>
             <div class="info-row">
-              <!-- <strong>소개:</strong>  -->
+              <strong>소개:</strong><br>
               <textarea v-model="employee.introduction"></textarea>
             </div>
           </div>
@@ -90,83 +90,87 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 export default {
   components: { AdminMenu },
   data() {
-      return {
-          employee: null,
-          emailError: ''
-      };
+    return {
+      employee: null,
+      emailError: ''
+    };
   },
   computed: {
-      darkModeEnabled() {
-          return this.$store.state.darkMode;
-      }
+    darkModeEnabled() {
+      return this.$store.state.darkMode;
+    }
   },
   methods: {
-      getProfilePictureUrl(profilePicture) {
-          if (profilePicture) {
-              return `data:image/jpeg;base64,${profilePicture}`;
-          } else {
-              return require('@/assets/profile_basic.png');
-          }
-      },
-      async fetchEmployeeDetails() {
-          const employeeId = this.$route.params.id;
-          try {
-              const response = await axiosInstance.get(`/employees/${employeeId}`);
-              this.employee = response.data;
-          } catch (error) {
-              console.error('Failed to fetch employee details:', error);
-              alert('Failed to fetch employee details.');
-          }
-      },
-      async saveEmployeeDetails() {
-    // 유효성 검사 추가
-    if (!this.employee) {
+    getProfilePictureUrl(profilePicture) {
+      if (profilePicture) {
+        return `data:image/jpeg;base64,${profilePicture}`;
+      } else {
+        return require('@/assets/profile_basic.png');
+      }
+    },
+    async fetchEmployeeDetails() {
+      const employeeId = this.$route.params.id;
+      try {
+        const response = await axiosInstance.get(`/employees/${employeeId}`);
+        this.employee = response.data;
+      } catch (error) {
+        console.error('Failed to fetch employee details:', error);
+        alert('Failed to fetch employee details.');
+      }
+    },
+    async saveEmployeeDetails() {
+      // 유효성 검사 추가
+      if (!this.employee) {
         alert('직원 정보를 먼저 불러와야 합니다.');
         return;
-    }
-    // 이메일 유효성 검사
-    if (this.employee.email && !this.isValidEmail(this.employee.email)) {
+      }
+      // 이메일 유효성 검사
+      if (this.employee.email && !this.isValidEmail(this.employee.email)) {
         this.showEmailErrorAlert();
         return;
-    } else {
+      } else {
         this.emailError = '';
-    }
-    // 모든 필수 필드가 채워져 있는지 확인
-    const requiredFields = ['name', 'gender', 'birthday', 'phoneNumber', 'deptName', 'position', 'jobId', 'hireDate', 'status', 'authorization'];
-    for (const field of requiredFields) {
+      }
+      // 이메일 필드가 빈 문자열인 경우 null 값 할당
+      if (!this.employee.email) {
+        this.employee.email = null;
+      }
+      // 모든 필수 필드가 채워져 있는지 확인
+      const requiredFields = ['name', 'gender', 'birthday', 'phoneNumber', 'deptName', 'position', 'jobId', 'hireDate', 'status', 'authorization'];
+      for (const field of requiredFields) {
         if (!this.employee[field]) {
-            alert(`${field} 필드는 필수 입력 사항입니다.`);
-            return;
+          alert(`${field} 필드는 필수 입력 사항입니다.`);
+          return;
         }
-    }
-    // 직원 정보의 생년월일과 입사 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
-    this.employee.birthday = new Date(this.employee.birthday).toISOString().slice(0, 10);
-    this.employee.hireDate = new Date(this.employee.hireDate).toISOString().slice(0, 10);
-    try {
+      }
+      // 직원 정보의 생년월일과 입사 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
+      this.employee.birthday = new Date(this.employee.birthday).toISOString().slice(0, 10);
+      this.employee.hireDate = new Date(this.employee.hireDate).toISOString().slice(0, 10);
+      try {
         await axiosInstance.put(`/employees/${this.employee.id}`, this.employee);
         alert('저장하였습니다.');
         const router = this.$router;
-        router.push(`/list/`);
-    } catch (error) {
+        router.push(`/employees/${this.employee.id}`);
+      } catch (error) {
         console.error('저장에 실패하였습니다.', error);
         alert('저장에 실패하였습니다.');
+      }
+    },
+    isValidEmail(email) {
+      // 이메일 유효성 검사 정규식
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    },
+    showEmailErrorAlert() {
+      alert('이메일 형식이 잘못되었습니다.');
     }
-},
-isValidEmail(email) {
-    // 이메일 유효성 검사 정규식
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-},
-showEmailErrorAlert() {
-    alert('이메일 형식이 잘못되었습니다.');
-}
   },
   mounted() {
-      this.fetchEmployeeDetails();
+    this.fetchEmployeeDetails();
   }
 };
 </script>
-  
+
 <style scoped>
 .page-container {
   display: flex;
