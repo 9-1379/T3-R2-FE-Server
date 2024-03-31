@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="navbar-icons">
-      <button class="user-btn" @click="goToAdmin">관리자</button>
+      <button v-if="userRole === 'ROLE_MANAGER' || userRole === 'ROLE_HRMANAGER'" class="user-btn" @click="goToAdmin">관리자</button>
       <!-- Dark Mode Toggle Button -->
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
@@ -36,6 +36,9 @@ export default {
   computed: {
     darkModeEnabled() {
       return this.$store.state.darkMode;
+    },
+    userRole() {
+      return this.$store.state.userRole;
     },
   },
   methods: {
