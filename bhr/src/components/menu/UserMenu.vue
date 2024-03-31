@@ -61,6 +61,10 @@ export default {
       dropdownType: '',
     };
   },
+  created() {
+    // 페이지가 로드될 때 Vuex 스토어에서 사용자 권한 정보를 가져옵니다.
+    this.$store.commit('setUserRole', localStorage.getItem('userRole'));
+  }
 };
 </script>
 
