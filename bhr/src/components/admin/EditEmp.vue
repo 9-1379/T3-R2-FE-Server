@@ -40,7 +40,11 @@
             </div>
             <div class="info-row"><strong>생년월일:</strong> <input type="date" v-model="employee.birthday" /></div>
             <div class="info-row"><strong>전화번호:</strong> <input type="tel" v-model="employee.phoneNumber" /></div>
-            <div class="info-row"><strong>이메일:</strong> <input type="email" v-model="employee.email" /></div>
+            <div class="info-row">
+              <strong>이메일:</strong>
+              <input type="email" v-model="employee.email" @blur="validateEmail" />
+              <span v-if="emailError" class="error">{{ emailError }}</span>
+            </div>
             <!-- Department Selection -->
             <div class="info-row">
               <strong>부서: </strong>
@@ -87,7 +91,8 @@ export default {
   components: { AdminMenu },
   data() {
       return {
-          employee: null
+          employee: null,
+          emailError: ''
       };
   },
   computed: {
@@ -119,6 +124,13 @@ export default {
         alert('직원 정보를 먼저 불러와야 합니다.');
         return;
     }
+    // 이메일 유효성 검사
+    if (this.employee.email && !this.isValidEmail(this.employee.email)) {
+        this.showEmailErrorAlert();
+        return;
+    } else {
+        this.emailError = '';
+    }
     // 모든 필수 필드가 채워져 있는지 확인
     const requiredFields = ['name', 'gender', 'birthday', 'phoneNumber', 'deptName', 'position', 'jobId', 'hireDate', 'status', 'authorization'];
     for (const field of requiredFields) {
@@ -139,6 +151,14 @@ export default {
         console.error('저장에 실패하였습니다.', error);
         alert('저장에 실패하였습니다.');
     }
+},
+isValidEmail(email) {
+    // 이메일 유효성 검사 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+},
+showEmailErrorAlert() {
+    alert('이메일 형식이 잘못되었습니다.');
 }
   },
   mounted() {
@@ -257,5 +277,9 @@ h2 {
 
 .save-button:hover {
   background-color: #0056b3;
+}
+
+.error {
+  color: red;
 }
 </style>
