@@ -57,10 +57,19 @@
               </select>
             </div>
             <!-- End of Department Selection -->
-            <div class="info-row"><strong>직위:</strong> <input type="text" v-model="employee.position" /></div>
-            <div class="info-row"><strong>직무:</strong> <input type="text" v-model="employee.jobId" /></div>
-            <div class="info-row"><strong>입사 날짜:</strong> <input type="date" v-model="employee.hireDate" /></div>
-            <div class="info-row"><strong>주소:</strong> <input type="text" v-model="employee.formattedAddress" /></div>
+            <div class="info-row"><strong>직위: </strong> <input type="text" v-model="employee.position" /></div>
+            <div class="info-row"><strong>직무: </strong> <input type="text" v-model="employee.jobId" /></div>
+            <div class="info-row"><strong>입사 날짜: </strong> <input type="date" v-model="employee.hireDate" /></div>
+            <!-- Address Section -->
+            <div class="info-row">
+              <strong>우편번호: </strong>
+              <input type="text" v-model="employee.address.postcode" placeholder="우편번호" />
+              <button @click="searchAddress">찾기</button>
+            </div>
+            <div class="info-row"><strong>주소: </strong> <input type="text" v-model="employee.address.address" placeholder="주소" /></div>
+            <div class="info-row"><strong>상세주소: </strong> <input type="text" v-model="employee.address.detailAddress" placeholder="상세주소" /></div>
+            <div class="info-row"><strong>참고항목: </strong> <input type="text" v-model="employee.address.extraAddress" placeholder="참고항목" /></div>
+            <!-- End of Address Section -->
             <div class="info-row">
               <strong>재직여부: </strong>
               <select v-model="employee.status">
@@ -71,9 +80,11 @@
             </div>
             <div class="info-row">
               <strong>권한:</strong>
-              <label><input type="radio" v-model="employee.authorization" value="MANAGER" /> 매니저</label>
-              <label><input type="radio" v-model="employee.authorization" value="HRMANAGER" /> 인사담당자</label>
-              <label><input type="radio" v-model="employee.authorization" value="EMPLOYEE" /> 직원</label>
+              <select v-model="employee.authorization">
+                <option value="MANAGER"> 매니저</option>
+                <option value="HRMANAGER"> 인사담당자</option>
+                <option value="EMPLOYEE"> 직원</option>
+              </select>
             </div>
           </div>
         </div>
@@ -113,29 +124,29 @@ export default {
       try {
         const response = await axiosInstance.get(`/employees/${employeeId}`);
         this.employee = response.data;
+        // Ensure address object exists
+        if (!this.employee.address) {
+          this.employee.address = { postcode: '', address: '', detailAddress: '', extraAddress: '' };
+        }
       } catch (error) {
         console.error('Failed to fetch employee details:', error);
         alert('Failed to fetch employee details.');
       }
     },
     async saveEmployeeDetails() {
-      // 유효성 검사 추가
       if (!this.employee) {
         alert('직원 정보를 먼저 불러와야 합니다.');
         return;
       }
-      // 이메일 유효성 검사
       if (this.employee.email && !this.isValidEmail(this.employee.email)) {
         this.showEmailErrorAlert();
         return;
       } else {
         this.emailError = '';
       }
-      // 이메일 필드가 빈 문자열인 경우 null 값 할당
       if (!this.employee.email) {
         this.employee.email = null;
       }
-      // 모든 필수 필드가 채워져 있는지 확인
       const requiredFields = ['name', 'gender', 'birthday', 'phoneNumber', 'deptName', 'position', 'jobId', 'hireDate', 'status', 'authorization'];
       for (const field of requiredFields) {
         if (!this.employee[field]) {
@@ -143,26 +154,34 @@ export default {
           return;
         }
       }
-      // 직원 정보의 생년월일과 입사 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
       this.employee.birthday = new Date(this.employee.birthday).toISOString().slice(0, 10);
       this.employee.hireDate = new Date(this.employee.hireDate).toISOString().slice(0, 10);
       try {
         await axiosInstance.put(`/employees/${this.employee.id}`, this.employee);
         alert('저장하였습니다.');
-        const router = this.$router;
-        router.push(`/employees/${this.employee.id}`);
+        this.$router.push(`/employees/${this.employee.id}`);
       } catch (error) {
         console.error('저장에 실패하였습니다.', error);
         alert('저장에 실패하였습니다.');
       }
     },
     isValidEmail(email) {
-      // 이메일 유효성 검사 정규식
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     },
     showEmailErrorAlert() {
-      alert('이메일 형식이 잘못되었습니다.');
+      this.emailError = '이메일 형식이 잘못되었습니다.';
+    },
+    searchAddress() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          this.employee.address = {
+            ...this.employee.address,
+            address: data.address,
+            postcode: data.zonecode
+          };
+        }
+      }).open();
     }
   },
   mounted() {
@@ -170,6 +189,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .page-container {
@@ -286,4 +306,13 @@ h2 {
 .error {
   color: red;
 }
+
+/* 찾기 버튼 스타일 */
+.right-section .info-row button {
+  padding: 4px 8px; /* 패딩 줄임 */
+  font-size: 12px; /* 폰트 사이즈 줄임 */
+  margin-left: 0px; /* 버튼과 인풋 사이 간격 */
+  vertical-align: middle; /* 버튼을 입력 필드와 같은 높이에 위치시킴 */
+}
+
 </style>
