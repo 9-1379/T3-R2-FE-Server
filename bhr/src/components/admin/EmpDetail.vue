@@ -49,7 +49,6 @@
 
 <script>
 import axiosInstance from '@/axios';
-import { useRoute, useRouter } from 'vue-router';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 
 export default {
@@ -94,8 +93,7 @@ export default {
       }
     },
     async fetchEmployeeDetails() {
-      const route = useRoute();
-      const employeeId = route.params.id;
+      const employeeId = this.$route.params.id;
       try {
         const response = await axiosInstance.get(`/employees/${employeeId}`);
         this.employee = response.data;
@@ -107,9 +105,8 @@ export default {
     editEmployeeDetails() {
       // 수정하기 버튼 클릭 시 실행되는 메서드
       // 해당 직원의 ID를 사용하여 새로운 경로로 이동
-      const router = useRouter();
-      const route = useRoute();
-      const employeeId = route.params.id;
+      const router = this.$router;
+      const employeeId = this.$route.params.id;
       router.push(`/edit/${employeeId}`);
     }
   },
@@ -119,7 +116,13 @@ export default {
 };
 </script>
 
-<style lang="css" src="@/css/styles.css">
+<style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
 
 .admin-menu-wrapper {
   width: 100%;
@@ -224,5 +227,4 @@ h2 {
 .edit-button:hover {
   background-color: #0056b3;
 }
-
 </style>
