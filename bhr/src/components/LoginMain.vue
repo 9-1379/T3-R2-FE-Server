@@ -58,16 +58,16 @@ export default {
             console.log(res.data)
             switch (role) {
               case "ROLE_HRMANAGER":
-                router.push("/new");
+                router.push("/admin");
                 break;
               case "ROLE_MANAGER":
                 router.push("/new");
                 break;
               case "ROLE_EMPLOYEE":
-                router.push("/admin");
+                router.push("/hrcard");
                 break;
               default:
-                router.push("/admin");
+                router.push("/hrcard");
                 break;
             }
           }
