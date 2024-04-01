@@ -9,7 +9,7 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
-import AnnualTest from '@/components/AnnualTest.vue';
+import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 
 
 const routes = [
@@ -54,9 +54,9 @@ const routes = [
     component: AnnualSetupList
   },
   {
-    path: '/user/AnnualTest',
-    name: 'AnnualTest',
-    component: AnnualTest
+    path: '/emp/NewAnnual',
+    name: 'NewAnnual',
+    component: NewAnnual
   },
 ];
 
