@@ -8,8 +8,8 @@ import NewEmp from '@/components/NewEmp.vue';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
-import NewAnnual from '@/components/NewAnnual.vue';
 import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
+import AnnualTest from '@/components/AnnualTest.vue';
 
 
 const routes = [
@@ -49,15 +49,15 @@ const routes = [
     component: EmpDetail
   },
   {
-    path: '/newannual',
-    name: 'NewAnnual',
-    component: NewAnnual
-  },
-  {
-    path: '/adnim/annual',
+    path: '/admin/annual',
     name: 'AdminSetupList',
     component: AnnualSetupList
-  }
+  },
+  {
+    path: '/user/AnnualTest',
+    name: 'AnnualTest',
+    component: AnnualTest
+  },
 ];
 
 const router = createRouter({
