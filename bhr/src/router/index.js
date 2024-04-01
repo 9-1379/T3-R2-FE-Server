@@ -3,13 +3,16 @@ import { createRouter, createWebHistory } from 'vue-router';
 // import HelloWorld from '@/components/HelloWorld.vue';
 import LoginMain from '@/components/LoginMain.vue'; // 메인 컴포넌트 호출
 import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트 호출
-import EmpList from '@/components/EmpList.vue';
-import NewEmp from '@/components/NewEmp.vue';
+import EmpList from '@/components/admin/EmpList.vue';
+import NewEmp from '@/components/admin/NewEmp.vue';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import EmpDashboard from '@/components/EmpDashboard.vue';
+import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import NewAnnual from '@/components/NewAnnual.vue';
+import EditEmp from '@/components/admin/EditEmp.vue';
+import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
 
 const routes = [
   {
@@ -53,9 +56,20 @@ const routes = [
     component: EmpDetail
   },
   {
-    path: '/newannual', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
+    path: '/newannual',
     name: 'NewAnnual',
     component: NewAnnual
+  },
+  {
+    path: '/edit/:id',
+    name: 'EditEmp',
+    component: EditEmp
+  },
+  {
+    path: '/adnim/annual',
+    name: 'AdminSetupList',
+    component: AnnualSetupList
+
   }
 ];
 

@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <header class="header-section">
-            <AdminMenu />
+            <UserMenu />
         </header>
         <main class="main-section">
             <div class="list-section">
@@ -19,13 +19,13 @@
 import axiosInstance from '@/axios';
 import EmployeeProfile from './EmployeeProfile.vue';
 import EmployeesList from './EmployeesList.vue';
-import AdminMenu from '@/components/menu/AdminMenu.vue';
+import UserMenu from '@/components/menu/UserMenu.vue';
 
 export default {
     components: {
         EmployeeProfile,
         EmployeesList,
-        AdminMenu
+        UserMenu
     },
     data() {
         return {

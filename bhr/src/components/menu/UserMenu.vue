@@ -8,31 +8,24 @@
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')" @mouseleave="toggleDropdown(false, 'vacation')">
         <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
-          <a href="/adnim/annual">직원연차관리</a>
+          <a href="#">연차관리</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
-        <a href="#emp" class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
+        <a href="/hrcard" class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'emp'">
-          <a href="/list">임직원조회</a>
-          <a href="/new">신규직원추가</a>
-        </div>
-      </div>
-      <div class="nav-item" @mouseenter="toggleDropdown(true, 'badge')" @mouseleave="toggleDropdown(false, 'badge')">
-        <a href="/badge" class="nav-link">배지<span class="dropdown-arrow" v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
-        <div class="dropdown-content" v-show="dropdownType === 'badge'">
-          <a href="#badge">배지기준관리</a>
+          <a href="/hrcard">인사카드</a>
         </div>
       </div>
     </div>
     <div class="navbar-icons">
-      <button class="user-btn" @click="goToEmp">사용자</button> <!-- 수정된 부분 -->
+      <button v-if="userRole === 'ROLE_MANAGER' || userRole === 'ROLE_HRMANAGER'" class="user-btn" @click="goToAdmin">관리자</button>
       <!-- Dark Mode Toggle Button -->
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
       </button>
       <!-- Logout Button -->
-      <a href="/" class="logout-link">로그아웃</a>
+      <a href="/" class="logout-link" @click="logout">로그아웃</a>
     </div>
   </div>
 </template>
@@ -44,16 +37,23 @@ export default {
     darkModeEnabled() {
       return this.$store.state.darkMode;
     },
+    userRole() {
+      return this.$store.state.userRole;
+    },
   },
   methods: {
+    logout() {
+      console.log("실행")
+      localStorage.clear();
+    },
     toggleDropdown(visible, type) {
       this.dropdownType = visible ? type : '';
     },
     toggleDarkMode() {
       this.$store.commit('toggleDarkMode');
     },
-    goToEmp() {
-      this.$router.push("/hrcard"); // 수정된 부분
+    goToAdmin() {
+      this.$router.push("/list");
     },
   },
   data() {
@@ -61,6 +61,10 @@ export default {
       dropdownType: '',
     };
   },
+  created() {
+    // 페이지가 로드될 때 Vuex 스토어에서 사용자 권한 정보를 가져옵니다.
+    this.$store.commit('setUserRole', localStorage.getItem('userRole'));
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopMenuBar />
+    <UserMenu />
     <div class="signup-form-container">
       <div class="signup-form">
         <h2 class="form-title">연차 신청</h2>
@@ -8,13 +8,13 @@
           <div class="form-section">
             <div class="form-group">
               <p>연차시작일</p>
-              <input type="date" id="annual" v-model="form.annualstartday" placeholder="연차시작일">
+              <input type="date" id="annualStart" v-model="form.startDate" placeholder="연차시작일">
             </div>
           </div>
           <div class="form-section">
             <div class="form-group">
               <p>연차종료일</p>
-              <input type="date" id="annual" v-model="form.annualendday" placeholder="연차종료일">
+              <input type="date" id="annualEnd" v-model="form.endDate" placeholder="연차종료일">
             </div>
           </div>
           <div class="form-group">
@@ -33,13 +33,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="employee in filteredEmployees" :key="employee.id"
-                  :class="{ 'selected-row': selectedEmployees.includes(employee.id) }">
-                  <td><input type="checkbox" :value="employee.id" v-model="selectedEmployees"></td>
-                  <td>{{ employee.name }}</td>
-                  <td>{{ employee.deptName || '부서 정보 없음' }}</td>
-                  <td>{{ employee.phoneNumber }}</td>
-                  <td><button @click="viewEmployeeDetails(employee)" class="detail-button">상세보기</button></td>
+                <tr v-for="list in annualList" :key="list.id">
+                  <td>{{ list.id }}</td>
+                  <td>{{ list.annualYear }} - {{ list.startDate }} - {{ list.endDate }}</td>
                 </tr>
               </tbody>
             </table>
@@ -52,194 +48,41 @@
 </template>
 
 <script>
-import TopMenuBar from '@/components/menu/AdminMenu.vue';
+import UserMenu from '@/components/menu/UserMenu.vue';
+import axiosInstance from '@/axios';
+// import axios from '@/axios';
+
 
 export default {
   components: {
-    TopMenuBar,
+    UserMenu,
   },
+  name: 'AnnualList',
   data() {
     return {
-      form: {
-        name: '',
-        email: '',
-        annualstartday: '',
-      },
+      annualList: [],
     };
+  },
+  methods: {
+    async fetchAnnualList() {
+      try {
+        const response = await axiosInstance.get('/annualList'); // API 경로에 맞게 수정하세요.
+        this.annualList = response.data.map(item => ({
+          ...item,
+          startDate: item.startDate.split('T')[0], // ISO 문자열의 날짜 부분만 추출
+          endDate: item.endDate.split('T')[0], // ISO 문자열의 날짜 부분만 추출
+        }));
+      } catch (error) {
+        console.error('연차 목록을 불러오는데 실패했습니다: ', error);
+      }
+    },
+  },
+  created() {
+    this.fetchAnnualList();
   },
 };
 </script>
 
-<style scoped>
-.signup-form-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 110vh;
-  background-color: #edf2f7;
-  /* margin-top: 20px; */
-  /* Lighter shade for background */
-}
+<style lang="css" src="@/css/styles.css">
 
-.signup-form {
-  background: #ffffff;
-  padding: 20px;
-  /* Reduced padding */
-  border-radius: 16px;
-  /* Slightly rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Softer shadow */
-  width: 100%;
-  max-width: 840px;
-  margin-top: 20px;
-  /* Reduced maximum width */
-}
-
-.form-title,
-.section-title {
-  color: #2b2d42;
-  /* Darker shade for better readability */
-  text-align: center;
-  /* Align to left for conventional reading */
-  margin-bottom: 20px;
-  /* Reduced margin */
-  font-size: 30px;
-  /* Smaller font size */
-  margin-top: 40px;
-}
-
-.form-columns {
-  display: flex;
-  gap: 40px;
-  /* Reduced space between columns */
-}
-
-.form-section {
-  flex: 1;
-  /* Adjust the width dynamically */
-}
-
-.form-group {
-  margin-bottom: 16px;
-  /* Reduced margin */
-}
-
-.form-group label {
-  display: block;
-  color: #4a5568;
-  /* Darker label color */
-  margin-bottom: 6px;
-  /* Reduced margin */
-  font-weight: 500;
-  /* Slightly bolder */
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="date"],
-.form-group input[type="password"] {
-  width: 100%;
-  padding: 10px 12px;
-  /* Reduced padding */
-  border: 1px solid #cbd5e0;
-  /* Slightly thinner border */
-  border-radius: 6px;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-  /* Smooth transition */
-}
-
-.form-group input[type="text"]:hover,
-.form-group input[type="email"]:hover,
-.form-group input[type="date"]:hover,
-.form-group input[type="password"]:hover {
-  border-color: #a0aec0;
-  /* Darker border on hover */
-}
-
-.form-group input[type="text"]:focus,
-.form-group input[type="email"]:focus,
-.form-group input[type="date"]:focus,
-.form-group input[type="password"]:focus {
-  border-color: #4c51bf;
-  /* Highlighted border on focus */
-  outline: none;
-  /* Remove default focus outline */
-}
-
-.btn-group .btn {
-  background-color: transparent;
-  /* Change background to transparent */
-  border: 2px solid #a0aec0;
-  /* Add border and set initial color */
-  color: #a0aec0;
-  /* Set text color to match the border */
-  padding: 10px 20px;
-  /* Keep padding */
-  cursor: pointer;
-  margin-top: 8px;
-  /* Keep margin top */
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  /* Add transition for color and border color */
-  border-radius: 4px;
-  /* Keep rounded corners */
-}
-
-.btn-group .btn.active,
-.btn-group .btn:hover {
-  border-color: #2c3e50;
-  /* Green border for active/hover state */
-  color: #2c3e50;
-  /* Green text for active/hover state */
-  background-color: transparent;
-  /* Keep background transparent */
-}
-
-
-.submit-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #2c3e50;
-  /* Darker shade for the button */
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  /* Smaller font size */
-  margin-top: 20px;
-  /* Reduced margin */
-  transition: background-color 0.3s ease;
-  /* Smooth transition */
-}
-
-.submit-button:hover {
-  background-color: #434190;
-  /* Darker shade on hover */
-}
-
-.table-section {
-  width: 100%;
-  max-width: 700px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  text-align: center;
-  padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-th {
-  border-top: 1px solid #e0e0e0;
-}
-
-td {
-  border-bottom: 1px solid #e0e0e0;
-}
 </style>
