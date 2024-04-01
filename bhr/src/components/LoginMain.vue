@@ -22,13 +22,11 @@
 
 <script>
 import axiosInstance from "@/axios";
-
 import { reactive } from "vue";
 import { useRouter } from "vue-router"; // 라우터 사용을 위해 import
 
 export default {
   name: "LoginMain",
-
   methods: {
     goToNewEmp() {
       this.$router.push("/New")
@@ -45,23 +43,25 @@ export default {
       let formData = new FormData();
       formData.append("username", form.username);
       formData.append("password", form.password);
-
       axiosInstance.post("/login", formData)
         .then((res) => {
           if (res.status === 200) {
+            localStorage.removeItem('access_token')
             let token = res.headers['authorization'];
-            localStorage.setItem('access_token', token); // 토큰 저장
-            axiosInstance.defaults.headers.common['Authorization'] = `${localStorage.getItem('access_token')}`; // 저장된 토큰 사용
-
-            return axiosInstance.get("/api/login"); // 사용자 정보 요청 시 정확한 엔드포인트 확인
+            localStorage.setItem('access_token', token);
+            return axiosInstance.get("/api/login");
           }
         })
         .then((res) => {
           if (res.status === 200) {
             const { role } = res.data;
+            console.log(res.data)
             switch (role) {
               case "ROLE_HRMANAGER":
                 router.push("/admin");
+                break;
+              case "ROLE_MANAGER":
+                router.push("/new");
                 break;
               case "ROLE_EMPLOYEE":
                 router.push("/hrcard");
