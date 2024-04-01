@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-// import HelloWorld from '@/components/HelloWorld.vue';
 import LoginMain from '@/components/LoginMain.vue'; // 메인 컴포넌트 호출
 import LoginSuccess from '@/components/LoginSuccess.vue'; // 성공 컴포넌트 호출
 import EmpList from '@/components/admin/EmpList.vue';
@@ -8,9 +7,9 @@ import NewEmp from '@/components/admin/NewEmp.vue';
 import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포트합니다.
-import NewAnnual from '@/components/NewAnnual.vue';
 import EditEmp from '@/components/admin/EditEmp.vue';
 import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
+import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 
 const routes = [
   {
@@ -49,7 +48,12 @@ const routes = [
     component: EmpDetail
   },
   {
-    path: '/newannual',
+    path: '/admin/annual',
+    name: 'AdminSetupList',
+    component: AnnualSetupList
+  },
+  {
+    path: '/emp/NewAnnual',
     name: 'NewAnnual',
     component: NewAnnual
   },
