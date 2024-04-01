@@ -4,7 +4,7 @@ import router from './router';
 import axiosInstance from './axios'; // 2단계에서 생성한 인스턴스를 가져옵니다.
 import store from './store/store.js';
 
-const app = createApp(App);
+const app = createApp(App)
 
 
 

@@ -22,20 +22,19 @@
 
 <script>
 import axiosInstance from "@/axios";
-
 import { reactive } from "vue";
-import { useRouter } from "vue-router"; // 라우터 사용을 위해 import
+import { useRouter } from "vue-router";
+import store from "@/store/store.js"; // Vuex 스토어 import
 
 export default {
   name: "LoginMain",
-
   methods: {
     goToNewEmp() {
-      this.$router.push("/New")
-    }
+      this.$router.push("/New");
+    },
   },
   setup() {
-    const router = useRouter(); // 라우터 인스턴스 사용
+    const router = useRouter();
     const form = reactive({
       username: "",
       password: "",
@@ -45,36 +44,43 @@ export default {
       let formData = new FormData();
       formData.append("username", form.username);
       formData.append("password", form.password);
-
-      axiosInstance.post("/login", formData)
+      axiosInstance
+        .post("/login", formData)
         .then((res) => {
           if (res.status === 200) {
-            let token = res.headers['authorization'];
-            localStorage.setItem('access_token', token); // 토큰 저장
-            axiosInstance.defaults.headers.common['Authorization'] = `${localStorage.getItem('access_token')}`; // 저장된 토큰 사용
-
-            return axiosInstance.get("/api/login"); // 사용자 정보 요청 시 정확한 엔드포인트 확인
+            localStorage.removeItem("access_token");
+            let token = res.headers["authorization"];
+            localStorage.setItem("access_token", token);
+            return axiosInstance.get("/api/login");
           }
         })
         .then((res) => {
           if (res.status === 200) {
             const { role } = res.data;
+            store.commit("setUserRole", role); // Vuex 스토어의 setUserRole 뮤테이션을 호출하여 사용자 역할 정보 저장
             switch (role) {
               case "ROLE_HRMANAGER":
-                router.push("/new");
-                break;
+              case "ROLE_MANAGER":
               case "ROLE_EMPLOYEE":
+<<<<<<< HEAD
                 router.push("/employees/dashboard/:id");
+=======
+                router.push("/hrcard");
+>>>>>>> dev
                 break;
               default:
-                router.push("/admin");
+                router.push("/hrcard");
                 break;
             }
           }
         })
         .catch((error) => {
-          // 에러 응답에서 메시지 추출하여 표시
-          let errorMessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : "로그인 실패 혹은 사용자 정보 요청 실패";
+          let errorMessage =
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+              ? error.response.data.message
+              : "로그인 실패 혹은 사용자 정보 요청 실패";
           console.error("로그인 에러 혹은 사용자 정보 요청 에러:", error);
           alert(errorMessage);
         });
