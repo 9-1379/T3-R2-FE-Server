@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="navbar-icons">
-      <button class="user-btn">사용자</button>
+      <button class="user-btn" @click="goToEmp">사용자</button> <!-- 수정된 부분 -->
       <!-- Dark Mode Toggle Button -->
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
@@ -52,10 +52,10 @@ export default {
     toggleDarkMode() {
       this.$store.commit('toggleDarkMode');
     },
-    goToNewAnnual() {
-      this.$router.push("/newannual")
+    goToEmp() {
+      this.$router.push("/hrcard"); // 수정된 부분
+    },
   },
-},
   data() {
     return {
       dropdownType: '',
