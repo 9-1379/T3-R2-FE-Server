@@ -8,6 +8,7 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import EmpDetail from '@/components/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import EmpDashboard from '@/components/EmpDashboard.vue';
 =======
@@ -22,6 +23,10 @@ import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포
 import NewAnnual from '@/components/NewAnnual.vue';
 =======
 >>>>>>> dev
+=======
+import EmpDashboard from '@/components/EmpDashboard.vue';
+import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포트합니다.
+>>>>>>> e9d8817108f3ece0b66247e045e40ca73460c42b
 import EditEmp from '@/components/admin/EditEmp.vue';
 import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
