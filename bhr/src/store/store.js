@@ -1,24 +1,27 @@
 import { createStore } from 'vuex';
 
-const DARK_MODE_KEY = 'darkMode'; // 로컬 스토리지 키
+const DARK_MODE_KEY = 'darkMode';
+const EMP_ID_KEY = 'empId';
+const USER_ROLE_KEY = 'userRole';
 
 export default createStore({
   state: {
-    darkMode: localStorage.getItem(DARK_MODE_KEY) === 'true', // 로컬 스토리지에서 다크 모드 상태를 가져옴
-    userRole: null, // 사용자의 역할 정보를 저장할 변수 추가
+    darkMode: localStorage.getItem(DARK_MODE_KEY) === 'true',
+    userRole: localStorage.getItem(USER_ROLE_KEY),
+    empId: localStorage.getItem(EMP_ID_KEY),
   },
   mutations: {
     toggleDarkMode(state) {
       state.darkMode = !state.darkMode;
-      localStorage.setItem(DARK_MODE_KEY, state.darkMode); // 변경된 다크 모드 상태를 로컬 스토리지에 저장
+      localStorage.setItem(DARK_MODE_KEY, state.darkMode);
     },
-    setDarkMode(state, value) {
-      state.darkMode = value;
-      localStorage.setItem(DARK_MODE_KEY, value); // 변경된 다크 모드 상태를 로컬 스토리지에 저장
-    },
-    setUserRole(state, role) { // 사용자의 역할 정보를 설정하는 뮤테이션 추가
+    setUserRole(state, role) {
       state.userRole = role;
-      localStorage.setItem('userRole', role); // 변경된 사용자의 역할 정보를 로컬 스토리지에 저장
+      localStorage.setItem(USER_ROLE_KEY, role);
+    },
+    setEmpId(state, empId) {
+      state.empId = empId;
+      localStorage.setItem(EMP_ID_KEY, empId);
     },
   },
 });

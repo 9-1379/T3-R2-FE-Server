@@ -28,11 +28,6 @@ import store from "@/store/store.js"; // Vuex 스토어 import
 
 export default {
   name: "LoginMain",
-  methods: {
-    goToNewEmp() {
-      this.$router.push("/New");
-    },
-  },
   setup() {
     const router = useRouter();
     const form = reactive({
@@ -56,39 +51,28 @@ export default {
         })
         .then((res) => {
           if (res.status === 200) {
-            const { role } = res.data;
-            store.commit("setUserRole", role); // Vuex 스토어의 setUserRole 뮤테이션을 호출하여 사용자 역할 정보 저장
-            switch (role) {
-              case "ROLE_HRMANAGER":
-              case "ROLE_MANAGER":
-              case "ROLE_EMPLOYEE":
-                router.push("/hrcard");
-                break;
-              default:
-                router.push("/hrcard");
-                break;
-            }
+            const { role, empId } = res.data; // API 응답에서 empId 추출
+            store.commit("setUserRole", role);
+            store.commit("setEmpId", empId); // Vuex 스토어에 empId 저장
+            router.push("/hrcard");
           }
         })
         .catch((error) => {
-          let errorMessage =
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-              ? error.response.data.message
-              : "로그인 실패 혹은 사용자 정보 요청 실패";
           console.error("로그인 에러 혹은 사용자 정보 요청 에러:", error);
-          alert(errorMessage);
+          alert(error.response.data.message || "로그인 실패 혹은 사용자 정보 요청 실패");
         });
     };
 
-    return { form, handleLogin };
+    const goToNewEmp = () => {
+      router.push("/New");
+    };
+
+    return { form, handleLogin, goToNewEmp };
   },
 };
 </script>
 
 <style>
-/* 여기에 CSS 스타일을 추가하세요 */
 .login-container {
   max-width: 400px;
   margin: auto;
@@ -102,7 +86,7 @@ label {
   display: block;
 }
 
-input[type="email"],
+input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 10px;
