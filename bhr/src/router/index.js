@@ -8,7 +8,7 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import EditEmp from '@/components/admin/EditEmp.vue';
-import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
+import AnnualSetupList from '@/components/admin/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 
 const routes = [
