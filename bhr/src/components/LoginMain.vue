@@ -62,15 +62,7 @@ export default {
               case "ROLE_HRMANAGER":
               case "ROLE_MANAGER":
               case "ROLE_EMPLOYEE":
-<<<<<<< HEAD
-<<<<<<< HEAD
-                router.push("/employees/dashboard/:id");
-=======
-                router.push("/hrcard");
->>>>>>> dev
-=======
-                router.push("/employees/dashboard/:id");
->>>>>>> a9cdc188d36c0e461f8993027c882da91a1b39df
+                router.push("/emp/dashboard/:id");
                 break;
               default:
                 router.push("/hrcard");
