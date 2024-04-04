@@ -54,7 +54,8 @@ export default {
             const { role, empId } = res.data; // API 응답에서 empId 추출
             store.commit("setUserRole", role);
             store.commit("setEmpId", empId); // Vuex 스토어에 empId 저장
-            router.push("/hrcard");
+            router.push("/emp/dashboard/:empId");
+            //router.push("/hrcard");
           }
         })
         .catch((error) => {

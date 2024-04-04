@@ -11,6 +11,7 @@ import EditEmp from '@/components/admin/EditEmp.vue';
 import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 import AttendanceRecord from '@/components/emp/AttendanceRecord.vue';
+import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 
 const routes = [
   {
@@ -47,6 +48,11 @@ const routes = [
     path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
     name: 'EmpDetail',
     component: EmpDetail
+  },
+  {
+    path: '/emp/dashboard/:empId',
+    name: 'EmpDashboard',
+    component: EmpDashboard
   },
   {
     path: '/admin/annual',
