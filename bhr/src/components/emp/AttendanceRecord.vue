@@ -1,22 +1,11 @@
 <template>
   <div>
-    <h1>출퇴근 기록 시스템</h1>
     <div>
-      <!-- 출근 버튼 -->
-      <div v-if="!startClicked && !endClicked">
-        <button @click="startWork">출근하기</button>
+      <div style="margin-bottom: 10px;">
+        <button @click="startWork" style="padding: 8px 60px;">출근</button>
       </div>
-
-      <!-- 출근 시간과 퇴근 버튼 -->
-      <div v-if="startClicked && !endClicked">
-        <div v-if="startTime">출근 시간: {{ startTime }}</div>
-        <button @click="endWork">퇴근하기</button>
-      </div>
-
-      <!-- 출근 시간과 퇴근 시간 -->
-      <div v-if="endClicked">
-        <div v-if="startTime">출근 시간: {{ startTime }}</div>
-        <div v-if="endTime">퇴근 시간: {{ endTime }}</div>
+      <div>
+        <button @click="endWork" style="padding: 8px 60px;">퇴근</button>
       </div>
     </div>
   </div>
@@ -29,61 +18,55 @@ export default {
   name: 'AttendanceRecord',
   data() {
     return {
-      startClicked: false,
-      endClicked: false,
-      startTime: '',
-      endTime: '',
+      hasTodayRecord: false,
     };
   },
   created() {
-    this.checkAttendance();
+    this.fetchAttendanceRecord();
   },
   methods: {
-    checkAttendance() {
-      axiosInstance.get(`/attendance/record/${this.$store.state.empId}`)
+    fetchAttendanceRecord() {
+      const today = new Date().toISOString().split('T')[0];
+      axiosInstance.get(`/attendance/record/${this.getEmpIdFromToken()}`)
         .then(response => {
-          if (response.data && response.data.timeIn) {
-            this.startTime = response.data.timeIn;
-            this.startClicked = true;
-          }
-          if (response.data && response.data.timeOut) {
-            this.endTime = response.data.timeOut;
-            this.endClicked = true;
-          }
+          const record = response.data;
+          const recordDate = record.startDate.split('T')[0];
+          this.hasTodayRecord = today === recordDate;
         })
         .catch(error => {
-          console.error('기록을 가져오는 중 오류가 발생했습니다.', error);
+          console.error('Error fetching attendance record:', error);
         });
     },
     startWork() {
-      axiosInstance.post(`/attendance/startWork?employeeId=${String(this.$store.state.empId)}`)
-        .then(response => {
-          this.handleWorkResponse(response, 'start');
+      axiosInstance.post(`/attendance/startWork?employeeId=${this.getEmpIdFromToken()}`)
+        .then(() => {
+          this.hasTodayRecord = true;
+          alert('출근 완료!');
         })
         .catch(error => {
-          console.error('출근 처리 중 오류가 발생했습니다.', error);
-          alert('오류입니다.');
+          console.error('Error starting work:', error);
+          alert('이미 출근 하셨습니다.');
         });
     },
     endWork() {
-      axiosInstance.post(`/attendance/endWork?employeeId=${String(this.$store.state.empId)}`)
-        .then(response => {
-          this.handleWorkResponse(response, 'end');
+      axiosInstance.post(`/attendance/endWork?employeeId=${this.getEmpIdFromToken()}`)
+        .then(() => {
+          this.hasTodayRecord = false;
+          alert('퇴근 완료!');
         })
         .catch(error => {
-          console.error('퇴근 처리 중 오류가 발생했습니다.', error);
-          alert('오류입니다.');
+          console.error('Error ending work:', error);
+          alert('출근을 먼저 해주세요.');
         });
     },
-    handleWorkResponse(response, type) {
-      if (type === 'start' && response.data.timeIn) {
-        this.startTime = response.data.timeIn;
-        this.startClicked = true;
-      } else if (type === 'end' && response.data.timeOut) {
-        this.endTime = response.data.timeOut;
-        this.endClicked = true;
+    getEmpIdFromToken() {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const decodedToken = atob(token.split('.')[1]);
+        const { empId } = JSON.parse(decodedToken);
+        return empId;
       }
-      alert(response.data.message || `${type === 'start' ? '출근' : '퇴근'}완료!`);
+      return null;
     },
   }
 };
