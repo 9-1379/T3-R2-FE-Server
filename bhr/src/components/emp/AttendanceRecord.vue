@@ -1,15 +1,24 @@
 <template>
   <div>
     <h1>출퇴근 기록 시스템</h1>
-    <!-- 출근 버튼 클릭 시 startWork 메서드 실행 -->
-    <button @click="startWork">출근하기</button>
-    <!-- 퇴근 버튼 클릭 시 endWork 메서드 실행 -->
-    <button @click="endWork">퇴근하기</button>
+    <div>
+      <!-- 출근 버튼 -->
+      <div v-if="!startClicked && !endClicked">
+        <button @click="startWork">출근하기</button>
+      </div>
 
-    <!-- 출근 시간 표시 -->
-    <div v-if="startClicked">출근 시간: {{ formatTime(systemTime) }}</div>
-    <!-- 퇴근 시간 표시 -->
-    <div v-if="endClicked">퇴근 시간: {{ formatTime(systemTime) }}</div>
+      <!-- 출근 시간과 퇴근 버튼 -->
+      <div v-if="startClicked && !endClicked">
+        <div v-if="startTime">출근 시간: {{ startTime }}</div>
+        <button @click="endWork">퇴근하기</button>
+      </div>
+
+      <!-- 출근 시간과 퇴근 시간 -->
+      <div v-if="endClicked">
+        <div v-if="startTime">출근 시간: {{ startTime }}</div>
+        <div v-if="endTime">퇴근 시간: {{ endTime }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,23 +29,38 @@ export default {
   name: 'AttendanceRecord',
   data() {
     return {
-      systemTime: '',
       startClicked: false,
-      endClicked: false
+      endClicked: false,
+      startTime: '',
+      endTime: '',
     };
   },
+  created() {
+    this.checkAttendance();
+  },
   methods: {
+    checkAttendance() {
+      axiosInstance.get(`/attendance/record/${this.$store.state.empId}`)
+        .then(response => {
+          if (response.data && response.data.timeIn) {
+            this.startTime = response.data.timeIn;
+            this.startClicked = true;
+          }
+          if (response.data && response.data.timeOut) {
+            this.endTime = response.data.timeOut;
+            this.endClicked = true;
+          }
+        })
+        .catch(error => {
+          console.error('기록을 가져오는 중 오류가 발생했습니다.', error);
+        });
+    },
     startWork() {
       axiosInstance.post(`/attendance/startWork?employeeId=${String(this.$store.state.empId)}`)
         .then(response => {
-          // 출근 버튼 클릭 시간 저장 및 표시
-          this.systemTime = new Date();
-          this.startClicked = true;
-          // 서버에서 받은 응답을 처리하여 알림 표시
-          alert(response.data.message || '출근완료!');
+          this.handleWorkResponse(response, 'start');
         })
         .catch(error => {
-          // 오류가 발생한 경우 콘솔에 오류 로그 출력
           console.error('출근 처리 중 오류가 발생했습니다.', error);
           alert('오류입니다.');
         });
@@ -44,23 +68,23 @@ export default {
     endWork() {
       axiosInstance.post(`/attendance/endWork?employeeId=${String(this.$store.state.empId)}`)
         .then(response => {
-          // 퇴근 버튼 클릭 시간 저장 및 표시
-          this.systemTime = new Date();
-          this.endClicked = true;
-          // 서버에서 받은 응답을 처리하여 알림 표시
-          alert(response.data.message || '퇴근!');
+          this.handleWorkResponse(response, 'end');
         })
         .catch(error => {
-          // 오류가 발생한 경우 콘솔에 오류 로그 출력
           console.error('퇴근 처리 중 오류가 발생했습니다.', error);
           alert('오류입니다.');
         });
     },
-    formatTime(date) {
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    }
+    handleWorkResponse(response, type) {
+      if (type === 'start' && response.data.timeIn) {
+        this.startTime = response.data.timeIn;
+        this.startClicked = true;
+      } else if (type === 'end' && response.data.timeOut) {
+        this.endTime = response.data.timeOut;
+        this.endClicked = true;
+      }
+      alert(response.data.message || `${type === 'start' ? '출근' : '퇴근'}완료!`);
+    },
   }
 };
 </script>
