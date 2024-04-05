@@ -24,7 +24,6 @@
 import axiosInstance from "@/axios";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
-import store from "@/store/store.js"; // Vuex 스토어 import
 
 export default {
   name: "LoginMain",
@@ -46,20 +45,12 @@ export default {
             localStorage.removeItem("access_token");
             let token = res.headers["authorization"];
             localStorage.setItem("access_token", token);
-            return axiosInstance.get("/api/login");
-          }
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            const { role, empId } = res.data; // API 응답에서 empId 추출
-            store.commit("setUserRole", role);
-            store.commit("setEmpId", empId); // Vuex 스토어에 empId 저장
             router.push("/hrcard");
           }
         })
         .catch((error) => {
-          console.error("로그인 에러 혹은 사용자 정보 요청 에러:", error);
-          alert(error.response.data.message || "로그인 실패 혹은 사용자 정보 요청 실패");
+          console.error("로그인 에러:", error);
+          alert(error.response.data.message || "로그인 실패");
         });
     };
 
