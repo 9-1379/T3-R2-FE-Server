@@ -5,7 +5,7 @@ WORKDIR /app
 
 # package.json 및 package-lock.json 파일을 현재 디렉토리 로 복사 및 설치
 COPY package*.json ./
-RUN npm install --production
+RUN npm install -g @vue/cli
 
 COPY . .
 
