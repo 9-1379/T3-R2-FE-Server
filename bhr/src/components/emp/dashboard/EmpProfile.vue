@@ -34,12 +34,18 @@
           return require('@/assets/profile.jpg');
         }
       },
+      enableEditing() {
+        this.isEditable = true; 
+      },
           async updateIntroduction() {
           const empId = this.$route.params.empId; // 라우트에서 실제 ID를 가져옵니다.
           try {
-             await axiosInstance.patch(`/emp/dashboard/${empId}`, {
+             const res = await axiosInstance.patch(`/emp/dashboard/${empId}`, {
               introduction: this.introduction,
             });
+            if (res.status === 200) {
+                alert('소개글이 저장되었습니다.');
+            }
             this.isEditable = false; // 저장 후 텍스트 필드를 비활성화
             this.fetchEmployeeProfile(); // 소개글 업데이트 후 직원 정보 다시 로드
           } catch (error) {
@@ -60,9 +66,6 @@
              }
             }
           },
-          enableEditing() {
-        this.isEditable = true; 
-      },
       mounted() {
           this.fetchEmployeeProfile();
        }
@@ -72,6 +75,13 @@
     
     <style scoped>
     /* 여기에 스타일을 그대로 유지 */
+    
+  .emp-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* min-height: 100vh; 뷰포트 높이의 100%를 차지하도록 설정 */
+  }
     
     .emp-dashboard {
     font-family: 'Arial', sans-serif;
@@ -92,9 +102,10 @@
     
     .profile-textarea {
       width: 200px;
-      height: 50px; /* 또는 필요한 만큼 높이 조절 */
-      padding-right: 40px; /* 버튼 자리를 비워두기 위해 패딩 설정 */
+      height: 30px; /* 또는 필요한 만큼 높이 조절 */
       background: #fff;
+      position: relative; /* 상대적 위치 설정 */
+      left: -50px; /* 왼쪽으로 10px 이동 */
     }
     
     .edit-button {
@@ -102,7 +113,7 @@
       top: 50%; /* 텍스트 필드의 내부 상단에 버튼을 배치 */
       right: 10px; /* 텍스트 필드의 내부 우측에 버튼을 배치 */
       transform: translateY(-50%); /* 버튼을 상하 중앙에 정렬 */
-      border: 1px solid #ccc; /* 경계선 설정, 색상은 예시입니다 */
+      border: 1px solid #fff; /* 경계선 설정, 색상은 예시입니다 */
       background: #fff; 
       cursor: pointer; 
       padding:0 10px; 
