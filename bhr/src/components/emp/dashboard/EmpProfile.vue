@@ -2,6 +2,9 @@
     <div class="emp-profile-container">
       <div v-if="employee" class="employee-profile">
         <img :src="getProfilePictureUrl(employee.profilePicture)" class="profile-circle" alt="프로필 사진" />
+        <div class="upload-container">
+        <input type="file" @change="uploadProfilePicture" />
+          <div class="emp-db">
         <h2>{{ employee.name }}</h2>
         <p>{{ employee.deptName }}</p>
         <p>{{ employee.position }}</p>
@@ -12,6 +15,8 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
   </template>
     
     <script>
@@ -26,9 +31,39 @@
       };
     },
       methods: {
+    uploadProfilePicture(event) {
+    const selectedFile = event.target.files[0];
+    if (!selectedFile) {
+      alert('파일을 선택해 주세요.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    const empId = this.$route.params.empId;
+    axiosInstance
+      .post(`/emp/dashboard/${empId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(() => {
+        alert('파일 업로드 성공!');
+        this.fetchEmployeeProfile(); // 프로필 정보 다시 로드
+      })
+      .catch((error) => {
+        console.error('파일 업로드 실패:', error);
+        alert('파일 업로드에 실패했습니다.');
+      });
+  },
           getProfilePictureUrl(profilePicture) {
         if (profilePicture) {
-          return `data:image/jpeg;base64,${profilePicture}`; // 예시: base64 인코딩된 이미지를 보여주는 방식
+
+          // 서버의 정적 경로를 사용하여 이미지 URL을 생성합니다.
+          // 예를 들어, 서버가 'http://localhost:8000/' 에서 실행되고 있고,
+          // 정적 리소스를 '/uploads/' 에서 제공한다고 가정합니다.
+
+          return `http://localhost:8000${profilePicture}`; 
         } else {
           // 프로필 사진이 없는 경우 기본 이미지 경로 반환
           return require('@/assets/profile.jpg');
@@ -93,6 +128,19 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
+    .upload-container {
+      justify-content: center;
+      align-items: center;
+      position: relative; /* 상대적 위치 설정 */
+      right: 30px; 
+
+    }
+
+    .emp-db {
+    justify-content: center;
+    align-items: center;
+    }
+
     .textarea-container {
       position: relative;
       margin: auto;
@@ -113,19 +161,21 @@
       top: 50%; /* 텍스트 필드의 내부 상단에 버튼을 배치 */
       right: 10px; /* 텍스트 필드의 내부 우측에 버튼을 배치 */
       transform: translateY(-50%); /* 버튼을 상하 중앙에 정렬 */
-      border: 1px solid #fff; /* 경계선 설정, 색상은 예시입니다 */
+      border: 1px solid #ccc; /* 경계선 설정, 색상은 예시입니다 */
       background: #fff; 
       cursor: pointer; 
       padding:0 10px; 
     }
     
     .profile-circle {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 3px solid #f3f3f3;
+      justify-content: center;
+      align-items: center;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid #f3f3f3;
     }
     
     h2 {
