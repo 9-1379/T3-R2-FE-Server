@@ -2,22 +2,19 @@
   <div>
     <h1>출퇴근 기록 시스템</h1>
     <div>
-      <!-- 출근 버튼 -->
-      <div v-if="!startClicked && !endClicked">
+      <!-- 오늘 출근 기록이 없으면 출근 버튼 표시 -->
+      <div v-if="!hasTodayRecord">
         <button @click="startWork">출근하기</button>
       </div>
 
-      <!-- 출근 시간과 퇴근 버튼 -->
-      <div v-if="startClicked && !endClicked">
-        <div v-if="startTime">출근 시간: {{ startTime }}</div>
+      <div v-if="startTime">출근 시간: {{ startTime }}</div>
+      
+      <!-- 오늘 출근 기록이 있고, 퇴근 기록이 없으면 퇴근 버튼 표시 -->
+      <div v-if="hasTodayRecord && !endTime">
         <button @click="endWork">퇴근하기</button>
       </div>
-
-      <!-- 출근 시간과 퇴근 시간 -->
-      <div v-if="endClicked">
-        <div v-if="startTime">출근 시간: {{ startTime }}</div>
-        <div v-if="endTime">퇴근 시간: {{ endTime }}</div>
-      </div>
+      
+      <div v-if="endTime">퇴근 시간: {{ endTime }}</div>
     </div>
   </div>
 </template>
@@ -29,61 +26,55 @@ export default {
   name: 'AttendanceRecord',
   data() {
     return {
-      startClicked: false,
-      endClicked: false,
+      hasTodayRecord: false,
       startTime: '',
       endTime: '',
     };
   },
   created() {
-    this.checkAttendance();
+    this.fetchAttendanceRecord();
   },
   methods: {
-    checkAttendance() {
+    fetchAttendanceRecord() {
+      const today = new Date().toISOString().split('T')[0];
       axiosInstance.get(`/attendance/record/${this.$store.state.empId}`)
         .then(response => {
-          if (response.data && response.data.timeIn) {
-            this.startTime = response.data.timeIn;
-            this.startClicked = true;
-          }
-          if (response.data && response.data.timeOut) {
-            this.endTime = response.data.timeOut;
-            this.endClicked = true;
-          }
+          const record = response.data;
+          const recordDate = record.startDate;
+          this.startTime = record.timeIn;
+          this.endTime = record.timeOut;
+          // 오늘 날짜와 출근 날짜가 같으면 오늘 출근 기록이 있다고 판단
+          this.hasTodayRecord = today === recordDate;
         })
         .catch(error => {
-          console.error('기록을 가져오는 중 오류가 발생했습니다.', error);
+          console.error('Error fetching attendance record:', error);
         });
     },
     startWork() {
-      axiosInstance.post(`/attendance/startWork?employeeId=${String(this.$store.state.empId)}`)
+      // 출근 요청 보내기
+      axiosInstance.post(`/attendance/startWork?employeeId=${this.$store.state.empId}`)
         .then(response => {
-          this.handleWorkResponse(response, 'start');
+          this.startTime = response.data.timeIn;
+          this.endTime = ''; // 퇴근 시간 초기화
+          this.hasTodayRecord = true; // 출근 기록이 있음을 표시
+          alert('출근 완료!');
         })
         .catch(error => {
-          console.error('출근 처리 중 오류가 발생했습니다.', error);
+          console.error('Error starting work:', error);
           alert('오류입니다.');
         });
     },
     endWork() {
-      axiosInstance.post(`/attendance/endWork?employeeId=${String(this.$store.state.empId)}`)
+      // 퇴근 요청 보내기
+      axiosInstance.post(`/attendance/endWork?employeeId=${this.$store.state.empId}`)
         .then(response => {
-          this.handleWorkResponse(response, 'end');
+          this.endTime = response.data.timeOut;
+          alert('퇴근 완료!');
         })
         .catch(error => {
-          console.error('퇴근 처리 중 오류가 발생했습니다.', error);
+          console.error('Error ending work:', error);
           alert('오류입니다.');
         });
-    },
-    handleWorkResponse(response, type) {
-      if (type === 'start' && response.data.timeIn) {
-        this.startTime = response.data.timeIn;
-        this.startClicked = true;
-      } else if (type === 'end' && response.data.timeOut) {
-        this.endTime = response.data.timeOut;
-        this.endClicked = true;
-      }
-      alert(response.data.message || `${type === 'start' ? '출근' : '퇴근'}완료!`);
     },
   }
 };
