@@ -1,48 +1,65 @@
 <template>
   <div>
     <h1>출퇴근 기록 시스템</h1>
+    <!-- 출근 버튼 클릭 시 startWork 메서드 실행 -->
     <button @click="startWork">출근하기</button>
+    <!-- 퇴근 버튼 클릭 시 endWork 메서드 실행 -->
     <button @click="endWork">퇴근하기</button>
+
+    <!-- 출근 시간 표시 -->
+    <div v-if="startClicked">출근 시간: {{ formatTime(systemTime) }}</div>
+    <!-- 퇴근 시간 표시 -->
+    <div v-if="endClicked">퇴근 시간: {{ formatTime(systemTime) }}</div>
   </div>
 </template>
 
 <script>
-import axiosInstance from '@/axios'; // axiosInstance를 import합니다.
+import axiosInstance from '@/axios';
 
 export default {
   name: 'AttendanceRecord',
   data() {
     return {
-      employeeId: 1, // 예시 ID. 실제 애플리케이션에서는 동적으로 설정해야 합니다.
-      attendanceId: null, // 퇴근 시 사용할 출근 기록의 ID
+      systemTime: '',
+      startClicked: false,
+      endClicked: false
     };
   },
   methods: {
     startWork() {
-      // axiosInstance를 사용하여 출근 기록
-      axiosInstance.post(`/attendance/startWork?employeeId=${this.employeeId}`)
+      axiosInstance.post(`/attendance/startWork?employeeId=${String(this.$store.state.empId)}`)
         .then(response => {
-          this.attendanceId = response.data.id; // 출근 기록의 ID를 저장
-          alert('출근 처리되었습니다.');
+          // 출근 버튼 클릭 시간 저장 및 표시
+          this.systemTime = new Date();
+          this.startClicked = true;
+          // 서버에서 받은 응답을 처리하여 알림 표시
+          alert(response.data.message || '출근완료!');
         })
         .catch(error => {
+          // 오류가 발생한 경우 콘솔에 오류 로그 출력
           console.error('출근 처리 중 오류가 발생했습니다.', error);
+          alert('오류입니다.');
         });
     },
     endWork() {
-      if (!this.attendanceId) {
-        alert('출근 기록이 없습니다.');
-        return;
-      }
-
-      // axiosInstance를 사용하여 퇴근 기록
-      axiosInstance.post(`/attendance/endWork?attendanceId=${this.attendanceId}`)
-        .then(() => {
-          alert('퇴근 처리되었습니다.');
+      axiosInstance.post(`/attendance/endWork?employeeId=${String(this.$store.state.empId)}`)
+        .then(response => {
+          // 퇴근 버튼 클릭 시간 저장 및 표시
+          this.systemTime = new Date();
+          this.endClicked = true;
+          // 서버에서 받은 응답을 처리하여 알림 표시
+          alert(response.data.message || '퇴근!');
         })
         .catch(error => {
+          // 오류가 발생한 경우 콘솔에 오류 로그 출력
           console.error('퇴근 처리 중 오류가 발생했습니다.', error);
+          alert('오류입니다.');
         });
+    },
+    formatTime(date) {
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
     }
   }
 };
