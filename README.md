@@ -1,3 +1,25 @@
-# T3-R2-FE-Server
+## 💻Front-End⚡
+- HTML5
+- CSS3
+- axios
+- JavaScript
+- vue : v5.0.8
+- npm : v10.2.4
+- nodeModules : v20.11.0
 
-### annual woriking
+<tr>
+
+## Route settings
+```
+cd bhr
+```
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
