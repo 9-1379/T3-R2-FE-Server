@@ -38,17 +38,20 @@
       return;
     }
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('file', selectedFile, selectedFile.name);
 
     const empId = this.$route.params.empId;
     axiosInstance
-      .post(`/emp/dashboard/${empId}`, formData, {
+      .post(`/emp/dashboard/${empId}/uploads`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then(() => {
+      .then((res) => {
+        console.log("서버 응답:", res.data);
+        const filePath = res.data.split(': ')[1];
         alert('파일 업로드 성공!');
+        this.employee.profilePicture = filePath;
         this.fetchEmployeeProfile(); // 프로필 정보 다시 로드
       })
       .catch((error) => {
@@ -56,14 +59,14 @@
         alert('파일 업로드에 실패했습니다.');
       });
   },
-          getProfilePictureUrl(profilePicture) {
-        if (profilePicture) {
+          getProfilePictureUrl(profilePicturePath) {
+        if (profilePicturePath) {
 
           // 서버의 정적 경로를 사용하여 이미지 URL을 생성합니다.
           // 예를 들어, 서버가 'http://localhost:8000/' 에서 실행되고 있고,
           // 정적 리소스를 '/uploads/' 에서 제공한다고 가정합니다.
-
-          return `http://localhost:8000${profilePicture}`; 
+          const timestamp = new Date().getTime();
+          return `http://localhost:8000${profilePicturePath}?t=${timestamp}`;
         } else {
           // 프로필 사진이 없는 경우 기본 이미지 경로 반환
           return require('@/assets/profile.jpg');
