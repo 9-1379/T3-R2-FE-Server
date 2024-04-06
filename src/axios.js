@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://ec2-3-38-190-41.ap-northeast-2.compute.amazonaws.com:8000',
+    baseURL: 'http://localhost:8000',
 });
 
 axiosInstance.interceptors.request.use(
