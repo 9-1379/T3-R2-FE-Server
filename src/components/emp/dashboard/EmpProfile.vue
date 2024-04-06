@@ -1,9 +1,9 @@
 <template>
     <div class="emp-profile-container">
       <div v-if="employee" class="employee-profile">
-        <img :src="getProfilePictureUrl(employee.profilePicture)" class="profile-circle" alt="프로필 사진" />
+        <img :src="getProfilePictureUrl(employee.filePath)" class="profile-circle" alt="Profile Picture" />
         <div class="upload-container">
-        <input type="file" @change="uploadProfilePicture" />
+        <input type="file" @input="uploadProfilePicture" />
           <div class="emp-db">
         <h2>{{ employee.name }}</h2>
         <p>{{ employee.deptName }}</p>
@@ -20,7 +20,7 @@
   </template>
     
     <script>
-    import axiosInstance from 'axios';
+    import axiosInstance from '@/axios';
     
     export default {
       data() {
@@ -42,31 +42,29 @@
 
     const empId = this.$route.params.empId;
     axiosInstance
-      .post(`/emp/dashboard/${empId}/uploads`, formData, {
+      .post(`/emp/dashboard/${empId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
       .then((res) => {
         console.log("서버 응답:", res.data);
-        const filePath = res.data.split(': ')[1];
+        //const profilePicturePath = res.data.profilePicture;
         alert('파일 업로드 성공!');
-        this.employee.profilePicture = filePath;
-        this.fetchEmployeeProfile(); // 프로필 정보 다시 로드
+        this.fetchEmployeeProfile();
       })
       .catch((error) => {
         console.error('파일 업로드 실패:', error);
         alert('파일 업로드에 실패했습니다.');
       });
   },
-          getProfilePictureUrl(profilePicturePath) {
-        if (profilePicturePath) {
+          getProfilePictureUrl(filePath) {
+        if (filePath) {
 
-          // 서버의 정적 경로를 사용하여 이미지 URL을 생성합니다.
-          // 예를 들어, 서버가 'http://localhost:8000/' 에서 실행되고 있고,
-          // 정적 리소스를 '/uploads/' 에서 제공한다고 가정합니다.
-          const timestamp = new Date().getTime();
-          return `http://localhost:8000${profilePicturePath}?t=${timestamp}`;
+          const decodedFilePath = decodeURIComponent(filePath);
+          const serverUrl = 'http://localhost:8000';
+          return `${serverUrl}/uploads/${decodedFilePath}`;
+          //return require(`@/assets/${filePath}`);
         } else {
           // 프로필 사진이 없는 경우 기본 이미지 경로 반환
           return require('@/assets/profile.jpg');
@@ -95,7 +93,9 @@
           console.log(`Fetching employee data for ID: ${empId}`);
             try {
             const res = await axiosInstance.get(`/emp/dashboard/${empId}`);
-              this.employee = res.data;
+
+              const decodedFilePath = res.data.filePath ? decodeURIComponent(res.data.filePath) : null;
+              this.employee = { ...res.data, filePath: decodedFilePath };
               this.introduction = this.employee.introduction || '';
               this.isEditable = false;
             } catch (error) {
