@@ -12,7 +12,7 @@ import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 import BadgeManagement from '@/components/badge/BadgeManagement.vue';
 
-import AttendanceRecord from '@/components/emp/AttendanceRecord.vue';
+import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord.vue';
 import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 import MyAnnual from '@/components/emp/dashboard/MyAnnual';
 
@@ -54,7 +54,7 @@ const routes = [
     component: EmpDetail
   },
   {
-    path: '/emp/dashboard/:empId',
+    path: '/emp/dashboard',
     name: 'EmpDashboard',
     component: EmpDashboard
   },

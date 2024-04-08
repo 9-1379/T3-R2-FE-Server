@@ -34,15 +34,6 @@ export default {
       password: "",
     });
 
-    // 토큰에서 empId를 추출하는 메서드
-    function getEmpIdFromToken(token) {
-      // 실제 토큰 구조에 따라 다를 수 있으므로, 이 예시는 단순화된 버전입니다.
-      // 여기서는 페이로드의 empId를 반환한다고 가정합니다.
-      // 실제로는 서버와의 약속된 토큰 구조와 보안 요구사항에 따라 구현해야 합니다.
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.empId;
-    }
-
     const handleLogin = () => {
       let formData = new FormData();
       formData.append("username", form.username);
@@ -54,10 +45,7 @@ export default {
             localStorage.removeItem("access_token");
             let token = res.headers["authorization"];
             localStorage.setItem("access_token", token);
-           // router.push("/hrcard");
-
-           const empId = getEmpIdFromToken(token); //토큰에서 empId 추출하는 로직
-           router.push(`/emp/dashboard/${empId}`);
+            router.push("/emp/dashboard");
           }
         })
         .catch((error) => {
