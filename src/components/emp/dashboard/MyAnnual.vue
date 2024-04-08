@@ -1,12 +1,21 @@
 <template>
     <div class="hrcard-container">
-      <h2>HR Card</h2>
+      <h4 class="header">연차 현황</h4>
       <div v-if="annualDetails">
-        <p>연차 현황</p>
-        <p>귀속 연도: {{ annualDetails.annualYear }}</p>
-        <p>직원 ID: {{ annualDetails.empId }}</p>
-        <p>총 생성 연차: {{ annualDetails.annualTotal }}</p>
-        <p>선 사용 연차: {{ annualDetails.annualUsed }}</p>
+        <div class="annual-status">
+          <div class="status-item">
+            <p>All</p>
+            <div class="status-circle">{{ annualDetails.annualTotal }}</div>
+          </div>
+          <div class="status-item">
+            <p>사용</p>
+            <div class="status-circle">{{ annualDetails.annualUsed }}</div>
+          </div>
+          <div class="status-item">
+            <p>잔여</p>
+            <div class="status-circle">{{ annualDetails.annualTotal - annualDetails.annualUsed }}</div>
+          </div>
+        </div>
       </div>
       <div v-else>
         <p>연차 정보를 불러오는 중...</p>
@@ -15,53 +24,93 @@
   </template>
   
   <script>
-import axiosInstance from "@/axios";
-import { reactive, onMounted } from "vue";
-
-export default {
-  name: "HRCard",
-  setup() {
-    const annualDetails = reactive({}); // 빈 객체로 초기화
-
-    const annualYear = '2024'; // 예시로 2024로 정의
-    const empId = 'e1'; // 예시로 e1로 정의
-
-    // 직원의 연차 현황을 불러오는 함수
-    const fetchAnnualDetails = async () => {
-      try {
-        const response = await axiosInstance.get(`/myAnnual/${annualYear}/${empId}`);
-        if (response.data) { // 값이 있는지 확인
-          Object.assign(annualDetails, response.data);
-        } else {
-          console.error("연차 정보를 불러오는 중 에러: 응답 데이터가 없습니다.");
-          alert("연차 정보를 불러오는 중 에러 발생: 응답 데이터가 없습니다.");
+  import axiosInstance from "@/axios";
+  import { reactive, onMounted } from "vue";
+  
+  export default {
+    name: "HRCard",
+    setup() {
+      const annualDetails = reactive({}); // 빈 객체로 초기화
+  
+      // 현재 시스템의 년도를 가져오기
+      const currentYear = new Date().getFullYear();
+  
+      // 직원의 연차 현황을 불러오는 함수
+      const fetchAnnualDetails = async () => {
+        try {
+          const empId = getEmpIdFromToken(); // 직원의 ID 가져오기
+          const response = await axiosInstance.get(`/myAnnual/${currentYear}/${empId}`);
+          if (response.data) {
+            Object.assign(annualDetails, response.data);
+          }
+        } catch (error) {
+          console.error("연차 정보를 불러오는 중 에러:", error);
         }
-      } catch (error) {
-        console.error("연차 정보를 불러오는 중 에러:", error);
-        console.error("에러 응답:", error.response);
-        alert("연차 정보를 불러오는 중 에러 발생: " + (error.response ? error.response.data.message : "알 수 없는 오류"));
+      };
+  
+      // 컴포넌트가 마운트된 후 연차 정보를 불러옴
+      onMounted(fetchAnnualDetails);
+  
+      // 직원의 ID 가져오는 함수
+      function getEmpIdFromToken() {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          const decodedToken = atob(token.split('.')[1]);
+          const { empId } = JSON.parse(decodedToken);
+          return empId;
+        }
+        return null;
       }
-    };
+  
+      return { annualDetails };
+    },
+  };
+  </script>
 
-    // 컴포넌트가 마운트된 후 연차 정보를 불러옴
-    onMounted(fetchAnnualDetails);
+<style>
+.hrcard-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 0; /* 컨테이너의 위쪽 공간 제거 */
+}
 
-    return { annualDetails };
-  },
-};
-</script>
-  
-  <style>
-  .hrcard-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .p {
-    margin-bottom: 10px;
-  }
-  </style>
-  
+.header {
+  text-align: left;
+  margin-bottom: 5px; /* 텍스트 위의 공간 조절 */
+  margin-top: 0; /* 헤더와 컨테이너 간의 공백 제거 */
+}
+
+.annual-status {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 40px; /* 원 사이의 간격 조절 */
+}
+
+.status-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+}
+
+.p {
+  margin-bottom: 10px;
+}
+
+.status-item:last-child {
+  margin-right: 0; /* 마지막 원의 오른쪽 공간 제거 */
+}
+</style>
