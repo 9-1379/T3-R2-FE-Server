@@ -48,7 +48,7 @@ export default {
         })
         .catch(error => {
           console.error('Error starting work:', error);
-          alert('출근 처리 중 오류가 발생했습니다.');
+          alert('이미 출근 하셨습니다.');
         });
     },
     endWork() {
@@ -60,7 +60,7 @@ export default {
         })
         .catch(error => {
           console.error('Error ending work:', error);
-          alert('퇴근 처리 중 오류가 발생했습니다.');
+          alert('출근을 먼저 해주세요.');
         });
     },
   }
