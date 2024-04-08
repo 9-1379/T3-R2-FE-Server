@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <h1>출퇴근 기록 시스템</h1> -->
     <div>
       <div style="margin-bottom: 10px;">
         <button @click="startWork" style="padding: 8px 60px;">출근</button>
@@ -28,11 +27,10 @@ export default {
   methods: {
     fetchAttendanceRecord() {
       const today = new Date().toISOString().split('T')[0];
-      axiosInstance.get(`/attendance/record/${this.$store.state.empId}`)
+      axiosInstance.get(`/attendance/record/${this.getEmpIdFromToken()}`)
         .then(response => {
           const record = response.data;
-          const recordDate = record.startDate.split('T')[0]; // 출근 날짜의 날짜 부분만 추출
-          // 오늘 날짜와 출근 날짜가 같으면 오늘 출근 기록이 있다고 판단
+          const recordDate = record.startDate.split('T')[0];
           this.hasTodayRecord = today === recordDate;
         })
         .catch(error => {
@@ -40,10 +38,9 @@ export default {
         });
     },
     startWork() {
-      // 출근 요청 보내기
-      axiosInstance.post(`/attendance/startWork?employeeId=${this.$store.state.empId}`)
+      axiosInstance.post(`/attendance/startWork?employeeId=${this.getEmpIdFromToken()}`)
         .then(() => {
-          this.hasTodayRecord = true; // 출근 기록이 있음을 표시
+          this.hasTodayRecord = true;
           alert('출근 완료!');
         })
         .catch(error => {
@@ -52,16 +49,24 @@ export default {
         });
     },
     endWork() {
-      // 퇴근 요청 보내기
-      axiosInstance.post(`/attendance/endWork?employeeId=${this.$store.state.empId}`)
+      axiosInstance.post(`/attendance/endWork?employeeId=${this.getEmpIdFromToken()}`)
         .then(() => {
-          this.hasTodayRecord = false; // 퇴근 기록이 있음을 표시
+          this.hasTodayRecord = false;
           alert('퇴근 완료!');
         })
         .catch(error => {
           console.error('Error ending work:', error);
           alert('출근을 먼저 해주세요.');
         });
+    },
+    getEmpIdFromToken() {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const decodedToken = atob(token.split('.')[1]);
+        const { empId } = JSON.parse(decodedToken);
+        return empId;
+      }
+      return null;
     },
   }
 };

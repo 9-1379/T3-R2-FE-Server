@@ -38,13 +38,22 @@ export default {
       return this.$store.state.darkMode;
     },
     userRole() {
-      return this.$store.state.userRole;
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        // 토큰 디코딩 및 역할 추출
+        const decodedToken = atob(token.split('.')[1]); // Base64 디코딩
+        const { role } = JSON.parse(decodedToken);
+        return role;
+      }
+      return null;
     },
   },
   methods: {
     logout() {
-      console.log("실행")
+      console.log("실행");
       localStorage.clear();
+      // 로그아웃 후 로그인 페이지로 이동
+      this.$router.push("/login");
     },
     toggleDropdown(visible, type) {
       this.dropdownType = visible ? type : '';
@@ -61,12 +70,9 @@ export default {
       dropdownType: '',
     };
   },
-  created() {
-    // 페이지가 로드될 때 Vuex 스토어에서 사용자 권한 정보를 가져옵니다.
-    this.$store.commit('setUserRole', localStorage.getItem('userRole'));
-  }
 };
 </script>
+
 
 <style scoped>
 .top-navbar {
