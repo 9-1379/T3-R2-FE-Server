@@ -1,24 +1,19 @@
 # bhr
 
-## Project setup
+## Project Setting
 ```
-npm install
+# npm version
+v10.2.4
+# node version
+v20.11.1
+```
+## Project Setup
+```
+$ git clone
+$ npm install
+$ npm run serve
+
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Relese v1.0.0
+화면 배포 중
