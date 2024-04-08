@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>출퇴근 기록 시스템</h1>
+    <!-- <h1>출퇴근 기록 시스템</h1> -->
     <div>
       <div>
-        <button @click="startWork">출근하기</button>
+        <button @click="startWork">출근</button>
       </div>
       <div>
-        <button @click="endWork">퇴근하기</button>
+        <button @click="endWork">퇴근</button>
       </div>
     </div>
   </div>
