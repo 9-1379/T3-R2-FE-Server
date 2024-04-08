@@ -15,10 +15,10 @@ User
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="badge in badges" :key="badge.id">
+                <tr v-for="(badge,index) in badges" :key="badge.id">
                     <td>{{ badge.badgeName }}</td>
                     <td>{{ badge.badgeDetail }}</td>
-                    <td><img :src="badge.badgeImage" alt="배지 사진" /></td>
+                    <td><img :src="getBadgeImagePath(index)" alt="배지 사진" /></td>
                     <td>
                         <button @click="deactivateBadge(badge.badgeName)">삭제</button>
                     </td>
@@ -34,6 +34,16 @@ User
 import AddBadgeModal from './AddBadgeModal.vue';
 import axiosInstance from '@/axios';
 
+//이미지 파일 임포트
+import zImage from '@/assets/z.png';
+import yImage from '@/assets/y.png';
+import xImage from '@/assets/x.png';
+import cuteImage from '@/assets/cute.jpg';
+import nightShiftImage from '@/assets/night_shift.jpg';
+import legendImage from '@/assets/legend.jpg';
+import balanceImage from '@/assets/work_and_life_balance.jpg';
+import dobbyImage from '@/assets/dobby_is_free.jpg';
+
 export default {
     components: {
         AddBadgeModal
@@ -41,10 +51,15 @@ export default {
     data() {
         return {
             badges: [],
-            popState: false
+            popState: false,
+            badgeImages: [zImage, yImage, xImage, cuteImage, nightShiftImage, legendImage, balanceImage, dobbyImage],
         };
     },
     methods: {
+        getBadgeImagePath(index) {
+
+            return this.badgeImages[index];
+        },
         async fetchBadges() {
             try {
                 const response = await axiosInstance.get('/api/admin/badge/list');
