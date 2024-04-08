@@ -3,7 +3,7 @@ name: FEDeploy2aws 🛸
 on:
   push:
     branches:
-      - dev
+      - release/v1.0.0
   pull_request:
     types:
       - closed
@@ -16,6 +16,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      # Node.js 설정
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # 프로젝트에 맞는 Node.js 버전을 사용하세요.
+
+      # 의존성 설치
+      - name: Install dependencies
+        run: npm install
+
+      # 빌드 스크립트 실행
+      - name: Build
+        run: npm run build
 
       # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
       - name: Configure AWS credentials
