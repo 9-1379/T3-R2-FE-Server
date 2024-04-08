@@ -2,11 +2,11 @@
   <div>
     <!-- <h1>출퇴근 기록 시스템</h1> -->
     <div>
-      <div>
-        <button @click="startWork">출근</button>
+      <div style="margin-bottom: 10px;">
+        <button @click="startWork" style="padding: 8px 60px;">출근</button>
       </div>
       <div>
-        <button @click="endWork">퇴근</button>
+        <button @click="endWork" style="padding: 8px 60px;">퇴근</button>
       </div>
     </div>
   </div>
