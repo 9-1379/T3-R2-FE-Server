@@ -3,9 +3,11 @@
     <div>
       <div style="margin-bottom: 10px;">
         <button @click="startWork" style="padding: 8px 60px;">출근</button>
+        <span v-if="record.timeIn">출근 시간: {{ record.timeIn }}</span>
       </div>
       <div>
         <button @click="endWork" style="padding: 8px 60px;">퇴근</button>
+        <span v-if="record.timeOut">퇴근 시간: {{ record.timeOut }}</span>
       </div>
     </div>
   </div>
@@ -18,7 +20,10 @@ export default {
   name: 'AttendanceRecord',
   data() {
     return {
-      hasTodayRecord: false,
+      record: {
+        timeIn: null,
+        timeOut: null
+      }
     };
   },
   created() {
@@ -31,6 +36,7 @@ export default {
         .then(response => {
           const record = response.data;
           const recordDate = record.startDate.split('T')[0];
+          this.record = record;
           this.hasTodayRecord = today === recordDate;
         })
         .catch(error => {
