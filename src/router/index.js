@@ -10,6 +10,8 @@ import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포
 import EditEmp from '@/components/admin/EditEmp.vue';
 import AnnualSetupList from '@/components/admin/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
+import BadgeManagement from '@/components/badge/BadgeManagement.vue';
+import AttendanceRecord from '@/components/emp/AttendanceRecord.vue';
 
 const routes = [
   {
@@ -66,6 +68,17 @@ const routes = [
     path: '/adnim/annual',
     name: 'AdminSetupList',
     component: AnnualSetupList
+  },
+  {
+
+    path: '/admin/badge',
+    name: 'BadgeManagement',
+    component: BadgeManagement
+  },
+  {
+    path: '/attendance',
+    name: 'AttendanceRecord',
+    component: AttendanceRecord
 
   }
 ];
