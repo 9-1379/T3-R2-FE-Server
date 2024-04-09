@@ -7,6 +7,7 @@
       <input v-model="form.annualTotal" />
       <button @click="newAnnualTotal">부여</button>
     </div>
+    <h1>체크박스자리</h1>
     <h1>직원 연차 현황1</h1>
     <div class="table-section">
       <table class="centered-table">
