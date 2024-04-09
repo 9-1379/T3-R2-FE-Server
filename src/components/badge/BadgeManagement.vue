@@ -18,7 +18,7 @@ User
                 <tr v-for="badge in badges" :key="badge.id">
                     <td>{{ badge.badgeName }}</td>
                     <td>{{ badge.badgeDetail }}</td>
-                    <td><img :src="badge.badgeImages" alt="배지 사진" /></td>
+                    <td><img :src="badge.badgeImage" alt="배지 사진" /></td>
                     <td>
                         <button @click="deactivateBadge(badge.badgeName)">삭제</button>
                     </td>
