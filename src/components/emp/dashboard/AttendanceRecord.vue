@@ -44,7 +44,7 @@ export default {
         });
     },
     startWork() {
-      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
       axiosInstance.post(`/attendance/startWork?employeeId=${this.getEmpIdFromToken()}`)
         .then(() => {
           this.record.timeIn = now;
@@ -57,7 +57,7 @@ export default {
         });
     },
     endWork() {
-      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
       axiosInstance.post(`/attendance/endWork?employeeId=${this.getEmpIdFromToken()}`)
         .then(() => {
           this.record.timeOut = now;
