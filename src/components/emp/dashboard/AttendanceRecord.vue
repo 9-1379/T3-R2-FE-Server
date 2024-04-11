@@ -2,11 +2,11 @@
   <div>
     <div>
       <div style="margin-bottom: 10px;">
-        <button @click="startWork" style="padding: 8px 60px;">출근</button>
+        <button @click="startWork" style="padding: 8px 60px; background-color: beige; color: black;">출근</button>
         <span v-if="record.timeIn">출근 시간: {{ formatTime(record.timeIn) }}</span>
       </div>
       <div>
-        <button @click="endWork" style="padding: 8px 60px;">퇴근</button>
+        <button @click="endWork" style="padding: 8px 60px; background-color: beige; color: black;">퇴근</button>
         <span v-if="record.timeOut">퇴근 시간: {{ formatTime(record.timeOut) }}</span>
       </div>
     </div>
