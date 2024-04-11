@@ -44,8 +44,10 @@ export default {
         });
     },
     startWork() {
+      const now = new Date().toLocaleTimeString();
       axiosInstance.post(`/attendance/startWork?employeeId=${this.getEmpIdFromToken()}`)
         .then(() => {
+          this.record.timeIn = now;
           this.hasTodayRecord = true;
           alert('출근 완료!');
         })
@@ -55,8 +57,10 @@ export default {
         });
     },
     endWork() {
+      const now = new Date().toLocaleTimeString();
       axiosInstance.post(`/attendance/endWork?employeeId=${this.getEmpIdFromToken()}`)
         .then(() => {
+          this.record.timeOut = now;
           this.hasTodayRecord = false;
           alert('퇴근 완료!');
         })
@@ -73,7 +77,7 @@ export default {
         return empId;
       }
       return null;
-    },
+    }
   }
 };
 </script>
