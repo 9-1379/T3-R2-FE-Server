@@ -13,9 +13,6 @@
       <div>
         <button type="submit">Login</button>
       </div>
-      <div>
-        <button @click="goToNewEmp">신규직원추가(개발용버튼)</button>
-      </div>
     </form>
   </div>
 </template>
@@ -54,12 +51,14 @@ export default {
         });
     };
 
-    const goToNewEmp = () => {
-      router.push("/New");
-    };
 
+<<<<<<< HEAD
     return { form, handleLogin, goToNewEmp };
   }
+=======
+    return { form, handleLogin };
+  },
+>>>>>>> dev
 };
 </script>
 

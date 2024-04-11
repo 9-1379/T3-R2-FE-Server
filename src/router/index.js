@@ -8,15 +8,19 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import EditEmp from '@/components/admin/EditEmp.vue';
-import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
+import AnnualSetupList from '@/components/admin/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 import BadgeManagement from '@/components/badge/BadgeManagement.vue';
 
 import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord.vue';
 import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 import MyAnnual from '@/components/emp/dashboard/MyAnnual';
+<<<<<<< HEAD
 import EmpProfile from '@/components/emp/dashboard/EmpProfile.vue';
 
+=======
+import MyAttendance from '@/components/emp/dashboard/MyAttendance';
+>>>>>>> dev
 
 const routes = [
   {
@@ -99,6 +103,11 @@ const routes = [
     path: '/myAnnual',
     name: 'MyAnnual',
     component: MyAnnual
+  },
+  {
+    path: '/myAttendance',
+    name: 'MyAttendance',
+    component: MyAttendance
   }
 ];
 
