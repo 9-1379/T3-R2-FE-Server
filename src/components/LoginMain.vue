@@ -51,20 +51,10 @@ export default {
         });
     };
 
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-    return { form, handleLogin, goToNewEmp };
-  }
-=======
-    return { form, handleLogin };
-  },
->>>>>>> dev
-=======
     return { form, handleLogin };
   },
 
->>>>>>> 542d4daf097f310cb1c13cdb65dad2f40d683184
 };
 </script>
 
