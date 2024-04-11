@@ -49,9 +49,9 @@
         </table>
       </div>
       <div class="paging, section-bottom-bottom">
-      <button class="button-set" @click="prevPage" :disabled="currentPage === 1">Previous</button>
+      <button class="button-set" @click="prevPage" :disabled="currentPage === 1">이전</button>
       <span>{{ currentPage }} / {{ totalPages }}</span>
-      <button class="button-set" @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+      <button class="button-set" @click="nextPage" :disabled="currentPage === totalPages">다음</button>
     </div>
     </div>
   </div>
@@ -226,7 +226,9 @@ export default {
   max-width: 700px;
   text-align: center;
 }
-
+button {
+  background: #8070f7;
+}
 span {
   margin-left: 10px;
   margin-right: auto;
@@ -290,7 +292,7 @@ td {
 
 .dept-title {
   border: 1px solid rgb(255, 255, 255) beb; /* 테두리 스타일 및 색상 */
-  background-color: rgb(76, 129, 227); /* 배경색 설정 */
+  background-color: #8070f7; /* 배경색 설정 */
   color: white; /* 글자 색 설정 */
   border-radius: 10px; /* 모서리를 동그랗게 만듦 */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
