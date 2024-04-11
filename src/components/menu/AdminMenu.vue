@@ -21,7 +21,7 @@
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'badge')" @mouseleave="toggleDropdown(false, 'badge')">
         <a href="/badge" class="nav-link">배지<span class="dropdown-arrow" v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'badge'">
-          <a href="#badge">배지기준관리</a>
+          <a href="/admin/badge">배지기준관리</a>
         </div>
       </div>
     </div>
