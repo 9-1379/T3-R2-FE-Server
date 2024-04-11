@@ -15,6 +15,7 @@ import BadgeManagement from '@/components/badge/BadgeManagement.vue';
 import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord.vue';
 import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 import MyAnnual from '@/components/emp/dashboard/MyAnnual';
+import EmpProfile from '@/components/emp/dashboard/EmpProfile.vue';
 
 
 const routes = [
@@ -57,6 +58,11 @@ const routes = [
     path: '/emp/dashboard',
     name: 'EmpDashboard',
     component: EmpDashboard
+  },
+  {
+    path: '/emp/dashboard/:empId',
+    name: 'EmpProfile',
+    component: EmpProfile 
   },
   {
     path: '/admin/annual',

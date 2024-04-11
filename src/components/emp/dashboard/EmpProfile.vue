@@ -40,19 +40,23 @@ export default {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
 
-      const empId = this.$route.params.empId;
-      axiosInstance
-        .post(`/emp/dashboard/${empId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
+      const empId = this.$store.state.empId;
+      if (!empId) {
+        console.error('Employee ID is not set.');
+        alert('사용자 정보를 불러올 수 없습니다. 다시 로그인 해주세요.');
+        return;
+      }
+
+      // 파일 업로드 요청보내기
+      axiosInstance.post(`/emp/dashboard/${empId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
         .then((res) => {
           console.log("서버 응답:", res.data);
-          //const profilePicturePath = res.data.profilePicture;
-          this.employee.profilePicture = res.data.profilePicture;
+          this.$router.push('/emp/dashboard');
           alert('파일 업로드 성공!');
-          this.fetchEmployeeProfile();
         })
         .catch((error) => {
           console.error('파일 업로드 실패:', error);
@@ -61,9 +65,7 @@ export default {
     },
     getProfilePictureUrl(profilePicture) {
       if (profilePicture) {
-        // const serverUrl = 'http://localhost:8000';
         return profilePicture;
-
       } else {
         // 프로필 사진이 없는 경우 기본 이미지 경로 반환
         return require('@/assets/profile.jpg');
