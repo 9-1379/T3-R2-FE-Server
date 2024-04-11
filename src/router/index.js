@@ -16,11 +16,18 @@ import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord.vue';
 import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 import MyAnnual from '@/components/emp/dashboard/MyAnnual';
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 542d4daf097f310cb1c13cdb65dad2f40d683184
 import EmpProfile from '@/components/emp/dashboard/EmpProfile.vue';
+import MyAttendance from '@/components/emp/dashboard/MyAttendance';
 
+<<<<<<< HEAD
 =======
 import MyAttendance from '@/components/emp/dashboard/MyAttendance';
 >>>>>>> dev
+=======
+>>>>>>> 542d4daf097f310cb1c13cdb65dad2f40d683184
 
 const routes = [
   {
