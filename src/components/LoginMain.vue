@@ -42,7 +42,7 @@ export default {
             localStorage.removeItem("access_token");
             let token = res.headers["authorization"];
             localStorage.setItem("access_token", token);
-            router.push("/hrcard");
+            router.push("/emp/dashboard");
           }
         })
         .catch((error) => {
@@ -54,6 +54,7 @@ export default {
 
     return { form, handleLogin };
   },
+
 };
 </script>
 
