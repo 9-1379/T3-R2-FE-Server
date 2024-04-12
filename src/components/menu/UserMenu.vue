@@ -1,7 +1,7 @@
 <template>
   <div class="top-navbar" :class="{ 'dark-mode': darkModeEnabled }">
     <div class="navbar-logo">
-      <img src="@/assets/team_logo.png" alt="Logo" /> <!-- 로고 이미지 경로를 설정해주세요 -->
+      <img src="@/assets/team_logo.png" alt="Logo" @click="goToHome"/> <!-- 로고 이미지 경로를 설정해주세요 -->
     </div>
     <div class="navbar-links">
       <a href="#home" class="nav-link">Home</a>
@@ -64,6 +64,9 @@ export default {
     goToAdmin() {
       this.$router.push("/list");
     },
+    goToHome() {
+      this.$router.push("/")
+    }
   },
   data() {
     return {
