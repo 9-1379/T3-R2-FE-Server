@@ -4,7 +4,7 @@
     <div class="section-top">
       <h2>직원 연차 부여</h2>
       부여 년도: {{ currentYear }}년도
-      <input class="input-set" v-model="form.annualTotal" placeholder="부여할 갯수 입력">
+      <input @keyup.enter="newAnnualTotal" class="input-set" v-model="form.annualTotal" placeholder="부여할 갯수 입력">
       <button class="button-set" @click="newAnnualTotal">부여</button>
     </div>
     <div class="section-bottom">

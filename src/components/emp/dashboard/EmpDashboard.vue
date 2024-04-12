@@ -1,84 +1,72 @@
 <template>
-  <div class="page-container" :class="{ 'dark-mode': darkModeEnabled }">
-    <div class="admin-menu-wrapper">
+  <div>
+    <div>
       <AdminMenu />
-      <EmpProfile />
+    </div>
+    <div class="profile-section" v-for="(list, index) in employee" v-bind:key="index">
+      <p>이름: {{ list.name }} <br>
+      부서명:{{ list.deptName }} <br>
+      직위: {{ list.position }} <br>
+      직무: {{ list.jobId }} <br>
+      입사일: {{ list.hireDate }} <br>
+      소개글: {{ list.introduction }}
+      </p>
+      <textarea v-model="form.introduction"></textarea>
+      <button @click="postIntro" >저장</button>
+
     </div>
   </div>
 </template>
 
 <script>
-import AdminMenu from '@/components/menu/AdminMenu.vue';
-import EmpProfile from './EmpProfile.vue';
+import axiosInstance from "@/axios";
+import AdminMenu from "@/components/menu/AdminMenu.vue";
 
 export default {
   components: {
     AdminMenu,
-    EmpProfile
   },
-
-  computed: {
-    darkModeEnabled() {
-      return this.$store.state.darkMode;
+  data() {
+    return {
+      employee: [],
+      form: {
+        introduction: "",
+      }
+    };
+  },
+  methods: {
+    async getEmpToOne() {
+      const empResponse = await axiosInstance.get("/emp/dashboard/empToOne");
+      this.employee = empResponse.data;
+    },
+    async postIntro() {
+        await axiosInstance.post('/emp/dashboard/empIntro', this.form)
+        alert("소개글이 저장되었습니다");
+        this.clearInput();  
+        this.getEmpToOne(); 
+    },
+    clearInput() {
+      this.form.introduction = "";
     }
-  }
+  },
+  mounted() {
+    this.getEmpToOne();
+  },
 };
-
 </script>
 
 <style scoped>
-/* 여기에 스타일을 그대로 유지 */
-
-.emp-dashboard {
-  font-family: 'Arial', sans-serif;
-  margin: 0 auto;
-  max-width: 800px;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.profile-section {
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: left;
+    border: 1px solid #ccc; /* 네모 박스 테두리 스타일 */
+    padding: 20px; /* 내부 여백 설정 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
-
-.profile-picture {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  margin-bottom: 20px;
-  border: 3px solid #f3f3f3;
-}
-
-h2 {
-  margin: 0;
-  color: #333;
-  font-size: 24px;
-}
-
 p {
-  color: #666;
-  line-height: 1.6;
-}
-
-button {
-  margin-right: 10px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  background-color: #e0e0e0;
-  color: #333;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-button:hover {
-  background-color: #d5d5d5;
-}
-
-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  resize: vertical;
+  line-height: 1.5; /* 원하는 줄간격 값으로 조절합니다. */
 }
 </style>
