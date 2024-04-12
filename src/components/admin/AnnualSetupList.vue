@@ -113,6 +113,7 @@ export default {
       await axiosInstance.post("/annualTotal", this.form);
       this.clearInput();
       alert("연차가 부여되었습니다");
+      this.empAnnualStatus();
     },
     clearInput() {
       this.form.annualTotal = "";
