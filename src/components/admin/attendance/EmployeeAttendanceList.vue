@@ -1,10 +1,9 @@
 <template>
     <div class="employee-attendance-list">
-        <h2>직원 근태 리스트</h2>
         <!-- 검색 필터 -->
-        <div>
+        <div class="search-filter">
             <input type="date" v-model="searchDate" />
-            <input type="text" v-model="searchName" placeholder="이름 검색" />
+            <input v-model="searchName" placeholder="이름 검색" />
             <button @click="applyFilters">검색</button>
         </div>
         <table>
@@ -38,11 +37,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import { onMounted } from 'vue';
+import { ref, watch, onMounted, defineProps } from 'vue';
 import axiosInstance from '@/axios';
 
-// eslint-disable-next-line
 const props = defineProps({
     status: String,
     date: String
@@ -52,7 +49,6 @@ const searchName = ref('');
 const searchDate = ref('');
 const attendances = ref([]);
 
-// 데이터를 서버로부터 가져오는 함수
 const fetchAttendances = async () => {
     try {
         const response = await axiosInstance.get('/api/admin/attendance/list', {
@@ -68,21 +64,28 @@ const fetchAttendances = async () => {
     }
 };
 
-// 검색 버튼 클릭 이벤트
 const applyFilters = () => {
     fetchAttendances();
 };
 
 onMounted(fetchAttendances);
-
-// 감시자를 통해 상태가 변경되면 데이터를 다시 불러옵니다.
 watch(() => props.status, fetchAttendances);
 </script>
 
 <style scoped>
+.employee-attendance-list .search-filter {
+    margin-top: 20px;
+    display: flex;
+
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .employee-attendance-list table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+    /* 테이블 너비 고정 */
 }
 
 .employee-attendance-list th,
