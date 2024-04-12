@@ -1,7 +1,7 @@
 <template>
   <div class="top-navbar" :class="{ 'dark-mode': darkModeEnabled }">
     <div class="navbar-logo">
-      <img src="@/assets/team_logo.png" alt="Logo" /> <!-- 로고 이미지 경로를 설정해주세요 -->
+      <img src="@/assets/team_logo.png" alt="Logo" @click="goToHome"/> <!-- 로고 이미지 경로를 설정해주세요 -->
     </div>
     <div class="navbar-links">
       <a href="#home" class="nav-link">Home</a>
@@ -21,7 +21,7 @@
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'badge')" @mouseleave="toggleDropdown(false, 'badge')">
         <a href="/badge" class="nav-link">배지<span class="dropdown-arrow" v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'badge'">
-          <a href="#badge">배지기준관리</a>
+          <a href="/admin/badge">배지기준관리</a>
         </div>
       </div>
     </div>
@@ -55,6 +55,9 @@ export default {
     goToEmp() {
       this.$router.push("/hrcard"); // 수정된 부분
     },
+    goToHome() {
+      this.$router.push("/")
+    }
   },
   data() {
     return {

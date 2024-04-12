@@ -5,8 +5,8 @@
       <h2 class="list-title">직원 목록 조회</h2>
       <div class="search-and-actions">
         <div class="search-section">
-          <label for="search">검색:</label>
-          <input type="text" id="search" @input="updateSearchQuery" placeholder="검색">
+          <label id="search">검색:</label>
+          <input id="search" @input="updateSearchQuery" placeholder="이름을 검색하세요">
         </div>
         <div class="action-buttons">
           <button @click="goToNewEmployee" class="action-button">신규 직원 추가</button>
@@ -159,7 +159,9 @@ export default {
 }
 
 .search-section label, .search-section input {
-  margin-right: 10px;
+  margin-right: 20px;
+  white-space: nowrap;
+  
 }
 
 .action-buttons {

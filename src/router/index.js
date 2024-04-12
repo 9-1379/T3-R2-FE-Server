@@ -8,10 +8,17 @@ import AdminMenu from '@/components/menu/AdminMenu.vue';
 import HrCardMain from '@/components/emp/hrcard/HrCardMain.vue';
 import EmpDetail from '@/components/admin/EmpDetail.vue'; // EmpDetail을 임포트합니다.
 import EditEmp from '@/components/admin/EditEmp.vue';
-import AnnualSetupList from '@/components/adminPage/AnnualSetupList';
+import AnnualSetupList from '@/components/admin/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 import BadgeManagement from '@/components/badge/BadgeManagement.vue';
-import AttendanceRecord from '@/components/emp/AttendanceRecord.vue';
+
+import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord.vue';
+import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
+import MyAnnual from '@/components/emp/dashboard/MyAnnual';
+import EmpProfile from '@/components/emp/dashboard/EmpProfile.vue';
+import MyAttendance from '@/components/emp/dashboard/MyAttendance';
+import AttendanceManagement from '@/components/admin/attendance/AttendanceManagement.vue';
+
 
 const routes = [
   {
@@ -50,6 +57,16 @@ const routes = [
     component: EmpDetail
   },
   {
+    path: '/emp/dashboard',
+    name: 'EmpDashboard',
+    component: EmpDashboard
+  },
+  {
+    path: '/emp/dashboard/:empId',
+    name: 'EmpProfile',
+    component: EmpProfile 
+  },
+  {
     path: '/admin/annual',
     name: 'AdminSetupList',
     component: AnnualSetupList
@@ -79,7 +96,21 @@ const routes = [
     path: '/attendance',
     name: 'AttendanceRecord',
     component: AttendanceRecord
-
+  },
+  {
+    path: '/myAnnual',
+    name: 'MyAnnual',
+    component: MyAnnual
+  },
+  {
+    path: '/myAttendance',
+    name: 'MyAttendance',
+    component: MyAttendance
+  },
+  {
+    path: '/admin/attendance',
+    name: 'AttendanceManagement',
+    component: AttendanceManagement
   }
 ];
 
