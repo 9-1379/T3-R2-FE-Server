@@ -1,3 +1,4 @@
+
 # bhr
 
 ## Project Setting
@@ -15,5 +16,8 @@ $ npm run serve
 
 ```
 
-## Relese v1.0.0
-화면 배포 중
+## Release v1.0.0
+1차 배포 완료
+
+## Release v2.0.0
+2차 배포 완료
