@@ -1,25 +1,32 @@
 <template>
   <div class="top-navbar" :class="{ 'dark-mode': darkModeEnabled }">
     <div class="navbar-logo">
-      <img src="@/assets/team_logo.png" alt="Logo" @click="goToHome"/> <!-- 로고 이미지 경로를 설정해주세요 -->
+      <img src="@/assets/team_logo.png" alt="Logo" @click="goToHome" /> <!-- 로고 이미지 경로를 설정해주세요 -->
     </div>
     <div class="navbar-links">
-      <a href="#home" class="nav-link">Home</a>
-      <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')" @mouseleave="toggleDropdown(false, 'vacation')">
-        <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
+      <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')"
+        @mouseleave="toggleDropdown(false, 'vacation')">
+        <a href="/admin/attendance" class="nav-link">근태 관리</a>
+      </div>
+      <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')"
+        @mouseleave="toggleDropdown(false, 'vacation')">
+        <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow"
+            v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
           <a href="/adnim/annual">직원연차관리</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
-        <a href="#emp" class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
+        <a href="#emp" class="nav-link">인사<span class="dropdown-arrow"
+            v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'emp'">
           <a href="/list">임직원조회</a>
           <a href="/new">신규직원추가</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'badge')" @mouseleave="toggleDropdown(false, 'badge')">
-        <a href="/badge" class="nav-link">배지<span class="dropdown-arrow" v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
+        <a href="/badge" class="nav-link">배지<span class="dropdown-arrow"
+            v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'badge'">
           <a href="/admin/badge">배지기준관리</a>
         </div>
@@ -75,7 +82,8 @@ export default {
   background-color: white;
   color: black;
   padding: 10px 20px;
-  border-bottom: 1px solid #ccc; /* 연한 경계선 추가 */
+  border-bottom: 1px solid #ccc;
+  /* 연한 경계선 추가 */
 }
 
 .navbar-logo,
@@ -153,7 +161,7 @@ export default {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   text-align: left;
 }
