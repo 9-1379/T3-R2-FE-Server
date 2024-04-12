@@ -1,26 +1,28 @@
 <template>
     <div class="attendance-summary">
-        <div class="status-box" @click="selectStatus('present')">
+        <div class="status-box" @click="selectStatus('PRESENT')">
             출근: {{ summary.presentCount }}명
         </div>
-        <div class="status-box" @click="selectStatus('leave')">
+        <div class="status-box" @click="selectStatus('LEAVE')">
             퇴근: {{ summary.leaveCount }}명
         </div>
-        <div class="status-box" @click="selectStatus('late')">
+        <div class="status-box" @click="selectStatus('LATE')">
             지각: {{ summary.lateCount }}명
         </div>
-        <div class="status-box" @click="selectStatus('absent')">
+        <div class="status-box" @click="selectStatus('ABSENT')">
             결근: {{ summary.absentCount }}명
         </div>
-        <div class="status-box" @click="selectStatus('onLeave')">
+        <div class="status-box" @click="selectStatus('ON_LEAVE')">
             휴가: {{ summary.onLeaveCount }}명
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineEmits } from 'vue';
 import axiosInstance from '@/axios';
+
+const emit = defineEmits(['status-selected']);
 
 const summary = ref({
     presentCount: 0, // 출근
@@ -42,8 +44,6 @@ onMounted(async () => {
 
 function selectStatus(status) {
     selectedStatus.value = status;
-    // 여기서 emit을 사용하여 상위 컴포넌트로 선택된 상태 전달
-    // eslint-disable-next-line
     emit('status-selected', status);
 }
 </script>
