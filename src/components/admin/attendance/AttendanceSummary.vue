@@ -1,26 +1,33 @@
 <template>
     <div class="attendance-summary">
-        <div class="status-box" @click="selectStatus('present')">
-            출근: {{ summary.presentCount }}명
+        <div class="status-box" style="border-color: #8ecae6;" @click=" selectStatus('PRESENT')">
+            <div class="status-label">출근</div>
+            <div class="number">{{ summary.presentCount }}<span class="unit">명</span></div>
         </div>
-        <div class="status-box" @click="selectStatus('leave')">
-            퇴근: {{ summary.leaveCount }}명
+        <div class="status-box" style="border-color: #219ebc;" @click="selectStatus('LEAVE')">
+            <div class="status-label">퇴근</div>
+            <div class="number">{{ summary.leaveCount }}<span class="unit">명</span></div>
         </div>
-        <div class="status-box" @click="selectStatus('late')">
-            지각: {{ summary.lateCount }}명
+        <div class="status-box" style="border-color: #023047;" @click="selectStatus('LATE')">
+            <div class="status-label">지각</div>
+            <div class="number">{{ summary.lateCount }}<span class="unit">명</span></div>
         </div>
-        <div class="status-box" @click="selectStatus('absent')">
-            결근: {{ summary.absentCount }}명
+        <div class="status-box" style="border-color: #ffb703;" @click="selectStatus('ABSENT')">
+            <div class="status-label">결근</div>
+            <div class="number">{{ summary.absentCount }}<span class="unit">명</span></div>
         </div>
-        <div class="status-box" @click="selectStatus('onLeave')">
-            휴가: {{ summary.onLeaveCount }}명
+        <div class="status-box" style="border-color: #fb8500;" @click="selectStatus('ON_LEAVE')">
+            <div class="status-label">휴가</div>
+            <div class="number">{{ summary.onLeaveCount }}<span class="unit">명</span></div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineEmits } from 'vue';
 import axiosInstance from '@/axios';
+
+const emit = defineEmits(['status-selected']);
 
 const summary = ref({
     presentCount: 0, // 출근
@@ -42,8 +49,6 @@ onMounted(async () => {
 
 function selectStatus(status) {
     selectedStatus.value = status;
-    // 여기서 emit을 사용하여 상위 컴포넌트로 선택된 상태 전달
-    // eslint-disable-next-line
     emit('status-selected', status);
 }
 </script>
@@ -52,19 +57,43 @@ function selectStatus(status) {
 .attendance-summary {
     display: flex;
     width: 100%;
+    gap: 10px;
 }
 
 .status-box {
     flex: 1;
     border: 1px solid #ddd;
     padding: 20px;
-    margin: 2px;
+    margin: 5px;
     text-align: center;
     cursor: pointer;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     transition: background-color 0.3s;
-    font-size: 1.5em;
-    /* 글씨 크기 키우기 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.status-label {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.number {
+    font-size: 3em;
+    display: flex;
+    align-items: baseline;
+}
+
+.unit {
+    font-weight: normal;
+    /* 굵기를 일반으로 변경 */
+    font-size: 0.75em;
+    /* 글씨 크기를 조금 줄임 */
+    margin-left: 2px;
+    /* 숫자와의 간격 조정 */
 }
 
 .status-box:hover {
