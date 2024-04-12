@@ -11,10 +11,14 @@ import EditEmp from '@/components/admin/EditEmp.vue';
 import AnnualSetupList from '@/components/admin/AnnualSetupList';
 import NewAnnual from '@/components/emp/annual/NewAnnual.vue';
 import BadgeManagement from '@/components/badge/BadgeManagement.vue';
-import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord';
+
+import AttendanceRecord from '@/components/emp/dashboard/AttendanceRecord.vue';
+import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 import MyAnnual from '@/components/emp/dashboard/MyAnnual';
+import EmpProfile from '@/components/emp/dashboard/EmpProfile.vue';
 import MyAttendance from '@/components/emp/dashboard/MyAttendance';
 import AttendanceManagement from '@/components/admin/attendance/AttendanceManagement.vue';
+
 
 const routes = [
   {
@@ -51,6 +55,16 @@ const routes = [
     path: '/employees/:id', // 직원 상세 정보 페이지의 라우트 경로를 추가합니다.
     name: 'EmpDetail',
     component: EmpDetail
+  },
+  {
+    path: '/emp/dashboard',
+    name: 'EmpDashboard',
+    component: EmpDashboard
+  },
+  {
+    path: '/emp/dashboard/:empId',
+    name: 'EmpProfile',
+    component: EmpProfile 
   },
   {
     path: '/admin/annual',

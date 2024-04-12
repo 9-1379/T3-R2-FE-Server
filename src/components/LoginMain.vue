@@ -13,9 +13,6 @@
       <div>
         <button type="submit">Login</button>
       </div>
-      <div>
-        <button @click="goToNewEmp">신규직원추가(개발용버튼)</button>
-      </div>
     </form>
   </div>
 </template>
@@ -45,7 +42,7 @@ export default {
             localStorage.removeItem("access_token");
             let token = res.headers["authorization"];
             localStorage.setItem("access_token", token);
-            router.push("/hrcard");
+            router.push("/emp/dashboard");
           }
         })
         .catch((error) => {
@@ -54,12 +51,10 @@ export default {
         });
     };
 
-    const goToNewEmp = () => {
-      router.push("/New");
-    };
 
-    return { form, handleLogin, goToNewEmp };
+    return { form, handleLogin };
   },
+
 };
 </script>
 
