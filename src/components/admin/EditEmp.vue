@@ -18,10 +18,6 @@
           <div class="info-section">
             <div class="info-row"><strong>이름:</strong> <input type="text" v-model="employee.name" /></div>
             <div class="info-row"><strong>사번:</strong> {{ employee.id }}</div>
-            <div class="info-row">
-              <strong>소개:</strong><br>
-              <textarea v-model="employee.introduction"></textarea>
-            </div>
           </div>
         </div>
 
