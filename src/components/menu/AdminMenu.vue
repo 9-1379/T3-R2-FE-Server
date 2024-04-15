@@ -60,7 +60,7 @@ export default {
       this.$store.commit('toggleDarkMode');
     },
     goToEmp() {
-      this.$router.push("/hrcard"); // 수정된 부분
+      this.$router.push("/emp/dashboard"); // 수정된 부분
     },
     goToHome() {
       this.$router.push("/")
