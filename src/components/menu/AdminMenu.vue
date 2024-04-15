@@ -13,7 +13,7 @@
         <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow"
             v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
-          <a href="/adnim/annual">직원연차관리</a>
+          <a href="/admin/annual">직원연차관리</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
