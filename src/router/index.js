@@ -18,6 +18,7 @@ import MyAnnual from '@/components/emp/dashboard/MyAnnual';
 import EmpProfile from '@/components/emp/dashboard/EmpProfile.vue';
 import MyAttendance from '@/components/emp/dashboard/MyAttendance';
 import AttendanceManagement from '@/components/admin/attendance/AttendanceManagement.vue';
+import EmpBadge from '@/components/emp/dashboard/EmpBadge.vue';
 
 
 const routes = [
@@ -111,6 +112,11 @@ const routes = [
     path: '/admin/attendance',
     name: 'AttendanceManagement',
     component: AttendanceManagement
+  },
+  {
+    path: '/myBadge',
+    name: 'EmpBadge',
+    component: EmpBadge
   }
 ];
 

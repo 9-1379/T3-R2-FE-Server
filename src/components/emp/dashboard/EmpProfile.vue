@@ -1,7 +1,7 @@
 <template>
   <div class="emp-profile-container">
     <div v-if="employee" class="employee-profile">
-      <img :src="employee.profilePicture" class="profile-circle" alt="Profile Picture" />
+      <img :src="getProfilePictureUrl(employee.profilePicture)" class="profile-circle" alt="Profile Picture" />
       <div class="upload-container">
         <input type="file" @input="uploadProfilePicture" />
         <div class="emp-db">
@@ -30,6 +30,12 @@ export default {
       isEditable: false,
     };
   },
+  // Vuex store의 state에서 empId를 가져옴
+computed: {
+    empId() {
+        return this.$store.state.empId;
+    }
+},
   methods: {
     uploadProfilePicture(event) {
       const selectedFile = event.target.files[0];
@@ -55,7 +61,7 @@ export default {
       })
         .then((res) => {
           console.log("서버 응답:", res.data);
-          this.$router.push('/emp/dashboard');
+          this.$router.push(`/emp/dashboard/${empId}`);
           alert('파일 업로드 성공!');
         })
         .catch((error) => {
@@ -65,7 +71,7 @@ export default {
     },
     getProfilePictureUrl(profilePicture) {
       if (profilePicture) {
-        return profilePicture;
+        return `http://localhost:8000${profilePicture}`;
       } else {
         // 프로필 사진이 없는 경우 기본 이미지 경로 반환
         return require('@/assets/profile.jpg');

@@ -18,7 +18,7 @@ User
                 <tr v-for="badge in badges" :key="badge.id">
                     <td>{{ badge.badgeName }}</td>
                     <td>{{ badge.badgeDetail }}</td>
-                    <td><img :src="badge.badgeImage" alt="배지 사진" /></td>
+                    <td><img :src="getImageUrl(badge.badgeImage)" alt="배지 사진" /></td>
                     <td>
                         <button @click="deactivateBadge(badge.badgeName)">삭제</button>
                     </td>
@@ -45,6 +45,9 @@ export default {
         };
     },
     methods: {
+        getImageUrl(filename) {
+            return `http://localhost:8000${filename}`;
+        },
         async fetchBadges() {
             try {
                 const response = await axiosInstance.get('/api/admin/badge/list');
