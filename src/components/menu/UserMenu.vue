@@ -62,7 +62,7 @@ export default {
       this.$store.commit('toggleDarkMode');
     },
     goToAdmin() {
-      this.$router.push("/list");
+      this.$router.push("/admin/attendance");
     },
     goToHome() {
       this.$router.push("/")
