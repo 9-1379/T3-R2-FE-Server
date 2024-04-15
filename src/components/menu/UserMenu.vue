@@ -4,15 +4,15 @@
       <img src="@/assets/team_logo.png" alt="Logo" @click="goToHome"/> <!-- 로고 이미지 경로를 설정해주세요 -->
     </div>
     <div class="navbar-links">
-      <a href="#home" class="nav-link">Home</a>
+      <a href="/emp/dashboard" class="nav-link">Home</a>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')" @mouseleave="toggleDropdown(false, 'vacation')">
-        <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
+        <a  class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
           <a href="/emp/NewAnnual">연차신청 및 내역</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
-        <a href="/hrcard" class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
+        <a class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'emp'">
           <a href="/hrcard">인사카드</a>
         </div>
