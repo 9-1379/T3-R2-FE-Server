@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <AdminMenu />
+      <UserMenu />
     </div>
     <div class="profile-section">
       <div
@@ -36,14 +36,14 @@
 
 <script>
 import axiosInstance from "@/axios";
-import AdminMenu from "@/components/menu/AdminMenu.vue";
 import AttendanceRecord from "@/components/emp/dashboard/AttendanceRecord.vue";
 import MyAnnual from "@/components/emp/dashboard/MyAnnual.vue";
 import MyAttendance from "@/components/emp/dashboard/MyAttendance.vue";
+import UserMenu from "@/components/menu/UserMenu.vue";
 
 export default {
   components: {
-    AdminMenu,
+    UserMenu,
     AttendanceRecord,
     MyAnnual,
     MyAttendance,
