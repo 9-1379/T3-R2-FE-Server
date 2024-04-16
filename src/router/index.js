@@ -97,7 +97,7 @@ const routes = [
     component: AttendanceManagement
   },
   {
-    path: '/myBadge',
+    path: '/myBadge/list',
     name: 'EmpBadge',
     component: EmpBadge
   }
