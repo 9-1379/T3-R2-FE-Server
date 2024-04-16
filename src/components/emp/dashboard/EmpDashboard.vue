@@ -4,7 +4,10 @@
     <div class="profile-section">
       <div class="profile-info">
         <div class="profile-image-wrapper">
-          <img class="profile-image" src="@/assets/emotion/dead.jpg" alt="Profile Picture" />
+          <!-- 이미지의 src 속성에 getImagePath 메서드를 호출하여 프로필 사진 경로를 동적으로 설정합니다. -->
+          <img class="profile-image" :src="getImagePath(employee.profilePicture)" alt="Profile Picture" />
+          <input type="file" @change="uploadProfilePicture" accept="image/*" style="display: none" ref="fileInput" />
+          <button class="change-profile-btn" @click="$refs.fileInput.click()">프로필 사진 변경</button>
         </div>
         <div class="basic-info">
           <h2>{{ employee.name }}</h2>
@@ -37,11 +40,10 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
 </template>
+
 <script>
 import axiosInstance from "@/axios";
 import AttendanceRecord from "@/components/emp/dashboard/AttendanceRecord.vue";
@@ -66,6 +68,66 @@ export default {
     };
   },
   methods: {
+    uploadProfilePicture(event) {
+      const selectedFile = event.target.files[0];
+      if (!selectedFile) {
+        alert('파일을 선택해 주세요.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', selectedFile, selectedFile.name);
+
+      // empId를 가져오는 함수 호출
+      const empId = this.getEmpIdFromToken();
+      if (!empId) {
+        console.error('Employee ID is not set.');
+        alert('사용자 정보를 불러올 수 없습니다. 다시 로그인 해주세요.');
+        return;
+      }
+
+      // 파일 업로드 요청보내기
+      axiosInstance.post(`/emp/dashboard/${empId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then((res) => {
+          console.log("서버 응답:", res.data);
+          this.$router.push('/emp/dashboard');
+          alert('파일 업로드 성공!');
+        })
+        .catch((error) => {
+          console.error('파일 업로드 실패:', error);
+          alert('파일 업로드에 실패했습니다.');
+        });
+    },
+    getEmpIdFromToken() {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const decodedToken = atob(token.split('.')[1]);
+        const { empId } = JSON.parse(decodedToken);
+        return empId;
+      }
+      return null;
+    },
+    getImagePath(profilePicture) {
+  if (profilePicture) {
+    try {
+      return require('@/assets/' + profilePicture);
+    } catch (error) {
+      console.error('이미지를 불러오는 데 실패했습니다.', error);
+      return require('@/assets/emotion/dead.jpg');
+    }
+  } else {
+    console.error('프로필 사진이 없습니다.');
+    return require('@/assets/emotion/dead.jpg');
+  }
+},
+
+    enableEditing() {
+      this.isEditable = true;
+    },
+    
     async getEmpToOne() {
       const empResponse = await axiosInstance.get("/emp/dashboard/empToOne");
       this.employee = empResponse.data;
@@ -94,13 +156,11 @@ export default {
   justify-content: center;
   align-items: flex-start;
   margin-top: 30px;
-  /* 기타 스타일링 */
 }
 
 .profile-info {
   text-align: center;
   margin-right: 30px;
-  /* 추가된 스타일링 */
 }
 
 .profile-image-wrapper {
@@ -110,11 +170,24 @@ export default {
   height: 300px;
   margin-bottom: 15px;
   overflow: hidden;
+  position: relative;
 }
 
 .profile-image {
   width: 100%;
   height: auto;
+}
+
+.change-profile-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
 .basic-info h2 {
@@ -163,18 +236,13 @@ export default {
 .button-container {
   display: flex;
   justify-content: flex-end;
-  /* 오른쪽 정렬 */
   padding-top: 10px;
-  /* 버튼과 텍스트 영역 사이 간격 */
 }
 
 .edit-button {
   padding: 5px 10px;
-  /* 버튼 내부 여백 */
   font-size: 0.8rem;
-  /* 글씨 크기 */
   border-radius: 4px;
-  /* 버튼 모서리 둥글게 */
 }
 
 .second-section {
@@ -188,26 +256,17 @@ export default {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* 2열 구조 */
   grid-template-rows: 1fr 1fr;
-  /* 2행 구조 */
   gap: 20px;
-  /* 그리드 사이의 간격 */
   width: 100%;
-  /* 컨테이너 너비 */
   height: auto;
-  /* 자동 높이 조정 */
 }
 
 .grid-item {
   background-color: #fff;
-  /* 배경색 */
   border: 1px solid #ccc;
-  /* 테두리 */
   padding: 10px;
-  /* 패딩 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* 그림자 효과 */
   display: flex;
   justify-content: center;
   align-items: center;
