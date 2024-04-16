@@ -111,23 +111,21 @@ export default {
       return null;
     },
     getImagePath(profilePicture) {
-  if (profilePicture) {
-    try {
-      return require('@/assets/' + profilePicture);
-    } catch (error) {
-      console.error('이미지를 불러오는 데 실패했습니다.', error);
-      return require('@/assets/emotion/dead.jpg');
-    }
-  } else {
-    console.error('프로필 사진이 없습니다.');
-    return require('@/assets/emotion/dead.jpg');
-  }
-},
-
+      if (profilePicture) {
+        try {
+          return require('@/assets/' + profilePicture);
+        } catch (error) {
+          console.error('이미지를 불러오는 데 실패했습니다.', error);
+          return require('@/assets/emotion/dead.jpg');
+        }
+      } else {
+        console.error('프로필 사진이 없습니다.');
+        return require('@/assets/emotion/dead.jpg');
+      }
+    },
     enableEditing() {
       this.isEditable = true;
     },
-    
     async getEmpToOne() {
       const empResponse = await axiosInstance.get("/emp/dashboard/empToOne");
       this.employee = empResponse.data;
@@ -188,6 +186,8 @@ export default {
   border-radius: 4px;
   padding: 5px 10px;
   cursor: pointer;
+  z-index: 1; /* 이미지 위로 버튼이 올라오도록 설정 */
+  color: #333; /* 버튼 텍스트 색상 지정 */
 }
 
 .basic-info h2 {
