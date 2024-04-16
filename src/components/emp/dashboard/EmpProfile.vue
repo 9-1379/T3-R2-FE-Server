@@ -76,12 +76,13 @@ export default {
       return null;
     },
     getImagePath(profilePicture) {
-      if (profilePicture) {
-        return require('@/assets/' + profilePicture);
-      } else {
-        return require('@/assets/profile.jpg');
-      }
-    },
+  try {
+    return require('@/assets/' + profilePicture);
+  } catch (error) {
+    console.error('이미지를 불러오는 데 실패했습니다.', error);
+    return require('@/assets/profile.jpg');
+  }
+},
     enableEditing() {
       this.isEditable = true;
     },
