@@ -1,7 +1,9 @@
 <template>
   <div class="emp-profile-container">
     <div v-if="employee" class="employee-profile">
-      <img :src="employee.profilePicture" class="profile-circle" alt="Profile Picture" />
+      <!-- 이미지 소스 경로를 템플릿 보간법을 사용하여 설정 -->
+      <img :src="getImagePath(employee.profilePicture)" class="profile-circle" alt="Profile Picture" />
+
       <div class="upload-container">
         <input type="file" @input="uploadProfilePicture" />
         <div class="emp-db">
@@ -73,11 +75,10 @@ export default {
       }
       return null;
     },
-    getProfilePictureUrl(profilePicture) {
+    getImagePath(profilePicture) {
       if (profilePicture) {
-        return profilePicture;
+        return require('@/assets/' + profilePicture);
       } else {
-        // 프로필 사진이 없는 경우 기본 이미지 경로 반환
         return require('@/assets/profile.jpg');
       }
     },
@@ -93,8 +94,7 @@ export default {
           alert('소개글이 저장되었습니다.');
           this.employee = res.data;
         }
-        this.isEditable = false; // 저장 후 텍스트 필드를 비활성화
-        // this.fetchEmployeeProfile(); // 소개글 업데이트 후 직원 정보 다시 로드
+        this.isEditable = false;
       } catch (error) {
         console.error("소개글을 저장하는 데 실패했습니다.", error);
       }
