@@ -111,18 +111,17 @@ export default {
       return null;
     },
     getImagePath(profilePicture) {
-      if (profilePicture) {
-        try {
-          return require('@/assets/' + profilePicture);
-        } catch (error) {
-          console.error('이미지를 불러오는 데 실패했습니다.', error);
-          return require('@/assets/emotion/dead.jpg');
-        }
-      } else {
-        console.error('프로필 사진이 없습니다.');
-        return require('@/assets/emotion/dead.jpg');
-      }
-    },
+  if (profilePicture) {
+    try {
+      return require('@/assets/' + profilePicture);
+    } catch (error) {
+      console.error('이미지를 불러오는 데 실패했습니다.', error);
+      return require('@/assets/emotion/dead.jpg');
+    }
+  } else {
+    return require('@/assets/emotion/dead.jpg');
+  }
+},
     enableEditing() {
       this.isEditable = true;
     },
