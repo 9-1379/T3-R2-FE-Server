@@ -40,7 +40,8 @@ export default {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
 
-      const empId = this.$store.state.empId;
+      // empId를 가져오는 함수 호출
+      const empId = this.getEmpIdFromToken();
       if (!empId) {
         console.error('Employee ID is not set.');
         alert('사용자 정보를 불러올 수 없습니다. 다시 로그인 해주세요.');
@@ -62,6 +63,15 @@ export default {
           console.error('파일 업로드 실패:', error);
           alert('파일 업로드에 실패했습니다.');
         });
+    },
+    getEmpIdFromToken() {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const decodedToken = atob(token.split('.')[1]);
+        const { empId } = JSON.parse(decodedToken);
+        return empId;
+      }
+      return null;
     },
     getProfilePictureUrl(profilePicture) {
       if (profilePicture) {
@@ -106,7 +116,6 @@ export default {
     this.fetchEmployeeProfile();
   }
 };
-
 </script>
 
 <style scoped>
