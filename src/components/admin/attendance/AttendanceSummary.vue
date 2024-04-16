@@ -1,20 +1,16 @@
 <template>
     <div class="attendance-summary">
+        <div class="status-box" style="border-color: #219ebc;" @click="selectStatus()">
+            <div class="status-label">총인원</div>
+            <div class="number">{{ summary.total }}<span class="unit">명</span></div>
+        </div>
         <div class="status-box" style="border-color: #8ecae6;" @click=" selectStatus('PRESENT')">
             <div class="status-label">출근</div>
             <div class="number">{{ summary.presentCount }}<span class="unit">명</span></div>
         </div>
-        <div class="status-box" style="border-color: #219ebc;" @click="selectStatus('LEAVE')">
-            <div class="status-label">퇴근</div>
-            <div class="number">{{ summary.leaveCount }}<span class="unit">명</span></div>
-        </div>
         <div class="status-box" style="border-color: #023047;" @click="selectStatus('LATE')">
             <div class="status-label">지각</div>
             <div class="number">{{ summary.lateCount }}<span class="unit">명</span></div>
-        </div>
-        <div class="status-box" style="border-color: #ffb703;" @click="selectStatus('ABSENT')">
-            <div class="status-label">결근</div>
-            <div class="number">{{ summary.absentCount }}<span class="unit">명</span></div>
         </div>
         <div class="status-box" style="border-color: #fb8500;" @click="selectStatus('ON_LEAVE')">
             <div class="status-label">휴가</div>

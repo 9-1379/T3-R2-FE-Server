@@ -1,6 +1,7 @@
 User
 <template>
     <div class="badge-management">
+<<<<<<< HEAD
         <h1>배지 관리</h1>
         <div class="badge-header">
             <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
@@ -27,18 +28,50 @@ User
         </table>
         <AddBadgeModal v-if="popState" @close="changePopState()" />
 
+=======
+      <!-- AdminMenu 추가 -->
+      <AdminMenu />
+      <h1>배지 관리</h1>
+      <div class="badge-header">
+        <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>배지 이름</th>
+            <th>배지 설명</th>
+            <th>배지 사진</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="badge in badges" :key="badge.id">
+            <td>{{ badge.badgeName }}</td>
+            <td>{{ badge.badgeDetail }}</td>
+            <td><img :src="badge.badgeImage" alt="배지 사진" /></td>
+            <td>
+              <button @click="deactivateBadge(badge.badgeName)">삭제</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <AddBadgeModal v-if="popState" @close="changePopState()" />
+>>>>>>> dev
     </div>
-</template>
-
-<script>
-import AddBadgeModal from './AddBadgeModal.vue';
-import axiosInstance from '@/axios';
-
-export default {
+  </template>
+  
+  <script>
+  import AddBadgeModal from './AddBadgeModal.vue';
+  import AdminMenu from '@/components/menu/AdminMenu.vue'; // AdminMenu 추가
+  import axiosInstance from '@/axios';
+  
+  export default {
     components: {
-        AddBadgeModal
+      AddBadgeModal,
+      AdminMenu // AdminMenu 추가
     },
     data() {
+<<<<<<< HEAD
         return {
             badges: [],
             popState: false,
@@ -70,13 +103,43 @@ export default {
         changePopState() {
             this.popState = !this.popState;
             this.fetchBadges();
+=======
+      return {
+        badges: [],
+        popState: false
+      };
+    },
+    methods: {
+      async fetchBadges() {
+        try {
+          const response = await axiosInstance.get('/api/admin/badge/list');
+          this.badges = response.data.filter(badge => badge.status === 'Enabled');
+        } catch (error) {
+          console.error("배지 리스트를 가져오는 데 실패했습니다.", error);
+>>>>>>> dev
         }
+      },
+      deactivateBadge(badgeName) {
+        axiosInstance.post('/api/admin/badge/deactivate', null, { params: { badgeName } })
+          .then(() => {
+            this.fetchBadges(); // 배지 리스트를 다시 불러옴
+            alert(badgeName + ' 배지가 비활성화되었습니다.');
+          })
+          .catch(error => {
+            console.error("배지 비활성화 중 오류가 발생했습니다.", error);
+            alert('배지 비활성화에 실패했습니다. 에러 로그를 확인해주세요.');
+          });
+      },
+      changePopState() {
+        this.popState = !this.popState;
+        this.fetchBadges();
+      }
     },
     mounted() {
-        this.fetchBadges();
+      this.fetchBadges();
     }
-};
-</script>
+  };
+  </script>
 
 <style scoped>
 .badge-header {
