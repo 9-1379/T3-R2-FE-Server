@@ -1,39 +1,47 @@
 <template>
   <div>
-    <div>
-      <UserMenu />
-    </div>
+    <UserMenu />
     <div class="profile-section">
-      <div
-        class="first-section"
-        v-for="(list, index) in employee"
-        v-bind:key="index"
-      >
-        <p class="p1">
-          이름: {{ list.name }} <br />
-          부서명:{{ list.deptName }} <br />
-          직위: {{ list.position }} <br />
-          직무: {{ list.jobId }} <br />
-        </p>
-        <p class="p1">
-          <br />
-          {{ list.introduction }}
-        </p>
-        <textarea v-model="form.introduction"></textarea>
-        <button @click="postIntro">저장</button>
-        <div>
-          <AttendanceRecord />
+      <div class="profile-info">
+        <div class="profile-image-wrapper">
+          <img class="profile-image" src="@/assets/emotion/dead.jpg" alt="Profile Picture" />
+        </div>
+        <div class="basic-info">
+          <h2>{{ employee.name }}</h2>
+          <p>{{ employee.deptName }} | {{ employee.position }}</p>
+        </div>
+        <div class="introduction">
+          <p v-if="!editMode">{{ employee.introduction }}</p>
+          <textarea v-if="editMode" v-model="form.introduction"></textarea>
+          <div class="button-container">
+            <button class="edit-button" @click="editMode ? postIntro() : editMode = !editMode">
+              {{ editMode ? '저장' : '수정' }}
+            </button>
+          </div>
         </div>
       </div>
+
       <div class="second-section">
-        <p>배지가 들어갈 공간</p>
-        <MyAttendance />
-        <MyAnnual />
+        <div class="grid-container">
+          <div class="grid-item">
+            <AttendanceRecord />
+          </div>
+          <div class="grid-item">
+            <p>배지가 들어갈 공간</p>
+          </div>
+          <div class="grid-item">
+            <MyAttendance />
+          </div>
+          <div class="grid-item">
+            <MyAnnual />
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
-</template>
 
+</template>
 <script>
 import axiosInstance from "@/axios";
 import AttendanceRecord from "@/components/emp/dashboard/AttendanceRecord.vue";
@@ -50,6 +58,7 @@ export default {
   },
   data() {
     return {
+      editMode: false,
       employee: [],
       form: {
         introduction: "",
@@ -66,6 +75,7 @@ export default {
       alert("소개글이 저장되었습니다");
       this.clearInput();
       this.getEmpToOne();
+      this.editMode = false;
     },
     clearInput() {
       this.form.introduction = "";
@@ -79,39 +89,128 @@ export default {
 
 <style scoped>
 .profile-section {
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  text-align: left;
-  border: 1px solid #ccc; /* 네모 박스 테두리 스타일 */
-  padding: 20px; /* 내부 여백 설정 */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 30px;
+  /* 기타 스타일링 */
+}
+
+.profile-info {
   text-align: center;
+  margin-right: 30px;
+  /* 추가된 스타일링 */
 }
-.first-section,
+
+.profile-image-wrapper {
+  border: 3px solid #ccc;
+  border-radius: 0%;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.profile-image {
+  width: 100%;
+  height: auto;
+}
+
+.basic-info h2 {
+  margin: 0;
+  padding: 10px 0;
+}
+
+.basic-info p {
+  margin: 0;
+  padding: 5px 0;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.introduction {
+  margin: 15px 0;
+  position: relative;
+}
+
+.introduction p {
+  height: 100px;
+  width: 300px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: auto;
+}
+
+.introduction textarea {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none;
+  overflow: auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  /* 오른쪽 정렬 */
+  padding-top: 10px;
+  /* 버튼과 텍스트 영역 사이 간격 */
+}
+
+.edit-button {
+  padding: 5px 10px;
+  /* 버튼 내부 여백 */
+  font-size: 0.8rem;
+  /* 글씨 크기 */
+  border-radius: 4px;
+  /* 버튼 모서리 둥글게 */
+}
+
 .second-section {
-  width: 45%; /* 섹션의 너비 */
-  display: inline-block; /* 같은 라인에 표시 */
-  vertical-align: top; /* 섹션들을 위쪽에 정렬 */
-  /* margin-right: 5%; 오른쪽 마진 설정 */
-  /* text-align: center; */
+  width: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 50px;
 }
 
-
-p {
-  line-height: 1.5; /* 원하는 줄간격 값으로 조절합니다. */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* 2열 구조 */
+  grid-template-rows: 1fr 1fr;
+  /* 2행 구조 */
+  gap: 20px;
+  /* 그리드 사이의 간격 */
+  width: 100%;
+  /* 컨테이너 너비 */
+  height: auto;
+  /* 자동 높이 조정 */
 }
-.p1 {
-  text-align: left;
-  border: 1px solid #a09e9e; /* 네모 박스 테두리 스타일 */
-  width: 280px; /* 네모 박스의 너비 */
-  height: 100px; /* 네모 박스의 높이 */
-  border-radius: 10px;
-  box-shadow: 0px 4px 2px rgba(96, 99, 100, 0.3);
-  margin-bottom: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 5px;
+
+.grid-item {
+  background-color: #fff;
+  /* 배경색 */
+  border: 1px solid #ccc;
+  /* 테두리 */
+  padding: 10px;
+  /* 패딩 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 그림자 효과 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>
