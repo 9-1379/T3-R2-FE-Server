@@ -113,7 +113,7 @@ export default {
     getImagePath(profilePicture) {
   if (profilePicture) {
     try {
-      return require('@/assets/profile' + profilePicture);
+      return require('@/assets/profile/' + profilePicture);
     } catch (error) {
       console.error('이미지를 불러오는 데 실패했습니다.', error);
       return require('@/assets/emotion/dead.jpg');
