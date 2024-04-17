@@ -24,8 +24,8 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 import axiosInstance from "@/axios";
 import { reactive, onMounted } from "vue";
 
@@ -71,20 +71,22 @@ export default {
 };
 </script>
 
-  <style scoped>
+<style scoped>
 .hrcard-container {
   max-width: 400px;
   margin: auto;
   padding: 20px;
   border-radius: 5px;
   display: inline-block;
-  margin-top: 20px; /* 컨테이너의 위쪽 공간 제거 */
+  margin-top: 15px;
 }
 
 .header {
   text-align: left;
-  margin-bottom: 5px; /* 텍스트 위의 공간 조절 */
-  margin-top: 0; /* 헤더와 컨테이너 간의 공백 제거 */
+  margin-bottom: 5px;
+  /* 텍스트 위의 공간 조절 */
+  margin-top: 0;
+  /* 헤더와 컨테이너 간의 공백 제거 */
 }
 
 .annual-status {
@@ -96,7 +98,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 40px; /* 원 사이의 간격 조절 */
+  margin-right: 40px;
+  /* 원 사이의 간격 조절 */
 }
 
 .status-circle {
@@ -114,6 +117,7 @@ export default {
 }
 
 .status-item:last-child {
-  margin-right: 0; /* 마지막 원의 오른쪽 공간 제거 */
+  margin-right: 0;
+  /* 마지막 원의 오른쪽 공간 제거 */
 }
 </style>

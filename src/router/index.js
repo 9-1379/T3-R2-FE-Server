@@ -13,6 +13,7 @@ import BadgeManagement from '@/components/badge/BadgeManagement.vue';
 
 import EmpDashboard from '@/components/emp/dashboard/EmpDashboard';
 import AttendanceManagement from '@/components/admin/attendance/AttendanceManagement.vue';
+import EmpBadge from '@/components/emp/dashboard/EmpBadge.vue';
 
 
 const routes = [
@@ -94,6 +95,12 @@ const routes = [
     path: '/admin/attendance',
     name: 'AttendanceManagement',
     component: AttendanceManagement
+  },
+  {
+    // (사용자) 배지 조회
+    path: '/emp/badge',
+    name: 'EmpBadge',
+    component: EmpBadge
   }
 ];
 
