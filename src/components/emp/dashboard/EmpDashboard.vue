@@ -27,7 +27,7 @@
             <AttendanceRecord />
           </div>
           <div class="grid-item">
-           <EmpBadge />
+            <EmpBadge />
           </div>
           <div class="grid-item">
             <MyAttendance />
