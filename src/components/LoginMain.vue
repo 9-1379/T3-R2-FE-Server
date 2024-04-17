@@ -26,6 +26,7 @@ export default {
   name: "LoginMain",
   setup() {
     const router = useRouter();
+    localStorage.removeItem("access_token");
     const form = reactive({
       username: "",
       password: "",
@@ -62,9 +63,12 @@ export default {
 .login-container {
   max-width: 400px;
   margin: auto;
-  padding: 20px;
+  padding: 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+  /* 추가적인 그림자 효과 */
 }
 
 label {
@@ -79,6 +83,8 @@ input[type="password"] {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+  /* 패딩과 테두리 포함하여 요소 크기 계산 */
 }
 
 button {

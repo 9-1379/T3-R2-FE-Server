@@ -10,23 +10,21 @@
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')"
         @mouseleave="toggleDropdown(false, 'vacation')">
-        <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow"
+        <a class="nav-link">연차<span class="dropdown-arrow"
             v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
           <a href="/admin/annual">직원연차관리</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
-        <a href="#emp" class="nav-link">인사<span class="dropdown-arrow"
-            v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
+        <a class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'emp'">
           <a href="/list">임직원조회</a>
           <a href="/new">신규직원추가</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'badge')" @mouseleave="toggleDropdown(false, 'badge')">
-        <a href="/badge" class="nav-link">배지<span class="dropdown-arrow"
-            v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
+        <a class="nav-link">배지<span class="dropdown-arrow" v-html="dropdownType === 'badge' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'badge'">
           <a href="/admin/badge">배지기준관리</a>
         </div>
@@ -39,7 +37,7 @@
         {{ darkModeEnabled ? '🌜' : '🌞' }}
       </button>
       <!-- Logout Button -->
-      <a href="/" class="logout-link">로그아웃</a>
+      <a href="/" class="logout-link" @click="logout">로그아웃</a>
     </div>
   </div>
 </template>
@@ -53,6 +51,12 @@ export default {
     },
   },
   methods: {
+    logout() {
+      console.log("실행");
+      localStorage.clear();
+      // 로그아웃 후 로그인 페이지로 이동
+      this.$router.push("/login");
+    },
     toggleDropdown(visible, type) {
       this.dropdownType = visible ? type : '';
     },
@@ -60,7 +64,7 @@ export default {
       this.$store.commit('toggleDarkMode');
     },
     goToEmp() {
-      this.$router.push("/hrcard"); // 수정된 부분
+      this.$router.push("/emp/dashboard"); // 수정된 부분
     },
     goToHome() {
       this.$router.push("/")
