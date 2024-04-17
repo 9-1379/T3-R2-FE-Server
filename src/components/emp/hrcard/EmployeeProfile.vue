@@ -1,12 +1,10 @@
 <template>
     <div class="profile-section" v-if="employee">
-        <img :src="employee.profilePicture" alt="프로필 사진" />
+        <img src="@/assets/emotion/dead.jpg" alt="프로필 사진" />
         <h2>{{ employee.name }}</h2>
         <profile-badge :employeeId="employee.id" />
         <p>{{ employee.email }}</p>
-        <p>{{ employee.deptName }}</p>
-        <p>{{ employee.position }}</p>
-        <p>{{ employee.jobId }}</p>
+        <p>{{ employee.deptName }} | {{ employee.position }} | {{ employee.jobId }}</p>
         <p>{{ employee.introduction }}</p>
     </div>
 </template>
