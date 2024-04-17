@@ -16,10 +16,11 @@ import axiosInstance from "@/axios";
 export default {
   data() {
     return {
-      badges: [],
+      badges: []
     };
   },
-  mounted() {
+  //mounted() {
+    created() {
     this.fetchBadges()
   },
   methods: {
@@ -27,14 +28,14 @@ export default {
       return `http://localhost:8000${filename}`;
         },
     fetchBadges() {
-      axiosInstance.get('/myBadge/list')
+      axiosInstance.get('/emp/badge')
         .then(response => {
           this.badges = response.data
         })
         .catch(error => {
           console.error(error)
         });
-    },
-  },
-};
+    }
+  }
+}
 </script>

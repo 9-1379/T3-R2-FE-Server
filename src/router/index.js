@@ -97,7 +97,8 @@ const routes = [
     component: AttendanceManagement
   },
   {
-    path: '/myBadge/list',
+    // (사용자) 배지 조회
+    path: '/emp/badge',
     name: 'EmpBadge',
     component: EmpBadge
   }

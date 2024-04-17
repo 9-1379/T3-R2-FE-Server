@@ -27,7 +27,7 @@
             <AttendanceRecord />
           </div>
           <div class="grid-item">
-            <p>배지가 들어갈 공간</p>
+           <EmpBadge />
           </div>
           <div class="grid-item">
             <MyAttendance />
@@ -48,6 +48,7 @@ import AttendanceRecord from "@/components/emp/dashboard/AttendanceRecord.vue";
 import MyAnnual from "@/components/emp/dashboard/MyAnnual.vue";
 import MyAttendance from "@/components/emp/dashboard/MyAttendance.vue";
 import UserMenu from "@/components/menu/UserMenu.vue";
+import EmpBadge from "./EmpBadge.vue";
 
 export default {
   components: {
@@ -55,6 +56,7 @@ export default {
     AttendanceRecord,
     MyAnnual,
     MyAttendance,
+    EmpBadge
   },
   data() {
     return {
