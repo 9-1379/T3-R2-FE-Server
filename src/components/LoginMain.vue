@@ -26,6 +26,7 @@ export default {
   name: "LoginMain",
   setup() {
     const router = useRouter();
+    localStorage.removeItem("access_token");
     const form = reactive({
       username: "",
       password: "",
