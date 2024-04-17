@@ -5,7 +5,8 @@
       <h2>직원 연차 부여</h2>
       부여 년도: {{ currentYear }}년도
       <input @keyup.enter="newAnnualTotal" class="input-set" v-model="form.annualTotal" placeholder="부여할 갯수 입력">
-      <button class="button-set" @click="newAnnualTotal">부여</button>
+      <button class="button-set" @click="newAnnualTotal">전체 부여</button>
+      <button class="button-set" @click="deleteTotalAll">전체 삭제</button>
     </div>
     <div class="section-bottom">
       <h2 class="list-title">직원 연차 현황</h2>
@@ -98,6 +99,11 @@ export default {
     },
   },
   methods: {
+    async deleteTotalAll() {
+      await axiosInstance.delete("/annualTotal/delete");
+      alert("연차가 전체 삭제 되었습니다");
+      this.empAnnualStatus();
+    },
     prevPage() {
       if (this.currentPage > 1) {
         this.currentPage--;
@@ -118,12 +124,14 @@ export default {
     clearInput() {
       this.form.annualTotal = "";
     },
+    // 현재 연차 현황 메서드
     async empAnnualStatus() {
       const statusListResponse = await axiosInstance.get(
         `/status/${this.currentYear}`
       );
       this.empAnnualList = statusListResponse.data;
     },
+    // 부서 불러오기 메서드
     async deptList() {
       const empdepartmentResponse = await axiosInstance.get(
         "api/hrCard/deptList"
@@ -298,5 +306,9 @@ td {
   border-radius: 10px; /* 모서리를 동그랗게 만듦 */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
   padding: 5px; /* 내부 여백 설정 */
+}
+input::placeholder {
+  text-align: center;
+  color: gray;
 }
 </style>

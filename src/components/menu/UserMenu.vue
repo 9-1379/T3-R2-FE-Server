@@ -19,7 +19,8 @@
       </div>
     </div>
     <div class="navbar-icons">
-      <button v-if="userRole === 'ROLE_MANAGER' || userRole === 'ROLE_HRMANAGER'" class="user-btn" @click="goToAdmin">관리자</button>
+      <h4>{{ employee.name }}님 환영합니다</h4>
+      <button v-if="userRole === 'ROLE_MANAGER' || userRole === 'ROLE_HRMANAGER'" class="user-btn" @click="goToAdmin">관리자 전환</button>
       <!-- Dark Mode Toggle Button -->
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+import axiosInstance from "@/axios";
+
 export default {
   name: 'TopMenuBar',
   computed: {
@@ -66,18 +69,29 @@ export default {
     },
     goToHome() {
       this.$router.push("/")
+    },
+    async getEmpToOne() {
+      const empResponse = await axiosInstance.get("/emp/dashboard/empToOne");
+      this.employee = empResponse.data;
     }
   },
   data() {
     return {
       dropdownType: '',
+      employee: [],
     };
+  },
+  mounted() {
+    this.getEmpToOne();
   },
 };
 </script>
 
 
 <style scoped>
+h4 {
+  margin-right: 10px;
+}
 .top-navbar {
   display: flex;
   justify-content: start;
