@@ -10,6 +10,7 @@
             </div>
             <div class="profile-section">
                 <EmployeeProfile :employee="selectedEmployee" />
+                <ProfileBadge :employeeId="selectedEmployee?.id" />
             </div>
         </main>
     </div>

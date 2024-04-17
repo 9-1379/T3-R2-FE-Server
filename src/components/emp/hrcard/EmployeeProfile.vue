@@ -2,12 +2,7 @@
     <div class="profile-section" v-if="employee">
         <img :src="employee.profilePicture" alt="프로필 사진" />
         <h2>{{ employee.name }}</h2>
-        <div class="badges">
-            <div v-for="(badge, index) in employee.badges" :key="index" class="badge">
-                <img :src="badge.image" :alt="badge.name" />
-                <span>{{ badge.name }}</span>
-            </div>
-        </div>
+        <profile-badge :employeeId="employee.id" />
         <p>{{ employee.email }}</p>
         <p>{{ employee.deptName }}</p>
         <p>{{ employee.position }}</p>
@@ -17,7 +12,12 @@
 </template>
 
 <script>
+import ProfileBadge from './ProfileBadge.vue';
+
 export default {
+    components: {
+        ProfileBadge
+    },
     props: {
         employee: {
             type: Object,
@@ -28,6 +28,13 @@ export default {
 </script>
 
 <style scoped>
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
 .profile-section img {
     width: 150px;
     height: 150px;
