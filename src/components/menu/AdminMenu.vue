@@ -30,8 +30,10 @@
         </div>
       </div>
     </div>
+    
     <div class="navbar-icons">
-      <button class="user-btn" @click="goToEmp">사용자</button> <!-- 수정된 부분 -->
+      <h4>관리자님 환영합니다</h4>
+      <button class="user-btn" @click="goToEmp">사용자 전환</button> <!-- 수정된 부분 -->
       <!-- Dark Mode Toggle Button -->
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
@@ -79,6 +81,10 @@ export default {
 </script>
 
 <style scoped>
+h4 {
+  text-align: right;
+  margin-right: 10px;
+}
 .top-navbar {
   display: flex;
   justify-content: start;

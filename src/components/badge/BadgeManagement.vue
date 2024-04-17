@@ -1,34 +1,33 @@
-User
 <template>
     <div class="badge-management">
-        <!-- AdminMenu 추가 -->
         <AdminMenu />
-        <h1>배지 관리</h1>
-        <div class="badge-header">
-            <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
+        <div class="badge-list">
+            <h1>배지 관리</h1>
+            <div class="badge-header">
+                <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>배지 이름</th>
+                        <th>배지 설명</th>
+                        <th>배지 사진</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="badge in badges" :key="badge.id">
+                        <td>{{ badge.badgeName }}</td>
+                        <td>{{ badge.badgeDetail }}</td>
+                        <td><img :src="badge.badgeImage" alt="배지 사진" /></td>
+                        <td>
+                            <button @click="deactivateBadge(badge.badgeName)">삭제</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <AddBadgeModal v-if="popState" @close="changePopState()" />
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>배지 이름</th>
-                    <th>배지 설명</th>
-                    <th>배지 사진</th>
-                    <th>삭제</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="badge in badges" :key="badge.id">
-                    <td>{{ badge.badgeName }}</td>
-                    <td>{{ badge.badgeDetail }}</td>
-                    <td><img :src="getImageUrl(badge.badgeImage)" alt="배지 사진" /></td>
-                    <td>
-                        <button @click="deactivateBadge(badge.badgeName)">삭제</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <AddBadgeModal v-if="popState" @close="changePopState()" />
-
     </div>
 </template>
 
@@ -45,13 +44,10 @@ export default {
     data() {
         return {
             badges: [],
-            popState: false,
+            popState: false
         };
     },
     methods: {
-        getImageUrl(filename) {
-            return `http://localhost:8000${filename}`;
-        },
         async fetchBadges() {
             try {
                 const response = await axiosInstance.get('/api/admin/badge/list');
@@ -76,21 +72,6 @@ export default {
             this.fetchBadges();
         }
     },
-    deactivateBadge(badgeName) {
-        axiosInstance.post('/api/admin/badge/deactivate', null, { params: { badgeName } })
-            .then(() => {
-                this.fetchBadges(); // 배지 리스트를 다시 불러옴
-                alert(badgeName + ' 배지가 비활성화되었습니다.');
-            })
-            .catch(error => {
-                console.error("배지 비활성화 중 오류가 발생했습니다.", error);
-                alert('배지 비활성화에 실패했습니다. 에러 로그를 확인해주세요.');
-            });
-    },
-    changePopState() {
-        this.popState = !this.popState;
-        this.fetchBadges();
-    },
     mounted() {
         this.fetchBadges();
     }
@@ -98,6 +79,15 @@ export default {
 </script>
 
 <style scoped>
+.badge-list {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    height: 100vh;
+    background-color: white;
+    padding: 20px;
+}
+
 .badge-header {
     display: flex;
     justify-content: flex-end;
@@ -106,7 +96,7 @@ export default {
 
 .add-badge-btn {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     border: none;
     cursor: pointer;

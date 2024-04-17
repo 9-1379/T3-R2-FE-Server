@@ -132,7 +132,7 @@ export default {
 .employee-list-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;      /* 가로 축에서 중앙 정렬 */
   height: 100vh;
   background-color: white;
   padding: 20px;
