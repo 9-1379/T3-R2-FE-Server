@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getBadgeImageUrl(filename) {
-      return `http://localhost:8000${filename}`;
+      return `https://9-1379-be.store${filename}`;
     },
     fetchBadges() {
       axiosInstance.get('/emp/badge')
