@@ -161,7 +161,7 @@ export default {
     async fetchEmployeeInfo() {
       // 부서 정보 로딩
       try {
-        const response = await axiosInstance.get('/api/join');
+        const response = await axiosInstance.get('/api/join/new');
         this.form.empId = response.data.empId;
         this.form.empNum = response.data.empNum;
         this.deptNames = response.data.deptNames;

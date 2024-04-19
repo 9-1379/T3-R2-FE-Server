@@ -1,6 +1,10 @@
 version: '3.8'
 services:
-  app:
-    build: .
+  nginx_server:
+    image: nginx:latest
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx/conf/:/etc/nginx/conf.d
     ports:
-      - "3000:3000"
+      - "80:80"
+    restart: always
