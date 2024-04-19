@@ -3,8 +3,10 @@ name: FEDeploy2aws 🛸
 on:
   push:
     branches:
-      - release/v2.0.0
+      - main 
   pull_request:
+    branches:
+      - main
     types:
       - closed
 
