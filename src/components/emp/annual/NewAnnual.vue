@@ -43,7 +43,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import UserMenu from "@/components/menu/UserMenu.vue";
 import axiosInstance from "../../../axios";
 
@@ -66,14 +66,18 @@ export default {
     async annualSave() {
       await axiosInstance.post("/annualSave", this.form);
       await this.fetchAnnualList();
+      alert("연차를 신청하였습니다.");
     },
     async fetchAnnualList() {
       const annualListResponse = await axiosInstance.get("/annualList");
       this.annualLists = annualListResponse.data;
     },
     async annualDelete(id) {
-      await axiosInstance.delete(`/annualList/${id}`);
-      await this.fetchAnnualList();
+      if (confirm("정말로 연차를 취소하시겠습니까?")) {
+        await axiosInstance.delete(`/annualList/${id}`);
+        await this.fetchAnnualList();
+        alert("연차를 취소하였습니다.");
+      }
     },
     isCancelable(startDate) {
       const currentDate = new Date();

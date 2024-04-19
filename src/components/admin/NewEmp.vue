@@ -152,7 +152,7 @@ export default {
         alert('신규 직원 정보가 성공적으로 등록되었습니다.');
         // 폼 초기화 또는 성공 메시
         // 폼 초기화 또는 성공 메시지 표시 등의 추가 작업
-        this.$router.push("/");
+        this.$router.push("/list");
       } catch (error) {
         console.error(error);
         alert('정보 등록에 실패했습니다.');
@@ -161,7 +161,7 @@ export default {
     async fetchEmployeeInfo() {
       // 부서 정보 로딩
       try {
-        const response = await axiosInstance.get('/api/join');
+        const response = await axiosInstance.get('/api/join/new');
         this.form.empId = response.data.empId;
         this.form.empNum = response.data.empNum;
         this.deptNames = response.data.deptNames;
