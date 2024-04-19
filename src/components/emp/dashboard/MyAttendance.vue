@@ -22,8 +22,8 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 import axiosInstance from "@/axios";
 import { reactive, onMounted } from "vue";
 
@@ -62,15 +62,15 @@ export default {
   },
 };
 </script>
-  
-  <style>
+
+<style>
 .attendance-card-container {
   max-width: 400px;
   margin: auto;
   padding: 20px;
   border-radius: 5px;
   display: inline-block;
-  margin-top: 0;
+  margin-top: 15px;
 }
 
 .header {
@@ -109,4 +109,3 @@ export default {
   margin-right: 0;
 }
 </style>
-  

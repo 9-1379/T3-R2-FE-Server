@@ -4,22 +4,23 @@
       <img src="@/assets/team_logo.png" alt="Logo" @click="goToHome"/> <!-- 로고 이미지 경로를 설정해주세요 -->
     </div>
     <div class="navbar-links">
-      <a href="#home" class="nav-link">Home</a>
+      <a href="/emp/dashboard" class="nav-link">Home</a>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'vacation')" @mouseleave="toggleDropdown(false, 'vacation')">
-        <a href="#vacation" class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
+        <a  class="nav-link">연차<span class="dropdown-arrow" v-html="dropdownType === 'vacation' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'vacation'">
           <a href="/emp/NewAnnual">연차신청 및 내역</a>
         </div>
       </div>
       <div class="nav-item" @mouseenter="toggleDropdown(true, 'emp')" @mouseleave="toggleDropdown(false, 'emp')">
-        <a href="/hrcard" class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
+        <a class="nav-link">인사<span class="dropdown-arrow" v-html="dropdownType === 'emp' ? ' ▲' : ' ▼'"></span></a>
         <div class="dropdown-content" v-show="dropdownType === 'emp'">
           <a href="/hrcard">인사카드</a>
         </div>
       </div>
     </div>
     <div class="navbar-icons">
-      <button v-if="userRole === 'ROLE_MANAGER' || userRole === 'ROLE_HRMANAGER'" class="user-btn" @click="goToAdmin">관리자</button>
+      <h4>{{ employee.name }}님 환영합니다</h4>
+      <button v-if="userRole === 'ROLE_MANAGER' || userRole === 'ROLE_HRMANAGER'" class="user-btn" @click="goToAdmin">관리자 전환</button>
       <!-- Dark Mode Toggle Button -->
       <button class="mode-toggle-btn" @click="toggleDarkMode">
         {{ darkModeEnabled ? '🌜' : '🌞' }}
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+import axiosInstance from "@/axios";
+
 export default {
   name: 'TopMenuBar',
   computed: {
@@ -62,22 +65,33 @@ export default {
       this.$store.commit('toggleDarkMode');
     },
     goToAdmin() {
-      this.$router.push("/list");
+      this.$router.push("/admin/attendance");
     },
     goToHome() {
       this.$router.push("/")
+    },
+    async getEmpToOne() {
+      const empResponse = await axiosInstance.get("/emp/dashboard/empToOne");
+      this.employee = empResponse.data;
     }
   },
   data() {
     return {
       dropdownType: '',
+      employee: [],
     };
+  },
+  mounted() {
+    this.getEmpToOne();
   },
 };
 </script>
 
 
 <style scoped>
+h4 {
+  margin-right: 10px;
+}
 .top-navbar {
   display: flex;
   justify-content: start;

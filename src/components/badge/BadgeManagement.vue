@@ -1,42 +1,45 @@
-User
 <template>
     <div class="badge-management">
-        <h1>배지 관리</h1>
-        <div class="badge-header">
-            <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
+        <AdminMenu />
+        <div class="badge-list">
+            <h1>배지 관리</h1>
+            <div class="badge-header">
+                <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>배지 이름</th>
+                        <th>배지 설명</th>
+                        <th>배지 사진</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="badge in badges" :key="badge.id">
+                        <td>{{ badge.badgeName }}</td>
+                        <td>{{ badge.badgeDetail }}</td>
+                        <td><img :src="getImageUrl(badge.badgeImage)" alt="배지 사진" /></td>
+                        <td>
+                            <button @click="deactivateBadge(badge.badgeName)">삭제</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <AddBadgeModal v-if="popState" @close="changePopState()" />
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>배지 이름</th>
-                    <th>배지 설명</th>
-                    <th>배지 사진</th>
-                    <th>삭제</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="badge in badges" :key="badge.id">
-                    <td>{{ badge.badgeName }}</td>
-                    <td>{{ badge.badgeDetail }}</td>
-                    <td><img :src="badge.badgeImage" alt="배지 사진" /></td>
-                    <td>
-                        <button @click="deactivateBadge(badge.badgeName)">삭제</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <AddBadgeModal v-if="popState" @close="changePopState()" />
-
     </div>
 </template>
 
 <script>
 import AddBadgeModal from './AddBadgeModal.vue';
+import AdminMenu from '@/components/menu/AdminMenu.vue'; // AdminMenu 추가
 import axiosInstance from '@/axios';
 
 export default {
     components: {
-        AddBadgeModal
+        AddBadgeModal,
+        AdminMenu // AdminMenu 추가
     },
     data() {
         return {
@@ -45,6 +48,9 @@ export default {
         };
     },
     methods: {
+        getImageUrl(filename) {
+            return `http://localhost:8000${filename}`;
+        },
         async fetchBadges() {
             try {
                 const response = await axiosInstance.get('/api/admin/badge/list');
@@ -76,6 +82,15 @@ export default {
 </script>
 
 <style scoped>
+.badge-list {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    height: 100vh;
+    background-color: white;
+    padding: 20px;
+}
+
 .badge-header {
     display: flex;
     justify-content: flex-end;
@@ -84,7 +99,7 @@ export default {
 
 .add-badge-btn {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     border: none;
     cursor: pointer;

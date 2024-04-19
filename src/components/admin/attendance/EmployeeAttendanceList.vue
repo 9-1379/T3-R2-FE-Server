@@ -41,21 +41,20 @@ import { ref, watch, onMounted, defineProps } from 'vue';
 import axiosInstance from '@/axios';
 
 const props = defineProps({
-    status: String,
-    date: String
+    status: String
 });
 
 const searchName = ref('');
 const searchDate = ref('');
 const attendances = ref([]);
 
-const fetchAttendances = async () => {
+const fetchAttendancesByStatus = async () => {
     try {
         const response = await axiosInstance.get('/api/admin/attendance/list', {
             params: {
                 status: props.status,
-                date: searchDate.value,
-                name: searchName.value
+                date: "",
+                name: ""
             }
         });
         attendances.value = response.data;
@@ -64,12 +63,27 @@ const fetchAttendances = async () => {
     }
 };
 
-const applyFilters = () => {
-    fetchAttendances();
+const fetchAttendancesBySearch = async () => {
+    try {
+        const response = await axiosInstance.get('/api/admin/attendance/list', {
+            params: {
+                status: "",
+                date: searchDate.value,
+                name: searchName.value
+            }
+        });
+        attendances.value = response.data;
+    } catch (error) {
+        console.error('검색 결과를 불러오는 데 실패했습니다.', error);
+    }
 };
 
-onMounted(fetchAttendances);
-watch(() => props.status, fetchAttendances);
+const applyFilters = () => {
+    fetchAttendancesBySearch();
+};
+
+onMounted(fetchAttendancesByStatus);
+watch(() => props.status, fetchAttendancesByStatus);
 </script>
 
 <style scoped>
