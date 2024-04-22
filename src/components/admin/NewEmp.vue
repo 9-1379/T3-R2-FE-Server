@@ -8,71 +8,178 @@
           <div class="form-section">
             <h3 class="section-title">기본정보 입력</h3>
             <div class="form-group">
-              <input type="text" id="name" v-model="form.name" required placeholder="이름">
+              <input
+                type="text"
+                id="name"
+                v-model="form.name"
+                required
+                placeholder="이름"
+              />
             </div>
             <div class="form-group">
               <div class="btn-group">
-                <button type="button" class="btn btn-secondary rounded" @click="setGender('MALE')" :class="{ active: form.gender === 'MALE' }">남자</button>
-                <button type="button" class="btn btn-secondary rounded" @click="setGender('FEMALE')" :class="{ active: form.gender === 'FEMALE' }">여자</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary rounded"
+                  @click="setGender('MALE')"
+                  :class="{ active: form.gender === 'MALE' }"
+                >
+                  남자
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary rounded"
+                  @click="setGender('FEMALE')"
+                  :class="{ active: form.gender === 'FEMALE' }"
+                >
+                  여자
+                </button>
               </div>
-              <input type="hidden" v-model="form.gender">
+              <input type="hidden" v-model="form.gender" />
             </div>
             <div class="form-group">
-              <input type="date" id="birth" v-model="form.birthday" aria-label="생년월일 입력" placeholder="생년월일" class="placeholder-gray">
+              <input
+                type="date"
+                id="birth"
+                v-model="form.birthday"
+                aria-label="생년월일 입력"
+                placeholder="생년월일"
+                class="placeholder-gray"
+              />
             </div>
             <div class="form-group">
-              <input type="text" id="phone" v-model="form.phoneNumber" required placeholder="전화번호">
+              <input
+                type="text"
+                id="phone"
+                v-model="form.phoneNumber"
+                required
+                placeholder="전화번호"
+              />
             </div>
             <div class="form-group">
-              <input type="email" id="email" v-model="form.email" class="blur-text" placeholder="이메일">
+              <input
+                type="email"
+                id="email"
+                v-model="form.email"
+                class="blur-text"
+                placeholder="이메일"
+              />
             </div>
-            <div class="form-group" style="display: flex;">
-              <input type="text" id="sample6_postcode" placeholder="우편번호" v-model="form.addr.postcode" style="flex: 5;">
-              <button @click="execDaumPostcode" style="flex: 1; padding: 1px;">찾기</button>
+            <div class="form-group" style="display: flex">
+              <input
+                type="text"
+                id="sample6_postcode"
+                placeholder="우편번호"
+                v-model="form.addr.postcode"
+                style="flex: 5"
+              />
+              <button @click="execDaumPostcode" style="flex: 1; padding: 1px">
+                찾기
+              </button>
             </div>
-            <div class="form-group" style="margin-top: -19px;">
-              <input type="text" id="sample6_address" placeholder="주소" v-model="form.addr.address">
+            <div class="form-group" style="margin-top: -19px">
+              <input
+                type="text"
+                id="sample6_address"
+                placeholder="주소"
+                v-model="form.addr.address"
+              />
             </div>
-            <div class="form-group" style="margin-top: -19px;">
-              <input type="text" id="sample6_detailAddress" placeholder="상세주소" v-model="form.addr.detailAddress">
+            <div class="form-group" style="margin-top: -19px">
+              <input
+                type="text"
+                id="sample6_detailAddress"
+                placeholder="상세주소"
+                v-model="form.addr.detailAddress"
+              />
             </div>
-            <div class="form-group" style="margin-top: -19px;">
-              <input type="text" id="sample6_extraAddress" placeholder="참고항목" v-model="form.addr.extraAddress">
+            <div class="form-group" style="margin-top: -19px">
+              <input
+                type="text"
+                id="sample6_extraAddress"
+                placeholder="참고항목"
+                v-model="form.addr.extraAddress"
+              />
             </div>
           </div>
 
           <div class="form-section">
             <h3 class="section-title">인사정보 입력</h3>
-            <div class="form-group" style="text-align: left;">
-              <label for="employeeId" style="font-size: 12px;">임직원 ID</label>
-              <input type="text" id="employeeId" v-model="form.empId" placeholder="임직원 ID" readonly style="font-size: 14px;">
+            <div class="form-group" style="text-align: left">
+              <label for="employeeId" style="font-size: 12px">임직원 ID</label>
+              <input
+                type="text"
+                id="employeeId"
+                v-model="form.empId"
+                placeholder="임직원 ID"
+                readonly
+                style="font-size: 14px"
+              />
             </div>
-            <div class="form-group" style="text-align: left;">
-              <label for="employeeNumber" style="font-size: 12px;">사번</label>
-              <input type="text" id="employeeNumber" v-model="form.empNum" placeholder="사번" readonly style="font-size: 14px;">
+            <div class="form-group" style="text-align: left">
+              <label for="employeeNumber" style="font-size: 12px">사번</label>
+              <input
+                type="text"
+                id="employeeNumber"
+                v-model="form.empNum"
+                placeholder="사번"
+                readonly
+                style="font-size: 14px"
+              />
             </div>
             <div class="form-group">
-              <input type="text" id="userId" v-model="form.username" placeholder="ID">
+              <input
+                type="text"
+                id="userId"
+                v-model="form.username"
+                placeholder="ID"
+              />
             </div>
             <div class="form-group">
-              <input type="password" id="password" v-model="form.password" placeholder="비밀번호">
+              <input
+                type="password"
+                id="password"
+                v-model="form.password"
+                placeholder="비밀번호"
+              />
             </div>
             <div class="form-group">
               <div class="select-container">
                 <select id="departmentName" v-model="form.deptName" required>
                   <option disabled value="">부서</option>
-                  <option v-for="deptName in deptNames" :key="deptName" :value="deptName">{{ deptName }}</option>
+                  <option
+                    v-for="deptName in deptNames"
+                    :key="deptName"
+                    :value="deptName"
+                  >
+                    {{ deptName }}
+                  </option>
                 </select>
               </div>
             </div>
             <div class="form-group">
-              <input type="text" id="position" v-model="form.position" placeholder="직위">
+              <input
+                type="text"
+                id="position"
+                v-model="form.position"
+                placeholder="직위"
+              />
             </div>
             <div class="form-group">
-              <input type="text" id="job" v-model="form.jobId" placeholder="직무">
+              <input
+                type="text"
+                id="job"
+                v-model="form.jobId"
+                placeholder="직무"
+              />
             </div>
             <div class="form-group">
-              <input type="date" id="hireDate" v-model="form.hireDate" placeholder="입사일">
+              <input
+                type="date"
+                id="hireDate"
+                v-model="form.hireDate"
+                placeholder="입사일"
+              />
             </div>
           </div>
         </div>
@@ -83,8 +190,8 @@
 </template>
 
 <script>
-import axiosInstance from '@/axios';
-import TopMenuBar from '@/components/menu/AdminMenu.vue';
+import axiosInstance from "@/axios";
+import TopMenuBar from "@/components/menu/AdminMenu.vue";
 
 export default {
   components: {
@@ -93,27 +200,27 @@ export default {
   data() {
     return {
       form: {
-        name: '',
-        gender: '',
-        birthday: '',
-        phoneNumber: '',
-        email: '',
-        position: '',
-        jobId: '',
-        hireDate: '',
+        name: "",
+        gender: "",
+        birthday: "",
+        phoneNumber: "",
+        email: "",
+        position: "",
+        jobId: "",
+        hireDate: "",
         addr: {
-          postcode: '',
-          address: '',
-          detailAddress: '',
-          extraAddress: '',
+          postcode: "",
+          address: "",
+          detailAddress: "",
+          extraAddress: "",
         },
-        username: '',
-        password: '',
-        deptName: '',
-        empId: '',
-        empNum: ''
+        username: "",
+        password: "",
+        deptName: "",
+        empId: "",
+        empNum: "",
       },
-      deptNames: [] // 서버에서 가져온 부서명을 저장할 배열
+      deptNames: [], // 서버에서 가져온 부서명을 저장할 배열
     };
   },
   methods: {
@@ -121,22 +228,26 @@ export default {
       new window.daum.Postcode({
         oncomplete: (data) => {
           // 주소 관련 데이터 처리 로직
-          let extraAddr = '';
-          if (data.userSelectedType === 'R') {
-            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+          let extraAddr = "";
+          if (data.userSelectedType === "R") {
+            if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
               extraAddr += data.bname;
             }
-            if (data.buildingName !== '' && data.apartment === 'Y') {
-              extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            if (data.buildingName !== "" && data.apartment === "Y") {
+              extraAddr +=
+                extraAddr !== "" ? ", " + data.buildingName : data.buildingName;
             }
-            extraAddr = extraAddr !== '' ? ` (${extraAddr})` : '';
+            extraAddr = extraAddr !== "" ? ` (${extraAddr})` : "";
           }
           this.form.addr = {
             postcode: data.zonecode,
-            address: data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress,
-            extraAddress: extraAddr
+            address:
+              data.userSelectedType === "R"
+                ? data.roadAddress
+                : data.jibunAddress,
+            extraAddress: extraAddr,
           };
-        }
+        },
       }).open();
     },
     setGender(gender) {
@@ -147,37 +258,52 @@ export default {
       try {
         // eslint-disable-next-line no-unused-vars
         const { empId, empNum, ...submitData } = this.form;
-        const response = await axiosInstance.post('/api/join', submitData);
+        const response = await axiosInstance.post("/api/join", submitData);
         console.log(response.data);
-        alert('신규 직원 정보가 성공적으로 등록되었습니다.');
+        alert("신규 직원 정보가 성공적으로 등록되었습니다.");
         // 폼 초기화 또는 성공 메시
         // 폼 초기화 또는 성공 메시지 표시 등의 추가 작업
         this.$router.push("/list");
       } catch (error) {
-        console.error(error);
-        alert('정보 등록에 실패했습니다.');
+        if (error.response && error.response.data) {
+          console.error(error.response.data);
+          // 오류 메시지가 객체 형태로 반환되는 경우
+          if (
+            typeof error.response.data === "object" &&
+            error.response.data !== null
+          ) {
+            const messages = Object.values(error.response.data).join("\n");
+            alert(messages);
+          } else {
+            // 기타 경우, 예를 들어 문자열 형태의 오류 메시지가 단순히 반환된 경우
+            alert(error.response.data.message || "정보 등록에 실패했습니다.");
+          }
+        } else {
+          // 네트워크 오류 등 기타 오류 처리
+          console.error("서버 응답 없음:", error);
+          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        }
       }
     },
     async fetchEmployeeInfo() {
       // 부서 정보 로딩
       try {
-        const response = await axiosInstance.get('/api/join/new');
+        const response = await axiosInstance.get("/api/join/new");
         this.form.empId = response.data.empId;
         this.form.empNum = response.data.empNum;
         this.deptNames = response.data.deptNames;
       } catch (error) {
-        console.error('부서 정보를 불러오는 데 실패했습니다.', error);
+        console.error("부서 정보를 불러오는 데 실패했습니다.", error);
       }
-    }
+    },
   },
   mounted() {
     this.fetchEmployeeInfo(); // 컴포넌트 마운트 시 부서 정보 로딩
-  }
+  },
 };
 </script>
 
 <style scoped>
-
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="date"],
@@ -314,7 +440,8 @@ export default {
   cursor: pointer;
   margin-top: 8px;
   /* Keep margin top */
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease;
   /* Add transition for color and border color */
   border-radius: 4px;
   /* Keep rounded corners */
@@ -329,7 +456,6 @@ export default {
   background-color: transparent;
   /* Keep background transparent */
 }
-
 
 .submit-button {
   width: 100%;
@@ -388,7 +514,7 @@ export default {
   outline: none;
 }
 
-input[type="date"]:not(.has-value):before{
+input[type="date"]:not(.has-value):before {
   color: gray;
   content: attr(placeholder);
 }
@@ -400,13 +526,8 @@ input[type="date"]:not(.has-value):before{
   /* Disable mouse events */
 }
 
-
 ::placeholder,
 select option {
   color: gray;
 }
-
-
-
-
 </style>
