@@ -4,7 +4,7 @@
         <div class="badge-list">
             <h1>배지 관리</h1>
             <div class="badge-header">
-                <button class="add-badge-btn" @click="changePopState()">배지 추가</button>
+                <button class="add-badge-btn" @click="changePopState()">배지 활성화</button>
             </div>
             <table>
                 <thead>
@@ -12,7 +12,7 @@
                         <th>배지 이름</th>
                         <th>배지 설명</th>
                         <th>배지 사진</th>
-                        <th>삭제</th>
+                        <th>비활성화</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,7 +21,7 @@
                         <td>{{ badge.badgeDetail }}</td>
                         <td><img :src="getImageUrl(badge.badgeImage)" alt="배지 사진" /></td>
                         <td>
-                            <button @click="deactivateBadge(badge.badgeName)">삭제</button>
+                            <button @click="deactivateBadge(badge.badgeName)">비활성화</button>
                         </td>
                     </tr>
                 </tbody>
