@@ -49,7 +49,7 @@ export default {
     },
     methods: {
         getImageUrl(filename) {
-            return `http://localhost:8000${filename}`;
+            return `https://9-1379-be.store${filename}`;
         },
         async fetchBadges() {
             try {
