@@ -3,7 +3,7 @@
         <!-- 검색 필터 -->
         <div class="search-filter">
             <input type="date" v-model="searchDate" />
-            <input v-model="searchName" placeholder="이름 검색" />
+            <input v-model="searchName" placeholder="이름/부서/직위 검색" />
             <button @click="applyFilters">검색</button>
         </div>
         <table>
