@@ -32,6 +32,7 @@ export default {
         return {
             employees: [],
             deptNames: [],
+            jobId: [],
             selectedEmployee: null,
             filteredEmployees: []
         };
@@ -41,9 +42,11 @@ export default {
             try {
                 const employeesResponse = await axiosInstance.get('/api/hrCard/empList');
                 const deptNamesResponse = await axiosInstance.get('/api/hrCard/deptList');
+                const jobIdResponse = await axiosInstance.get('/api/hrCard/jobId');
                 this.employees = employeesResponse.data;
                 this.filteredEmployees = this.employees;
                 this.deptNames = deptNamesResponse.data;
+                this.jobId = jobIdResponse.data;
             } catch (error) {
                 console.error('데이터를 불러오는 중 오류가 발생했습니다:', error);
             }
