@@ -13,6 +13,7 @@
       <div>
         <button type="submit">Login</button>
       </div>
+      <p>관리자 ID: admin PW: 1234 / 직원 ID: user PW: 1234</p>
     </form>
   </div>
 </template>
