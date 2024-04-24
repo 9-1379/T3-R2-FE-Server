@@ -1,21 +1,28 @@
 <template>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form @submit.prevent="handleLogin">
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="form.username" required>
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="form.password" required>
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
-      <p>관리자 ID: admin PW: 1234 / 직원 ID: user PW: 1234</p>
-    </form>
-  </div>
+  <div class="background-image"> </div>
+    <div class="login-container">
+      <h2>HR 시스템 로그인</h2>
+      <form @submit.prevent="handleLogin">
+        <div>
+          <label for="username">아이디</label>
+          <input type="text" id="username" v-model="form.username" required />
+        </div>
+        <div>
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            v-model="form.password"
+            required
+          />
+        </div>
+        <div>
+          <button type="submit">로그인</button>
+        </div>
+        <p>관리자 ID: admin PW: 1234 / 직원 ID: user PW: 1234</p>
+      </form>
+    </div>
+ 
 </template>
 
 <script>
@@ -53,22 +60,42 @@ export default {
         });
     };
 
-
     return { form, handleLogin };
   },
-
 };
 </script>
 
 <style>
+html, body {
+  height: 100%; /* 화면 전체 높이를 채우기 위해 필요 */
+  margin: 0; /* 기본 마진 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+  overflow-y: hidden;
+  
+}
+.background-image {
+  position: fixed; /* 요소를 화면에 고정 */
+  top: 0; /* 상단에서 시작 */
+  left: 0; /* 왼쪽에서 시작 */
+  width: 100%; /* 화면 전체 너비 */
+  height: 100%; /* 화면 전체 높이 */
+  background-image: url('/src/assets/emotion/login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; /* 이미지 반복 없음 */
+  z-index: -1; /* 다른 내용 뒤로 배치 */
+}
 .login-container {
   max-width: 400px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 100px;
+  margin-top: 85px;
+  background-color: #2BBEE8;
+  color: #ffffff;
   /* 추가적인 그림자 효과 */
 }
 
