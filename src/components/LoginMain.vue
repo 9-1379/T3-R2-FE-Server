@@ -89,14 +89,28 @@ html, body {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-  padding: 60px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 88px;
+  margin-top: 78px;
   background-color: #2BBEE8;
   color: #ffffff;
   /* 추가적인 그림자 효과 */
+}
+
+/* 화면 크기가 768px 미만일 때 */
+@media (max-width: 767px) {
+  .login-container {
+    padding: 20px; /* 더 작은 패딩 값 */
+  }
+}
+
+/* 화면 크기가 480px 미만일 때 */
+@media (max-width: 479px) {
+  .login-container {
+    padding: 10px; /* 최소 패딩 값 */
+  }
 }
 
 label {
