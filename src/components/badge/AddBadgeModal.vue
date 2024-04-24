@@ -49,7 +49,7 @@ export default {
     mounted() {
         this.fetchBadges();
     }
-}
+} 
 </script>
 
 <style scoped>
