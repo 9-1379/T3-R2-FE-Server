@@ -89,13 +89,14 @@ html, body {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-  padding: 20px;
+  padding: 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-top: 78px;
   background-color: #2BBEE8;
   color: #ffffff;
+  background: radial-gradient(circle, #2BBEE8, #2CAAE2); 
   /* 추가적인 그림자 효과 */
 }
 
